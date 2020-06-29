@@ -1,4 +1,7 @@
-Hello World | 0 | 1
+Hello World
 
-#!Bash | echo "Hello World"
-#!Perl | printf "Hello World"
+#!/bin/bash | 0
+echo "Hello World"
+
+#!/bin/perl | 0
+printf "Hello World"
