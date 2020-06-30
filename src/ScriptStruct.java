@@ -8,6 +8,8 @@ import java.util.ArrayList;
   Declaration ("new" tag)should NOT be used with relation to flow or we will add
     a significant amount of overhead. */
 
+import prefabs.Command;
+
 public class ScriptStruct{
   //variables-------------------------------------------------------------------
   ArrayList<Command> flow;

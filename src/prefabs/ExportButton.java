@@ -20,17 +20,6 @@ public class ExportButton extends Button {
 		this.setMaxSize(1000, 500);
 		this.setPrefSize(width, height);
 	}
-
-	//These constructors take button label and image as arguments, if desired
-	/*public ExportButton(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-
-	public ExportButton(String arg0, Node arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
-	}*/
 }
 
 class onExportClickEvent implements EventHandler<ActionEvent> {
@@ -38,5 +27,7 @@ class onExportClickEvent implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent actionEvent) {
 		System.out.print("hello!");
+		
+		actionEvent.consume();
 	}
 }
