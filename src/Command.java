@@ -29,6 +29,6 @@ public class Command{
 
   /* addLang
     Adds an entry to the hashtable (interp -> code) */
-  void addLang(String interp, String code){codeTable.add(interp, code); return;}
+  void addLang(String interp, String code){codeTable.put(interp, code); return;}
   //static subroutines----------------------------------------------------------
 }
