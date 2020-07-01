@@ -5,7 +5,9 @@ import java.lang.StringBuilder;
   Represents the main generation class for storing the flowchart and outputting
   to the selected out-lang. */
 
-class ScriptStruct{
+import prefabs.Command;
+
+public class ScriptStruct{
   //variables-------------------------------------------------------------------
   /*'Flow' holds command representations of the GUI flowchart. */
   ArrayList<Command> flow;
