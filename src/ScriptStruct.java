@@ -5,7 +5,7 @@ import java.lang.StringBuilder;
   Represents the main generation class for storing the flowchart and outputting
   to the selected out-lang. */
 
-public class ScriptStruct{
+class ScriptStruct{
   //variables-------------------------------------------------------------------
   /*'Flow' holds command representations of the GUI flowchart. */
   ArrayList<Command> flow;
@@ -25,16 +25,20 @@ public class ScriptStruct{
     Returns false on failure. */
   boolean addCommandBase(String id, Command c){
     boolean toReturn = false;
+    String error = "ERROR: " + id + " is already a key in commands and " +
+                        "was not added.";
     //if key already exists, fail
     if(commandBases.containsKey(id)){
-      System.err.println("ERROR: " + id + " is already a key in commands and " +
-                          "was not added.");
-      toReturn = false;
-    }else{ commandBases.put(id, c); toReturn = true; }
-    //return status
+      System.err.println(error); toReturn = false;
+    }else{
+      commandBases.put(id, c); toReturn = true;
+    }
+
     return toReturn;
   }
   /* addCommandToFlow
+    Duplicates the command from the hashtable and plugs it into flow.
+    NYI: Then adds user adjustments (flags/text input) to the command.
   */
   void addCommandToFlow(){
     //NYI
