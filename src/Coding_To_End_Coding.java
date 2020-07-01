@@ -4,11 +4,13 @@ import java.util.Hashtable;
 /* Coding
   The main java file. */
 
+import src.Main;
+
 public class Coding_To_End_Coding{
   //main------------------------------------------------------------------------
   public static void main(String[] args){
     Globals.interps = generateInterpreters();
-
+    Main.main(args);
     System.exit(0);
   }
   //static subroutines----------------------------------------------------------
