@@ -10,6 +10,7 @@ public class Coding_To_End_Coding{
   //main------------------------------------------------------------------------
   public static void main(String[] args){
     Globals.interps = generateInterpreters();
+    //Added a call to main so that running this file opens the gui that thomas set up
     Main.main(args);
     System.exit(0);
   }
