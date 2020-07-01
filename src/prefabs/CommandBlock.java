@@ -20,7 +20,7 @@ public class CommandBlock extends StackPane {
 			for size and color, so it's trivial to create a constructor that takes
 			size, position, and color
 	 */
-	static double width = 100;
+        static double width = 100;
 	static double height = 100;	
 	static enum livesOn{
 		SIDEBAR,

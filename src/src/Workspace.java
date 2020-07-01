@@ -37,31 +37,33 @@ public class Workspace extends Application {
 	public void start(Stage stage) throws Exception {
 		
 		//scene (window) is created here
-        stage.setTitle("My JavaFX Application");
-        Group root = new Group();
-        Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
-        stage.setScene(scene);
+	    stage.setTitle("My JavaFX Application");
+	    Group root = new Group();
+	    Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
+	    stage.setScene(scene);
         
-        //making all the containers for visual elements
-        //VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
-        VBox sidebar = new VBox(10);	//this number spaces the elements
-        sidebar.setPadding(new Insets(10));	//this number puts a buffer around the box
-        ExportButton button = new ExportButton(150, 100);
-        Rectangle sidebarRect = new Rectangle(
+	    //making all the containers for visual elements
+	    //VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
+	    VBox sidebar = new VBox(10);	//this number spaces the elements
+	    sidebar.setPadding(new Insets(10));	//this number puts a buffer around the box
+	    ExportButton button = new ExportButton(150, 100);
+	    Rectangle sidebarRect = new Rectangle(
         		150, 
         		defaultWindowHeight - button.getHeight(), 
         		Color.LIGHTGREY
-        );
-        sidebar.getChildren().addAll(button, sidebarRect);
+						  );
+	    sidebar.getChildren().addAll(button, sidebarRect);
         
-        //adding objects to the scene
-        root.getChildren().add(sidebar);
+	    //adding objects to the scene
+	    root.getChildren().add(sidebar);
 		
-        //show scene
-        stage.show();
+	    //show scene
+	    stage.show();
 
 	}
-	
+        
+
+    
 	/*
 	stop is like init, but it goes right after the application ends
 	The superclass definition also does nothing, so I commented this out
