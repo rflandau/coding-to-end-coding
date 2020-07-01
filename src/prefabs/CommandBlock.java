@@ -103,7 +103,8 @@ class onCommandBlockDrop implements EventHandler<DragEvent>{
 	public void handle(DragEvent event) {
 		//if this block was dragged from the sidebar...
 		if(targetBlock.home == CommandBlock.livesOn.SIDEBAR) {
-			if(/*The block landed on the workspace*/) {
+		    //set following if to true for temp value
+			if(true/*The block landed on the workspace*/) {
 				//create a copy of this command block
 				//add it to the scene graph
 			}
@@ -114,7 +115,7 @@ class onCommandBlockDrop implements EventHandler<DragEvent>{
 		
 		//if this block was dragged from the workspace...
 		if(targetBlock.home == CommandBlock.livesOn.WORKSPACE) {
-			if(/*The block landed on the sidebar*/) {
+			if(false/*The block landed on the sidebar*/) {
 				//delete it
 			}
 			

@@ -19,6 +19,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import prefabs.ExportButton;
+import prefabs.CommandBlock;
+import prefabs.Command;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
@@ -79,6 +81,10 @@ public class Workspace extends Application {
 	    @Override
 	    public void handle(MouseEvent e){
 		System.out.println("Mouse click handled");
+		Command c = new Command("echo HelloWorld", "baseBlock");
+		CommandBlock block = new CommandBlock(10,20,Color.LIGHTGREY,c);
+		mainCanvas.getChildren().add(block);
+		
 	    }
 	};
 
