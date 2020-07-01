@@ -44,6 +44,7 @@ public class Workspace extends Application {
 		
 	//scene (window) is created here
 	stage.setTitle("My JavaFX Application");
+	//I changed root to a borderPane to allow for better layout of the application
 	BorderPane root = new BorderPane();
 	Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
 	stage.setScene(scene);
