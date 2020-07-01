@@ -5,7 +5,8 @@ import java.util.Hashtable;
 Represents a command block and corresponding output code.
 
 NOTE: each command block is unlikely to have more than one or two interpreters
-  and corresponding code. A hash for two items may be overkill.*/
+  and corresponding code. A hash for two items may be overkill, espcially
+  because deep-copying a hashtable is expensive. */
 
 /*	Moved Command into prefabs so it can be handled as a type by CommandBlock, Command's
  	visual representation on the screen (classes from the default package can't be imported)
@@ -15,22 +16,33 @@ public class Command{
   //variables-------------------------------------------------------------------
   // basic info
   private String id, name, tooltip;
-  int inputs; //may  need to be tweaked after we figure out how to take text
+  private int inputCount; //may need to be tweaked after we figure out how to take text
   // hashtable stores K -> V as interpreter -> code
-  private Hashtable<String, String> codeTable = new Hashtable<String, String>();
+  // this could be broken off into an independent hashtable in main
+  Hashtable<String, String> codeTable = new Hashtable<String, String>();
   //constructors----------------------------------------------------------------
   public Command(String id, String name){
     this.id   = id;
     this.name = name;
   }
+  //duplication
+  public Command(Command c){
+    id   = c.getId();
+    name = c.getName();
+    tooltip = c.getTooltip();
+    inputCount = c.getInputCount();
+    //codeTable = c.codeTable;
+  }
   //subroutines-----------------------------------------------------------------
   //getters/setters
-  String getId()           { return id; }
-  void setId(String i)     { id = i; }
-  String getName()         { return name; }
-  void setName(String n)   { name = n; }
-  String getTooltip()      { return tooltip; }
-  void setTooltip(String t){ tooltip = t; return; }
+  String getId()             { return id; }
+  void   setId(String i)     { id = i; }
+  String getName()           { return name; }
+  void   setName(String n)   { name = n; }
+  String getTooltip()        { return tooltip; }
+  void   setTooltip(String t){ tooltip = t; }
+  int    getInputCount()     { return inputCount; }
+  void   setTooltip(int i)   { inputCount = i; }
 
   /* addLang
     Adds an entry to the hashtable (interp -> code) */
