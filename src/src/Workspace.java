@@ -68,7 +68,7 @@ public class Workspace extends Application {
 
 	// Creating the background of the canvas for the command blocks to be placed
 	Rectangle canvasRect = new Rectangle(
-					     300,
+					     500,
 					     defaultWindowHeight,
 					     Color.LIGHTGREY
 					     );
@@ -82,6 +82,9 @@ public class Workspace extends Application {
 	    }
 	};
 
+	//Linking the eventhandler to the canvas rectangle
+	canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+	
 	//Add the rectangle to the canvas node
 	mainCanvas.getChildren().add(canvasRect);
 	//Add canvas to the scene
