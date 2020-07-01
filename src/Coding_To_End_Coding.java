@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-/* Coding
+/* Coding_To_End_Coding
   The main java file. */
 
 public class Coding_To_End_Coding{
   //main------------------------------------------------------------------------
   public static void main(String[] args){
+    //gather interps and populate their command HTs
     Globals.interps = generateInterpreters();
 
     System.exit(0);
@@ -18,12 +19,12 @@ public class Coding_To_End_Coding{
     NOTE: Currently just creates the test interpreter. */
   static ArrayList<Interpreter> generateInterpreters(){
     //variables
-    Hashtable<String, String> ht = new Hashtable<String, String>();
+    Hashtable<String, Command> ht = new Hashtable<String, Command>();
     Interpreter bash;
     ArrayList<Interpreter> toReturn = new ArrayList<Interpreter>();
 
     //generate test bash ht
-    ht.put("helloworld", "echo \" Hello World\"");
+    ht.put("helloworld", new Command("Hello World", "echo \" Hello World\""));
 
     //create bash Interpreter object
     bash = new Interpreter("bash", "#!/bin/bash", ht);
