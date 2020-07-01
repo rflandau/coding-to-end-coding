@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;	//for sidebar shape
 import javafx.scene.paint.Color;		//for sidebar color
 import javafx.scene.layout.VBox;		//for vertical ordering of sidebar objects
+import javafx.scene.layout.BorderPane;		//for vertical ordering of sidebar objects
 import javafx.geometry.Insets;			//for sidebar spacing
 
 //Import Event Handling
@@ -43,14 +44,16 @@ public class Workspace extends Application {
 		
 	//scene (window) is created here
 	stage.setTitle("My JavaFX Application");
-	Group root = new Group();
+	BorderPane root = new BorderPane();
 	Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
 	stage.setScene(scene);
         
 	//making all the containers for visual elements
 	//VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
 	VBox sidebar = new VBox(10);	//this number spaces the elements
+	VBox mainCanvas = new VBox(10);  // making another Container for main canvas
 	sidebar.setPadding(new Insets(10));	//this number puts a buffer around the box
+	mainCanvas.setPadding(new Insets(10));
 	ExportButton button = new ExportButton(150, 100);
 	Rectangle sidebarRect = new Rectangle(
 					      150, 
@@ -60,8 +63,15 @@ public class Workspace extends Application {
 	sidebar.getChildren().addAll(button, sidebarRect);
         
 	//adding objects to the scene
-	root.getChildren().add(sidebar);
+	root.setRight(sidebar);
 
+	// Creating the background of the canvas for the command blocks to be placed
+	Rectangle canvasRect = new Rectangle(
+					     300,
+					     defaultWindowHeight,
+					     Color.LIGHTGREY
+					     );
+	
 	//Creating Event handler for click to add block
 	
 	EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -71,19 +81,10 @@ public class Workspace extends Application {
 	    }
 	};
 
-	// Creating the main canvas for the command blocks to be placed
-	Rectangle canvasRect = new Rectangle(
-					     300,
-					     defaultWindowHeight,
-					     Color.LIGHTGREY
-					     );
-	//Create Canvas Node
-	VBox mainCanvas = new VBox(10);
-	mainCanvas.setPadding(new Insets(10));
 	//Add the rectangle to the canvas node
 	mainCanvas.getChildren().add(canvasRect);
 	//Add canvas to the scene
-	root.getChildren().add(mainCanvas);
+	root.setCenter(mainCanvas);
 		
 	//show scene
 	stage.show();
