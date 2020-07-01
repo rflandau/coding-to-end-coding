@@ -72,13 +72,18 @@ public class Workspace extends Application {
 	};
 
 	// Creating the main canvas for the command blocks to be placed
-	Rectangle mainCanvas = new Rectangle(
+	Rectangle canvasRect = new Rectangle(
 					     300,
 					     defaultWindowHeight,
 					     Color.LIGHTGREY
 					     );
-
-	
+	//Create Canvas Node
+	VBox mainCanvas = new VBox(10);
+	mainCanvas.setPadding(new Insets(10));
+	//Add the rectangle to the canvas node
+	mainCanvas.getChildren().add(canvasRect);
+	//Add canvas to the scene
+	root.getChildren().add(mainCanvas);
 		
 	//show scene
 	stage.show();
