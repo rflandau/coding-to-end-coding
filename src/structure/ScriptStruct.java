@@ -33,11 +33,11 @@ public class ScriptStruct{
        NYI: Then adds user adjustments (flags/text input) to the command. */
     public void addCommandToFlow(Command cmd){
         System.out.println("Command: "+cmd.getName()+" added to flow");
-        //NYI
+        flow.add(flow.size(), cmd);
     }
     public void removeCommandFromFlow(Command cmd){
         System.out.println("Command: "+cmd.getName()+" removed from flow");
-        //NYI
+        flow.remove(flow.size()-1);
     }
 
     /* writeScript
@@ -57,8 +57,11 @@ public class ScriptStruct{
         //iterate through every element in 'flow'
         for(int i = 0; i<flow.size(); i++){
             Command c = flow.get(i);
+<<<<<<< HEAD
 			br.write(c.getSyntax() + "\n");
 			System.out.println(c.getSyntax());
+=======
+>>>>>>> f5e5adba59a2d388f3405e04afc3a306e32de189
         }
 
         //ensure the script is end-capped by a newline
