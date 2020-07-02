@@ -16,8 +16,10 @@ clean:
 	mkdir classes
 
 test:
-	cd classes
-	${J} ${JFLAGS} ${MAIN}
+# 	cd classes		# cd doesn't work in Makefiles :(
+# 	${J} ${JFLAGS} ${MAIN}
+	./run.sh
 
 ci:
-	git -am "Default commit for small changes that should not be used often"
+	git commit -am "soft tabs and makefile changes"
+	git push

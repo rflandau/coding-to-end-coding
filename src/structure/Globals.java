@@ -7,8 +7,8 @@ import java.util.ArrayList;
   */
 
 public class Globals{
-  //holds all interpreters
-  static ArrayList<Interpreter> interps = new ArrayList<Interpreter>();
-  //points to the current interpreter in 'interps'
-  static int curInterp = 0;
+    //holds all interpreters
+    static ArrayList<Interpreter> interps = new ArrayList<Interpreter>();
+    //points to the current interpreter in 'interps'
+    static int curInterp = 0;
 }
