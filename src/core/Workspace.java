@@ -88,14 +88,14 @@ public class Workspace extends Application {
         //Creating Event handler for click to add block
 
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e){
-            System.out.println("Mouse click handled");
-            Command c = new Command("echo HelloWorld", "baseBlock");
-            CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
-            block.addToFlow(commandList);
-            blocks.getChildren().add(block);
-        }
+            @Override
+            public void handle(MouseEvent e){
+                System.out.println("Mouse click handled");
+                Command c = new Command("echo HelloWorld", "baseBlock");
+                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+                block.addToFlow(commandList);
+                blocks.getChildren().add(block);
+            }
         };
         //Linking the eventhandler to the canvas rectangle
         canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
