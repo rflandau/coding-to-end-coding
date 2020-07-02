@@ -23,11 +23,11 @@ public class ScriptStruct{
     */
     public void addCommandToFlow(Command cmd){
         System.out.println("Command: "+cmd.getName()+" added to flow");
-        //NYI
+        flow.add(flow.size(), cmd);
     }
     public void removeCommandFromFlow(Command cmd){
         System.out.println("Command: "+cmd.getName()+" removed from flow");
-        //NYI
+        flow.remove(flow.size()-1);
     }
     
     /* generateScript
@@ -46,7 +46,6 @@ public class ScriptStruct{
         //iterate through every element in 'flow'
         for(int i = 0; i<flow.size(); i++){
             Command c = flow.get(i);
-
         }
 
         //ensure the script is end-capped by a newline
