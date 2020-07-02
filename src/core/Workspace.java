@@ -74,10 +74,10 @@ public class Workspace extends Application {
 
         // Creating the background of the canvas for the command blocks to be placed
         Rectangle canvasRect = new Rectangle(
-                        500,
-                        defaultWindowHeight,
-                        Color.LIGHTGREY
-                        );
+                               500,
+                               defaultWindowHeight,
+                               Color.LIGHTGREY
+                               );
 
         //Add the rectangle to the canvas node
         mainCanvas.getChildren().add(canvasRect);
