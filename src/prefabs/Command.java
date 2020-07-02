@@ -36,12 +36,5 @@ public class Command{
   String getTooltip()        { return tooltip; }
   void   setTooltip(String t){ tooltip = t; }
 
-  /* addLang
-    Adds an entry to the hashtable (interp -> code) */
-  //this was the original line here, but add isn't a method of hashtables? I guess?
-  //	I'm assuming that's what add is doing here, adding this key/value pair
-  //void addLang(String interp, String code){codeTable.add(interp, code); return;}
-  void addLang(String interp, String code){codeTable.put(interp, code); return;}
-
   //static subroutines----------------------------------------------------------
 }
