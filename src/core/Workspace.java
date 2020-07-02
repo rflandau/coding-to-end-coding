@@ -48,18 +48,18 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
 
         //scene (window) is created here
-        stage.setTitle("My JavaFX Application");
-        //I changed root to a borderPane to allow for better layout of the application
+        stage.setTitle("JCoding to End Coding");
+        //I changed root to a BorderPane to allow for better layout of the application
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
 
         //making all the containers for visual elements
         //VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
-        VBox sidebar = new VBox(10);    //this number spaces the elements
+        VBox rightSidebar = new VBox(10);    //this number spaces the elements
         StackPane mainCanvas = new StackPane();  // making another Container for main canvas
         VBox blocks = new VBox();
         blocks.setPadding(new Insets(10));
-        sidebar.setPadding(new Insets(10));    //this number puts a buffer around the box
+        rightSidebar.setPadding(new Insets(10));    //this number puts a buffer around the box
         mainCanvas.setPadding(new Insets(10));
         ExportButton button = new ExportButton(150, 100);
         Rectangle sidebarRect = new Rectangle(
@@ -67,10 +67,10 @@ public class Workspace extends Application {
                                 defaultWindowHeight - button.getHeight(),
                                 Color.LIGHTGREY
                                 );
-        sidebar.getChildren().addAll(button, sidebarRect);
+        rightSidebar.getChildren().addAll(button, sidebarRect);
 
         //adding objects to the scene
-        root.setRight(sidebar);
+        root.setRight(rightSidebar);
 
         // Creating the background of the canvas for the command blocks to be placed
         Rectangle canvasRect = new Rectangle(
@@ -87,14 +87,35 @@ public class Workspace extends Application {
         root.setCenter(mainCanvas);
         //Creating Event handler for click to add block
 
+        System.out.println("Creating START Block");
+        Command s = new Command("START", "baseBlock");
+        CommandBlock start = new CommandBlock(1,2,Color.BLACK,s);
+        start.addToFlow(commandList);
+        blocks.getChildren().add(start);
+        
+        System.out.println("Creating END Block");
+        Command e = new Command("END", "baseBlock");
+        CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
+        end.addToFlow(commandList);
+        blocks.getChildren().add(end);
+        
+        
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
                 System.out.println("Mouse click handled");
+                
+                // removing end block
+                end.removeFromFlow(commandList);
+                blocks.getChildren().remove(end);
+                
                 Command c = new Command("echo HelloWorld", "baseBlock");
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 block.addToFlow(commandList);
                 blocks.getChildren().add(block);
+                
+                end.addToFlow(commandList);
+                blocks.getChildren().add(end);
             }
         };
         //Linking the eventhandler to the canvas rectangle

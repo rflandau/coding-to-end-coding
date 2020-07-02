@@ -72,6 +72,11 @@ public class CommandBlock extends StackPane {
         cmdList.addCommandToFlow(attachedCommand);
     }
     
+    // function to remove command from the command list
+    public void removeFromFlow(ScriptStruct cmdList) {
+        cmdList.removeCommandFromFlow(attachedCommand);
+    }
+    
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
         this.home = newHome;
