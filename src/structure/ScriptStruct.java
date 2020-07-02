@@ -3,6 +3,7 @@ package structure;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.lang.StringBuilder;
+
 /* ScriptStruct
   Represents the main generation class for storing the flowchart and outputting
   to the selected out-lang. */
@@ -20,7 +21,7 @@ public class ScriptStruct{
     Duplicates the command from the hashtable and plugs it into flow.
     NYI: Then adds user adjustments (flags/text input) to the command.
   */
-  void addCommandToFlow(){
+  public void addCommandToFlow(){
     //NYI
   }
   /* generateScript
