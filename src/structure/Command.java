@@ -1,5 +1,4 @@
-
-package prefabs;
+package structure;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -31,10 +30,10 @@ public class Command{
   }
   //subroutines-----------------------------------------------------------------
   //getters/setters
-  String getName()           { return name; }
-  void   setName(String n)   { name = n; }
-  String getTooltip()        { return tooltip; }
-  void   setTooltip(String t){ tooltip = t; }
+  public String getName()           { return name; }
+  public void   setName(String n)   { name = n; }
+  public String getTooltip()        { return tooltip; }
+  public void   setTooltip(String t){ tooltip = t; }
 
   //static subroutines----------------------------------------------------------
 }

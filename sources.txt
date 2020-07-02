@@ -1,0 +1,8 @@
+./src/prefabs/ExportButton.java
+./src/prefabs/CommandBlock.java
+./src/core/Main.java
+./src/core/Workspace.java
+./src/structure/ScriptStruct.java
+./src/structure/Command.java
+./src/structure/Interpreter.java
+./src/structure/Globals.java

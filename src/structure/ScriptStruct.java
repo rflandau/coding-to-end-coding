@@ -1,11 +1,11 @@
+package structure;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.lang.StringBuilder;
 /* ScriptStruct
   Represents the main generation class for storing the flowchart and outputting
   to the selected out-lang. */
-
-import prefabs.Command;
 
 public class ScriptStruct{
   //variables-------------------------------------------------------------------
@@ -41,7 +41,7 @@ public class ScriptStruct{
       Command c = flow.get(i);
 
     }
-    
+
     //ensure the script is end-capped by a newline
     script.append("\n");
     return script.toString();

@@ -27,7 +27,7 @@ class onExportClickEvent implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent actionEvent) {
 		System.out.print("hello!");
-		
+
 		actionEvent.consume();
 	}
 }
