@@ -1,4 +1,5 @@
 package structure;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /* Interpreter

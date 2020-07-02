@@ -20,16 +20,16 @@ import javafx.stage.Stage;
 
 import prefabs.ExportButton;
 import prefabs.CommandBlock;
-import prefabs.Command;
+import structure.Command;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
     double defaultWindowHeight = 600;
-	
+
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
-    
+
     /*
       init is called right before start, before the application comes into being
       Stuff for its parts shouldn't be made here, but anything that needs to be
@@ -37,20 +37,20 @@ public class Workspace extends Application {
       The superclass definition also does nothing, so I commented this out
       @Override
       public void init() {
-		
+
       }
     */
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override
     public void start(Stage stage) throws Exception {
-		
+
 	//scene (window) is created here
 	stage.setTitle("My JavaFX Application");
 	//I changed root to a borderPane to allow for better layout of the application
 	BorderPane root = new BorderPane();
 	Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
 	stage.setScene(scene);
-        
+
 	//making all the containers for visual elements
 	//VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
 	VBox sidebar = new VBox(10);	//this number spaces the elements
@@ -59,12 +59,12 @@ public class Workspace extends Application {
 	mainCanvas.setPadding(new Insets(10));
 	ExportButton button = new ExportButton(150, 100);
 	Rectangle sidebarRect = new Rectangle(
-					      150, 
-					      defaultWindowHeight - button.getHeight(), 
+					      150,
+					      defaultWindowHeight - button.getHeight(),
 					      Color.LIGHTGREY
 					      );
 	sidebar.getChildren().addAll(button, sidebarRect);
-        
+
 	//adding objects to the scene
 	root.setRight(sidebar);
 
@@ -74,9 +74,9 @@ public class Workspace extends Application {
 					     defaultWindowHeight,
 					     Color.LIGHTGREY
 					     );
-	
+
 	//Creating Event handler for click to add block
-	
+
 	EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
 	    @Override
 	    public void handle(MouseEvent e){
@@ -84,33 +84,33 @@ public class Workspace extends Application {
 		Command c = new Command("echo HelloWorld", "baseBlock");
 		CommandBlock block = new CommandBlock(10,20,Color.LIGHTGREY,c);
 		mainCanvas.getChildren().add(block);
-		
+
 	    }
 	};
 
 	//Linking the eventhandler to the canvas rectangle
 	canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-	
+
 	//Add the rectangle to the canvas node
 	mainCanvas.getChildren().add(canvasRect);
 	//Add canvas to the scene
 	root.setCenter(mainCanvas);
-		
+
 	//show scene
 	stage.show();
 
     }
 
 
-    
 
-    
+
+
 	/*
 	stop is like init, but it goes right after the application ends
 	The superclass definition also does nothing, so I commented this out
 	@Override
 	public void stop() {
-		
+
 	}
 	*/
 
@@ -124,9 +124,9 @@ public class Workspace extends Application {
 				new Image("file:WorkspaceBackgroundTile.png"),
 				BackgroundRepeat.REPEAT, //how often the image repeats on x axis (repeat = as much as needed)
 				BackgroundRepeat.REPEAT, //how often the image repeats on y axis (repeat = as much as needed)
-				BackgroundPosition.DEFAULT, 
+				BackgroundPosition.DEFAULT,
 				BackgroundSize.DEFAULT
 		));
 		//root region should be the parent of static visual elements. It doesn't need to be tho
 		Region rootRegion = new Region();
-		rootRegion.setBackground(bg);*/	
+		rootRegion.setBackground(bg);*/
