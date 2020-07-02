@@ -14,4 +14,4 @@ javac -d classes/ \
 javac -d classes/ \
   --module-path  $jfx_path \
   --add-modules javafx.controls \
-  src/src/*.java
+  src/core/*.java

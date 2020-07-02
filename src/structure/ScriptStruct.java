@@ -1,3 +1,5 @@
+package structure;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.lang.StringBuilder;
@@ -41,7 +43,7 @@ public class ScriptStruct{
       Command c = flow.get(i);
 
     }
-    
+
     //ensure the script is end-capped by a newline
     script.append("\n");
     return script.toString();
