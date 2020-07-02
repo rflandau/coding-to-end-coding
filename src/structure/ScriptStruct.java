@@ -25,6 +25,11 @@ public class ScriptStruct{
         System.out.println("Command: "+cmd.getName()+" added to flow");
         //NYI
     }
+    public void removeCommandFromFlow(Command cmd){
+        System.out.println("Command: "+cmd.getName()+" removed from flow");
+        //NYI
+    }
+    
     /* generateScript
        Returns a (multi-line) string of the completed script, built from the items
        in 'flow'.
