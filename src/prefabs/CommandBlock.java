@@ -14,6 +14,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import structure.Command;
 import structure.ScriptStruct;
+import core.Main;
 
 public class CommandBlock extends StackPane {
     /*
@@ -65,13 +66,12 @@ public class CommandBlock extends StackPane {
 	this.setOnDragDropped(new onCommandBlockDrop(this));
     }
     
-    /*
+    
       // function to add command to the command list
-    public int addToFlow(){
-	ScriptStruct.addCommandToFlow(attachedCommand);
-	return 0;
+    public void addToFlow(ScriptStruct cmdList){
+	cmdList.addCommandToFlow(attachedCommand);
     }
-    */
+    
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
 	    this.home = newHome;
