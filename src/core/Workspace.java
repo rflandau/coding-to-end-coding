@@ -50,7 +50,6 @@ public class Workspace extends Application {
 	//I changed root to a borderPane to allow for better layout of the application
 	BorderPane root = new BorderPane();
 	Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
-	stage.setScene(scene);
 
 	//making all the containers for visual elements
 	//VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
@@ -78,6 +77,12 @@ public class Workspace extends Application {
 					     Color.LIGHTGREY
 					     );
 
+	//Add the rectangle to the canvas node
+	mainCanvas.getChildren().add(canvasRect);
+	//Add the blocks to the canvas over the rect
+	root.setLeft(blocks);
+	//Add canvas to the scene
+	root.setCenter(mainCanvas);
 	//Creating Event handler for click to add block
 
 	EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -89,19 +94,12 @@ public class Workspace extends Application {
 		blocks.getChildren().add(block);
 	    }
 	};
-
 	//Linking the eventhandler to the canvas rectangle
 	canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-	//Add the rectangle to the canvas node
-	mainCanvas.getChildren().add(canvasRect);
-	//Add the blocks to the canvas over the rect
-	mainCanvas.getChildren().add(blocks);
-	//Add canvas to the scene
-	root.setCenter(mainCanvas);
-
+	//add scene to stage
+	stage.setScene(scene);
 	//show scene
 	stage.show();
-
     }
 
 
