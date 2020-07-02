@@ -5,4 +5,4 @@ cd classes/
 java \
   --module-path $jfx_path \
   --add-modules javafx.controls \
-  core/Main
+  core.Main
