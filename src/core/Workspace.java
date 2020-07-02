@@ -87,17 +87,15 @@ public class Workspace extends Application {
 		Command c = new Command("echo HelloWorld", "baseBlock");
 		CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
 		blocks.getChildren().add(block);
-		mainCanvas.getChildren().add(blocks);
-
 	    }
 	};
 
 	//Linking the eventhandler to the canvas rectangle
 	canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-
 	//Add the rectangle to the canvas node
 	mainCanvas.getChildren().add(canvasRect);
 	//Add the blocks to the canvas over the rect
+	mainCanvas.getChildren().add(blocks);
 	//Add canvas to the scene
 	root.setCenter(mainCanvas);
 

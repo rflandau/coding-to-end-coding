@@ -18,3 +18,6 @@ clean:
 test:
 	cd classes
 	${J} ${JFLAGS} ${MAIN}
+
+ci:
+	git -am "Default commit for small changes that should not be used often"
