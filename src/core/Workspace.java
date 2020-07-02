@@ -22,11 +22,13 @@ import javafx.stage.Stage;
 import prefabs.ExportButton;
 import prefabs.CommandBlock;
 import structure.Command;
+import structure.ScriptStruct;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
     double defaultWindowHeight = 600;
+    ScriptStruct commandList;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -36,11 +38,11 @@ public class Workspace extends Application {
       Stuff for its parts shouldn't be made here, but anything that needs to be
       prepared for the starting of the app that isn't JavaFX can go here
       The superclass definition also does nothing, so I commented this out
-      @Override
-      public void init() {
-
-      }
     */
+    @Override
+    public void init() {
+	commandList = new ScriptStruct();
+    }
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override
     public void start(Stage stage) throws Exception {
@@ -50,7 +52,6 @@ public class Workspace extends Application {
 	//I changed root to a borderPane to allow for better layout of the application
 	BorderPane root = new BorderPane();
 	Scene scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
-	stage.setScene(scene);
 
 	//making all the containers for visual elements
 	//VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
@@ -78,6 +79,12 @@ public class Workspace extends Application {
 					     Color.LIGHTGREY
 					     );
 
+	//Add the rectangle to the canvas node
+	mainCanvas.getChildren().add(canvasRect);
+	//Add the blocks to the canvas over the rect
+	root.setLeft(blocks);
+	//Add canvas to the scene
+	root.setCenter(mainCanvas);
 	//Creating Event handler for click to add block
 
 	EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -86,24 +93,16 @@ public class Workspace extends Application {
 		System.out.println("Mouse click handled");
 		Command c = new Command("echo HelloWorld", "baseBlock");
 		CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+		block.addToFlow(commandList);
 		blocks.getChildren().add(block);
-		mainCanvas.getChildren().add(blocks);
-
 	    }
 	};
-
 	//Linking the eventhandler to the canvas rectangle
 	canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-
-	//Add the rectangle to the canvas node
-	mainCanvas.getChildren().add(canvasRect);
-	//Add the blocks to the canvas over the rect
-	//Add canvas to the scene
-	root.setCenter(mainCanvas);
-
+	//add scene to stage
+	stage.setScene(scene);
 	//show scene
 	stage.show();
-
     }
 
 
