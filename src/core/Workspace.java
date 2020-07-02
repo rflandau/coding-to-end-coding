@@ -109,11 +109,13 @@ public class Workspace extends Application {
                 end.removeFromFlow(commandList);
                 blocks.getChildren().remove(end);
                 
+                // appending new command block
                 Command c = new Command("echo HelloWorld", "baseBlock");
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 block.addToFlow(commandList);
                 blocks.getChildren().add(block);
                 
+                // appending end block
                 end.addToFlow(commandList);
                 blocks.getChildren().add(end);
             }
