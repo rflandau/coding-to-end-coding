@@ -16,7 +16,7 @@ import java.io.FileWriter;
 public class ScriptStruct{
     //variables-----------------------------------------------------------------
     /*'Flow' holds command representations of the GUI flowchart. */
-    ArrayList<Command> flow;
+    public ArrayList<Command> flow;
 	//'out' holds the path to the desired output file
 	String outPath = "out.sh";
     //constructors--------------------------------------------------------------
@@ -30,6 +30,9 @@ public class ScriptStruct{
 
     /* addCommandToFlow
        Duplicates the command from the hashtable and plugs it into flow.
+	   NOTE: If this is to check the interp hashtable, it should be given an id.
+	   If it is to just add a command, a command param is fine.
+	   TODO.
        NYI: Then adds user adjustments (flags/text input) to the command. */
     public void addCommandToFlow(Command cmd){
         System.out.println("Command: "+cmd.getName()+" added to flow");
@@ -47,8 +50,8 @@ public class ScriptStruct{
        properly before calling.
 	   Throws IOException if file to write to was not checked previously. Call
 	   createOutFile() for proper error-handling. */
-    private void writeScript(BufferedWriter br) throws IOException{
-		Interpreter interp = Globals.getCurInterp();
+    private void writeScript(BufferedWriter br, Interpreter interp)
+		throws IOException{
 
         //add interpreter path to top of script, plus newline
         br.write(interp.getPath() + "\n\n");
@@ -57,11 +60,7 @@ public class ScriptStruct{
         //iterate through every element in 'flow'
         for(int i = 0; i<flow.size(); i++){
             Command c = flow.get(i);
-<<<<<<< HEAD
 			br.write(c.getSyntax() + "\n");
-			System.out.println(c.getSyntax());
-=======
->>>>>>> f5e5adba59a2d388f3405e04afc3a306e32de189
         }
 
         //ensure the script is end-capped by a newline
@@ -80,7 +79,7 @@ public class ScriptStruct{
 			toReturn = new File(outPath);
 			if(toReturn.createNewFile())
 				System.out.println(outPath + " created.");
-			else System.out.println(outPath + " already exists.");
+			else System.out.println(outPath + " already exists. Overwritting...");
 		} catch (NullPointerException | SecurityException | IOException ex){
 			System.err.println("ERROR: " + ex.toString());
 			toReturn = null;
@@ -94,7 +93,7 @@ public class ScriptStruct{
 	/* export
 	   Calls generateScript to return the script before printing it to 'out'.
 	   Will return -1 if file cannot be created or opened. */
-	public boolean export() throws IOException{
+	public boolean export(Interpreter interp) throws IOException{
 		///variables
 		File out = createOutFile(); /* all error-handling should be handled by
 			createOutFile() */
@@ -106,7 +105,7 @@ public class ScriptStruct{
 			//assign BufferedWriter
 			br = new BufferedWriter(new FileWriter(out));
 			//call helper function
-			writeScript(br);
+			writeScript(br, interp);
 			br.close();
 		} else toReturn = false; //return false on null
 

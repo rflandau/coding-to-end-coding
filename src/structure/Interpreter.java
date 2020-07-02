@@ -9,7 +9,7 @@ The hashtable of an interp pairs id of a specific command block to a Command
 instance. The command instance is the basic info of a command, as loaded from
 its file. The command can then be duplicated and added to flow. */
 
-class Interpreter{
+public class Interpreter{
     //variables-----------------------------------------------------------------
     String name; //name of the interpreter
     String path; //execution path to the interpreter (probably with #!)
@@ -43,23 +43,28 @@ class Interpreter{
 
         return toReturn;
     }
+
+	/* getCommand
+	Returns a command from the commands ht, searching by ID. */
+	Command getCommand(String id){
+		return commands.get(id);
+	}
     //static subroutines----------------------------------------------------------
     /* generateInterpreters
     Used to populate the ArrayList of interpreter objects (as well as fill their
     fields).
     NOTE: Currently just creates the test interpreter. */
-    static ArrayList<Interpreter> generateInterpreters(){
+    public static ArrayList<Interpreter> generateInterpreters(){
         //variables
         Hashtable<String, Command> ht = new Hashtable<String, Command>();
         Interpreter bash;
         ArrayList<Interpreter> toReturn = new ArrayList<Interpreter>();
 
-        //generate test bash ht
-        ht.put("helloworld",
-        	new Command("Hello World", "echo \" Hello World\""));
-
         //create bash Interpreter object
         bash = new Interpreter("bash", "#!/bin/bash", ht);
+		//generate test bash command
+		bash.addCommand("helloworld",
+			new Command("Hello World", "echo \"Hello World\""));
 
         //add bash to AL
         toReturn.add(bash);
