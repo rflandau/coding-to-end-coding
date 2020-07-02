@@ -21,7 +21,8 @@ public class Command{
     //constructors----------------------------------------------------------------
     public Command(String name, String syntax){
         this.name = name;
-        this.syntax = syntax;
+        this.syntax = syntax.trim(); //trim whitespace from syntax
+		//^trim may cause issues in Python? A problem for later.
     }
     //duplication
     public Command(Command c){
@@ -30,10 +31,11 @@ public class Command{
     }
     //subroutines-----------------------------------------------------------------
     //getters/setters
-    public String getName()           { return name; }
-    public void   setName(String n)   { name = n; }
-    public String getTooltip()        { return tooltip; }
-    public void   setTooltip(String t){ tooltip = t; }
+    public String getName()           	{ return name; }
+    public void   setName(String n)   	{ name = n; }
+    public String getTooltip()        	{ return tooltip; }
+    public void   setTooltip(String t)	{ tooltip = t; }
+	public String getSyntax()			{ return syntax; }
 
     //static subroutines----------------------------------------------------------
 }
