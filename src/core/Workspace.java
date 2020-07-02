@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;	//for sidebar shape
 import javafx.scene.paint.Color;		//for sidebar color
 import javafx.scene.layout.VBox;		//for vertical ordering of sidebar objects
 import javafx.scene.layout.BorderPane;		//for vertical ordering of sidebar objects
+import javafx.scene.layout.StackPane;		//for vertical ordering of sidebar objects
 import javafx.geometry.Insets;			//for sidebar spacing
 
 //Import Event Handling
@@ -54,7 +55,9 @@ public class Workspace extends Application {
 	//making all the containers for visual elements
 	//VBoxes vertically order things. sidebar is for the sidebar, but NOT its contents
 	VBox sidebar = new VBox(10);	//this number spaces the elements
-	VBox mainCanvas = new VBox(10);  // making another Container for main canvas
+	StackPane mainCanvas = new StackPane();  // making another Container for main canvas
+	VBox blocks = new VBox();
+	blocks.setPadding(new Insets(10));
 	sidebar.setPadding(new Insets(10));	//this number puts a buffer around the box
 	mainCanvas.setPadding(new Insets(10));
 	ExportButton button = new ExportButton(150, 100);
@@ -82,8 +85,9 @@ public class Workspace extends Application {
 	    public void handle(MouseEvent e){
 		System.out.println("Mouse click handled");
 		Command c = new Command("echo HelloWorld", "baseBlock");
-		CommandBlock block = new CommandBlock(10,20,Color.LIGHTGREY,c);
-		mainCanvas.getChildren().add(block);
+		CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+		blocks.getChildren().add(block);
+		mainCanvas.getChildren().add(blocks);
 
 	    }
 	};
@@ -93,6 +97,7 @@ public class Workspace extends Application {
 
 	//Add the rectangle to the canvas node
 	mainCanvas.getChildren().add(canvasRect);
+	//Add the blocks to the canvas over the rect
 	//Add canvas to the scene
 	root.setCenter(mainCanvas);
 
