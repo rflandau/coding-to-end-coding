@@ -37,7 +37,8 @@ public class ScriptStruct{
 
     /* addCommandToFlow
 	   Takes a command and inserts it into flow at the specified index.
-	   If index is out of range, prints error to terminal and does nothing. */
+	   If index is out of range, prints error to terminal and does nothing.
+	   DEPRECIATED. */
     public void addCommandToFlow(int i, Command cmd){
 		if (i <= getFlowSize() && i >= 0){
         	System.out.println(cmd.getName()+" added to flow");
