@@ -10,11 +10,11 @@ import java.util.Hashtable;
   before the <>'d  are replaced during ScriptStruct.generateScript() */
 
 public class Command{
-    //variables-------------------------------------------------------------------
+    //variables-----------------------------------------------------------------
     // basic info
     private String name, tooltip, syntax;
     //private ArrayList<String> args;
-    //constructors----------------------------------------------------------------
+    //constructors--------------------------------------------------------------
     public Command(String name, String syntax){
         this.name = name;
         this.syntax = syntax.trim(); //trim whitespace from syntax
@@ -27,7 +27,7 @@ public class Command{
 		syntax = c.getSyntax();
 		//copy args individually, when implemented!
     }
-    //subroutines-----------------------------------------------------------------
+    //subroutines---------------------------------------------------------------
     //getters/setters
     public String getName()           	{ return name; }
     public void   setName(String n)   	{ name = n; }
@@ -36,5 +36,5 @@ public class Command{
 	public String getSyntax()			{ return syntax; }
 	//public ArrayList<String> getArgs()	{ return args; }
 
-    //static subroutines----------------------------------------------------------
+    //static subroutines--------------------------------------------------------
 }

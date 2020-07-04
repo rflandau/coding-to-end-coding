@@ -59,7 +59,7 @@ public class ScriptStruct{
 
 		if (i <= getFlowSize() && i >= 0){
 			if((fetched = interp.getCommand(id)) != null){
-				cmd = new Command(fetched);//duplicate command from fetched command
+				cmd = new Command(fetched);//duplicate command from fetched com
 				flow.add(i, cmd);
 			}
 			else System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
@@ -118,7 +118,7 @@ public class ScriptStruct{
 			toReturn = new File(outPath);
 			if(toReturn.createNewFile())
 				System.out.println(outPath + " created.");
-			else System.out.println(outPath + " already exists. Overwritting...");
+			else System.out.println(outPath+" already exists. Overwritting...");
 		} catch (NullPointerException | SecurityException | IOException ex){
 			System.err.println("ERROR@createOutFile()\n" + "---"+ex.toString());
 			toReturn = null;

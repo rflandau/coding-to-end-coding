@@ -27,8 +27,16 @@ public class Interpreter{
 	public String getPath()			{return path;}
 		   void   setPath(String p)	{path = p;}
 
+	/* getCommand
+	Returns a command from the commands ht, searching by ID. */
+	public Command getCommand(String id){
+		return commands.get(id);
+	}
+
     /* addCommand
     A wrapper for Hashtable.put() that wards duplicates.
+	Protected because commands should only ever be added by an internal,
+	initialize subroutine.
     Returns false on failure. */
     boolean addCommand(String id, Command c){
         boolean toReturn = false;
@@ -43,13 +51,7 @@ public class Interpreter{
 
         return toReturn;
     }
-
-	/* getCommand
-	Returns a command from the commands ht, searching by ID. */
-	Command getCommand(String id){
-		return commands.get(id);
-	}
-    //static subroutines----------------------------------------------------------
+    //static subroutines--------------------------------------------------------
     /* generateInterpreters
     Used to populate the ArrayList of interpreter objects (as well as fill their
     fields).
