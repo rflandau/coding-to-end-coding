@@ -79,12 +79,12 @@ public class CommandBlock extends StackPane {
     
       // function to add command to the command list
     public void addToFlow(ScriptStruct cmdList){
-        cmdList.addCommandToFlow(attachedCommand);
+        //cmdList.addCommandToFlow(attachedCommand);
     }
     
     // function to remove command from the command list
     public void removeFromFlow(ScriptStruct cmdList) {
-        cmdList.removeCommandFromFlow(attachedCommand);
+        //cmdList.removeCommandFromFlow(attachedCommand);
     }
     
     //allows the changing of a command block's home location, if need be
