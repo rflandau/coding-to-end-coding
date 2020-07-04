@@ -1,6 +1,4 @@
 package core;
-import structure.ScriptStruct;
-import structure.Command;
 
 public class Main {
     public static void main(String[] args) {

@@ -5,4 +5,3 @@
 ./src/structure/ScriptStruct.java
 ./src/structure/Command.java
 ./src/structure/Interpreter.java
-./src/structure/Globals.java
