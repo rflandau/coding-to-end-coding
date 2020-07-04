@@ -18,29 +18,68 @@ public class ScriptStruct{
     /*'Flow' holds command representations of the GUI flowchart. */
     public ArrayList<Command> flow;
 	//'out' holds the path to the desired output file
-	String outPath = "out.sh";
+	String outPath;
     //constructors--------------------------------------------------------------
     public ScriptStruct(){
         flow = new ArrayList<Command>();
+		outPath = "out.txt";
     }
+	// with specified output path
+	public ScriptStruct(String o){
+		flow = new ArrayList<Command>();
+		outPath = o;
+	}
     //subroutines---------------------------------------------------------------
 	//getters/setters
 	public String getOutPath()			{ return outPath; }
 	public void   setOutPath(String o)	{ outPath = o; }
+	public int    getFlowSize()			{ return flow.size(); }
 
     /* addCommandToFlow
-       Duplicates the command from the hashtable and plugs it into flow.
-	   NOTE: If this is to check the interp hashtable, it should be given an id.
-	   If it is to just add a command, a command param is fine.
-	   TODO.
-       NYI: Then adds user adjustments (flags/text input) to the command. */
-    public void addCommandToFlow(Command cmd){
-        System.out.println("Command: "+cmd.getName()+" added to flow");
-        flow.add(flow.size(), cmd);
+	   Takes a command and inserts it into flow at the specified index.
+	   If index is out of range, prints error to terminal and does nothing. */
+    public void addCommandToFlow(int i, Command cmd){
+		if (i <= getFlowSize() && i >= 0){
+        	System.out.println(cmd.getName()+" added to flow");
+        	flow.add(i, cmd);
+		}else{
+			System.err.println("ERROR@ScriptStruct.addCommandToFlow()\n" +
+				"---Given index (" + i + ") is out of range.");
+		}
+		return;
     }
-    public void removeCommandFromFlow(Command cmd){
-        System.out.println("Command: "+cmd.getName()+" removed from flow");
-        flow.remove(flow.size()-1);
+
+	/* addCommandByID
+		Takes an id for a command, duplicates it from the current interpreter,
+		and adds the new command to flow.
+		Alternative to addCommandToFlow() so Commands do not have to be passed.
+		Does nothing if id is not found in interpreter hash. */
+	public void addCommandByID(int i, String id, Interpreter interp){
+		Command fetched, cmd;
+
+		if (i <= getFlowSize() && i >= 0){
+			if((fetched = interp.getCommand(id)) != null){
+				cmd = new Command(fetched);//duplicate command from fetched command
+				flow.add(i, cmd);
+			}
+			else System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
+				"---Command with ID " + id + "could not be found.");
+		}else System.err.println("ERROR@ScriptStruct.addCommandByID()\n" +
+				"---Given index (" + i + ") is out of range.");
+	}
+
+	/* removeCommandFromFlow
+	   Removes the command at given index from flow.
+	   If index is out of range, prints error to terminal and does nothing. */
+    public void removeCommandFromFlow(int i){
+		if(i < getFlowSize() && i >= 0){
+        	System.out.println(flow.get(i).getName()+" removed from flow");
+        	flow.remove(i);
+		}else{ //index is out of range and will err
+			System.err.println("ERROR@ScriptStruct.removeCommandFromFlow()\n" +
+				"---Given index (" + i + ") is out of range.");
+		}
+		return;
     }
 
     /* writeScript
@@ -81,7 +120,7 @@ public class ScriptStruct{
 				System.out.println(outPath + " created.");
 			else System.out.println(outPath + " already exists. Overwritting...");
 		} catch (NullPointerException | SecurityException | IOException ex){
-			System.err.println("ERROR: " + ex.toString());
+			System.err.println("ERROR@createOutFile()\n" + "---"+ex.toString());
 			toReturn = null;
 			/* this error-handling could and should be made more robust as we
 			   flesh out the program and give the user more options (like

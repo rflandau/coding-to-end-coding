@@ -7,17 +7,13 @@ import java.util.Hashtable;
   Represents a command block and corresponding output code.
   The syntax will look something like
     echo <flags> <args>
-  before the <>'d  are replaced during ScriptStruct.generateScript()*/
-
-/*  Moved Command into prefabs so it can be handled as a type by CommandBlock, Command's
-    visual representation on the screen (classes from the default package can't be imported)
-    -Thomas    */
+  before the <>'d  are replaced during ScriptStruct.generateScript() */
 
 public class Command{
     //variables-------------------------------------------------------------------
     // basic info
     private String name, tooltip, syntax;
-    private ArrayList<String> args;
+    //private ArrayList<String> args;
     //constructors----------------------------------------------------------------
     public Command(String name, String syntax){
         this.name = name;
@@ -28,6 +24,8 @@ public class Command{
     public Command(Command c){
         name = c.getName();
         tooltip = c.getTooltip();
+		syntax = c.getSyntax();
+		//copy args individually, when implemented!
     }
     //subroutines-----------------------------------------------------------------
     //getters/setters
@@ -36,6 +34,7 @@ public class Command{
     public String getTooltip()        	{ return tooltip; }
     public void   setTooltip(String t)	{ tooltip = t; }
 	public String getSyntax()			{ return syntax; }
+	//public ArrayList<String> getArgs()	{ return args; }
 
     //static subroutines----------------------------------------------------------
 }

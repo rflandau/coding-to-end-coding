@@ -32,8 +32,8 @@ public class Interpreter{
     Returns false on failure. */
     boolean addCommand(String id, Command c){
         boolean toReturn = false;
-        String error = "ERROR: " + id + " is already a key in commands and " +
-        "was not added.";
+        String error = "ERROR@Interpreter.addCommand()\n" +
+		"---" + id + " is already a key in commands and was not added.";
         //if key already exists, fail
         if(commands.containsKey(id)){
             System.err.println(error); toReturn = false;
