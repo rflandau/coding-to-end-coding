@@ -23,12 +23,18 @@ import prefabs.ExportButton;
 import prefabs.CommandBlock;
 import structure.Command;
 import structure.ScriptStruct;
+import structure.Interpreter;
+
+
+import java.util.ArrayList;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
     double defaultWindowHeight = 600;
     ScriptStruct commandList;
+    ArrayList<Interpreter> interpreterList;
+    Interpreter interp;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -42,6 +48,8 @@ public class Workspace extends Application {
     @Override
     public void init() {
         commandList = new ScriptStruct();
+        interpreterList = Interpreter.generateInterpreters();
+        interp = interpreterList.get(0);
     }
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override
@@ -91,13 +99,13 @@ public class Workspace extends Application {
         System.out.println("Creating START Block");
         Command s = new Command("START", "baseBlock");
         CommandBlock start = new CommandBlock(1,2,Color.BLACK,s);
-        start.addToFlow(commandList);
+        start.addToFlow(commandList, "start", interp);
         blocks.getChildren().add(start);
         
         System.out.println("Creating END Block");
         Command e = new Command("END", "baseBlock");
         CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
-        end.addToFlow(commandList);
+        end.addToFlow(commandList, "end", interp);
         blocks.getChildren().add(end);
         
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -112,11 +120,11 @@ public class Workspace extends Application {
                 // appending new command block
                 Command c = new Command("echo HelloWorld", "baseBlock");
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
-                block.addToFlow(commandList);
+                block.addToFlow(commandList, "helloworld", interp);
                 blocks.getChildren().add(block);
                 
                 // appending end block
-                end.addToFlow(commandList);
+                end.addToFlow(commandList, "end", interp);
                 blocks.getChildren().add(end);
             }
         };

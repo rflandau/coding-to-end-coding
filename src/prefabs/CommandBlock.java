@@ -15,6 +15,7 @@ import javafx.scene.input.TransferMode;
 import structure.Command;
 import structure.ScriptStruct;
 import core.Main;
+import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
     /*
@@ -68,7 +69,8 @@ public class CommandBlock extends StackPane {
     
     
       // function to add command to the command list
-    public void addToFlow(ScriptStruct cmdList){
+    public void addToFlow(ScriptStruct cmdList, String id, Interpreter interp){
+        cmdList.addCommandByID(cmdList.getFlowSize(), id, interp);
         //cmdList.addCommandToFlow(attachedCommand);
     }
     
