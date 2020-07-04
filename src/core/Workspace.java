@@ -121,7 +121,7 @@ public class Workspace extends Application {
             }
         };
         //Linking the eventhandler to the canvas rectangle
-        canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+	blocks.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
         //add scene to stage
         stage.setScene(scene);
         //show scene
