@@ -82,9 +82,10 @@ public class Workspace extends Application {
         //Add the rectangle to the canvas node
         mainCanvas.getChildren().add(canvasRect);
         //Add the blocks to the canvas over the rect
-        root.setLeft(blocks);
+        //root.setLeft(blocks);
         //Add canvas to the scene
         root.setCenter(mainCanvas);
+	mainCanvas.getChildren().add(blocks);
         //Creating Event handler for click to add block
 
         System.out.println("Creating START Block");
@@ -98,7 +99,6 @@ public class Workspace extends Application {
         CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
         end.addToFlow(commandList);
         blocks.getChildren().add(end);
-        
         
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
@@ -121,7 +121,7 @@ public class Workspace extends Application {
             }
         };
         //Linking the eventhandler to the canvas rectangle
-        canvasRect.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+	blocks.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
         //add scene to stage
         stage.setScene(scene);
         //show scene
