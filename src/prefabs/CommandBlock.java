@@ -1,3 +1,13 @@
+/*
+ * TO-DO
+ *  switching the Drag from a MouseEvent to a MouseDragEvent
+ *  testing drag-and-drop functionality of blocks
+ *  switching from holding a Command object to a Command object's id
+ *  functionality for replacing the Command Blocks in the side bar
+ *  functionality for correcting command block position
+ */
+
+
 package prefabs;
 
 //visuals
