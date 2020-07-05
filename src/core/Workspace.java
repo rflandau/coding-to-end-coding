@@ -25,7 +25,6 @@ import structure.Command;
 import structure.ScriptStruct;
 import structure.Interpreter;
 
-
 import java.util.ArrayList;
 
 public class Workspace extends Application {
@@ -93,19 +92,19 @@ public class Workspace extends Application {
         //root.setLeft(blocks);
         //Add canvas to the scene
         root.setCenter(mainCanvas);
-	mainCanvas.getChildren().add(blocks);
+        mainCanvas.getChildren().add(blocks);
         //Creating Event handler for click to add block
 
         System.out.println("Creating START Block");
-        Command s = new Command("START", "baseBlock");
+        commandList.addCommandToFlow(commandList.getFlowSize(), "start", interp);
+        Command s = commandList.getCommand(commandList.getFlowSize()-1);
         CommandBlock start = new CommandBlock(1,2,Color.BLACK,s);
-        start.addToFlow(commandList, "start", interp);
         blocks.getChildren().add(start);
         
         System.out.println("Creating END Block");
-        Command e = new Command("END", "baseBlock");
+        commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
+        Command e = commandList.getCommand(commandList.getFlowSize()-1);
         CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
-        end.addToFlow(commandList, "end", interp);
         blocks.getChildren().add(end);
         
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -114,18 +113,26 @@ public class Workspace extends Application {
                 System.out.println("Mouse click handled");
                 
                 // removing end block
-                end.removeFromFlow(commandList);
+                                // removing end block
+                commandList.removeCommandFromFlow(commandList.getFlowSize()-1);
                 blocks.getChildren().remove(end);
                 
                 // appending new command block
-                Command c = new Command("echo HelloWorld", "baseBlock");
+                commandList.addCommandToFlow(commandList.getFlowSize(), "helloworld", interp);
+                Command c = commandList.getCommand(commandList.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
-                block.addToFlow(commandList, "helloworld", interp);
                 blocks.getChildren().add(block);
                 
                 // appending end block
-                end.addToFlow(commandList, "end", interp);
+                commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
                 blocks.getChildren().add(end);
+                
+                // print statements for debugging (NOTE remove this)
+                int size = commandList.getFlowSize();
+                for(int i = 0; i < size; i ++) {
+                    Command cmd = commandList.getCommand(i);
+                    System.out.println(cmd.getName());
+                }
             }
         };
         //Linking the eventhandler to the canvas rectangle
