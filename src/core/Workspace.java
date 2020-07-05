@@ -110,8 +110,6 @@ public class Workspace extends Application {
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
-                System.out.println("Mouse click handled");
-                
                 // removing end block
                 commandList.removeCommandFromFlow(commandList.getFlowSize()-1);
                 blocks.getChildren().remove(end);
@@ -128,6 +126,7 @@ public class Workspace extends Application {
                 
                 // print statements for debugging (NOTE remove this block)
                 int size = commandList.getFlowSize();
+                System.out.println("\n");
                 for(int i = 0; i < size; i ++) {
                     Command cmd = commandList.getCommand(i);
                     System.out.println(cmd.getSyntax());

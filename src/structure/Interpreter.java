@@ -69,7 +69,7 @@ public class Interpreter{
         bash.addCommand("start",
             new Command("start", "#!/bin/bash"));
         bash.addCommand("end",
-            new Command("end", ""));
+            new Command("end", "# end of bash script"));
         
         //generate test bash command
         bash.addCommand("helloworld",

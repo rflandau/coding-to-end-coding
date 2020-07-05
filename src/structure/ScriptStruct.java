@@ -75,7 +75,7 @@ public class ScriptStruct{
        If index is out of range, prints error to terminal and does nothing. */
     public void removeCommandFromFlow(int i){
         if(i < getFlowSize() && i >= 0){
-            System.out.println(flow.get(i).getName()+" removed from flow");
+//             System.out.println(flow.get(i).getName()+" removed from flow");
             flow.remove(i);
         }else{ //index is out of range and will err
             System.err.println("ERROR@ScriptStruct.removeCommandFromFlow()\n" +
