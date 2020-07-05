@@ -130,7 +130,7 @@ public class Workspace extends Application {
                 int size = commandList.getFlowSize();
                 for(int i = 0; i < size; i ++) {
                     Command cmd = commandList.getCommand(i);
-                    System.out.println(cmd.getName());
+                    System.out.println(cmd.getSyntax());
                 }
             }
         };

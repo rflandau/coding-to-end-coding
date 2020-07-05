@@ -67,7 +67,7 @@ public class Interpreter{
         
         // generate start and end placeholders
         bash.addCommand("start",
-            new Command("start", ""));
+            new Command("start", "#!/bin/bash"));
         bash.addCommand("end",
             new Command("end", ""));
         
