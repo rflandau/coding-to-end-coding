@@ -113,7 +113,6 @@ public class Workspace extends Application {
                 System.out.println("Mouse click handled");
                 
                 // removing end block
-                                // removing end block
                 commandList.removeCommandFromFlow(commandList.getFlowSize()-1);
                 blocks.getChildren().remove(end);
                 
