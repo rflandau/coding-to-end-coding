@@ -64,14 +64,17 @@ public class Interpreter{
 
         //create bash Interpreter object
         bash = new Interpreter("bash", "#!/bin/bash", ht);
-        //generate test bash command
-        bash.addCommand("helloworld",
-            new Command("Hello World", "echo \"Hello World\""));
+        
+        // generate start and end placeholders
         bash.addCommand("start",
             new Command("start", ""));
         bash.addCommand("end",
             new Command("end", ""));
-
+        
+        //generate test bash command
+        bash.addCommand("helloworld",
+            new Command("Hello World", "echo \"Hello World\""));
+        
         //add bash to AL
         toReturn.add(bash);
         return toReturn;
