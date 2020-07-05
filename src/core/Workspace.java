@@ -127,7 +127,7 @@ public class Workspace extends Application {
                 commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
                 blocks.getChildren().add(end);
                 
-                // print statements for debugging (NOTE remove this)
+                // print statements for debugging (NOTE remove this block)
                 int size = commandList.getFlowSize();
                 for(int i = 0; i < size; i ++) {
                     Command cmd = commandList.getCommand(i);
