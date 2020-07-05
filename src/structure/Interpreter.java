@@ -67,9 +67,9 @@ public class Interpreter{
         
         // generate start and end placeholders
         bash.addCommand("start",
-            new Command("start", "#!/bin/bash"));
+            new Command("bash start", "#!/bin/bash"));
         bash.addCommand("end",
-            new Command("end", "# end of bash script"));
+            new Command("bash end", "# end of bash script"));
         
         //generate test bash command
         bash.addCommand("helloworld",

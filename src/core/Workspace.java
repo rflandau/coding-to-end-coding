@@ -98,13 +98,13 @@ public class Workspace extends Application {
         // creating start block
         commandList.addCommandToFlow(commandList.getFlowSize(), "start", interp);
         Command s = commandList.getCommand(commandList.getFlowSize()-1);
-        CommandBlock start = new CommandBlock(1,2,Color.BLACK,s);
+        CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
         blocks.getChildren().add(start);
         
         // creating end block
         commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
         Command e = commandList.getCommand(commandList.getFlowSize()-1);
-        CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
+        CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
         blocks.getChildren().add(end);
         
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
