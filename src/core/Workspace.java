@@ -95,13 +95,13 @@ public class Workspace extends Application {
         mainCanvas.getChildren().add(blocks);
         //Creating Event handler for click to add block
 
-        System.out.println("Creating START Block");
+        // creating start block
         commandList.addCommandToFlow(commandList.getFlowSize(), "start", interp);
         Command s = commandList.getCommand(commandList.getFlowSize()-1);
         CommandBlock start = new CommandBlock(1,2,Color.BLACK,s);
         blocks.getChildren().add(start);
         
-        System.out.println("Creating END Block");
+        // creating end block
         commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
         Command e = commandList.getCommand(commandList.getFlowSize()-1);
         CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
