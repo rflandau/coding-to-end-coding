@@ -16,8 +16,6 @@ clean:
 	mkdir classes
 
 test:
-# 	cd classes		# cd doesn't work in Makefiles :(
-# 	${J} ${JFLAGS} ${MAIN}
 	./run.sh
 
 ci:

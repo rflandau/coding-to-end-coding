@@ -4,17 +4,20 @@ package prefabs;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
-//container
 import javafx.scene.layout.StackPane;
-//event handling
+
+//import event handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+
+//import our other packages
 import structure.Command;
 import structure.ScriptStruct;
 import core.Main;
+import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
     /*
@@ -67,14 +70,14 @@ public class CommandBlock extends StackPane {
     }
     
     
-      // function to add command to the command list
-    public void addToFlow(ScriptStruct cmdList){
-        //cmdList.addCommandToFlow(attachedCommand);
+      // function to add command to the end of command list
+    public void addToFlow(ScriptStruct cmdList, String id, Interpreter interp){
+        cmdList.addCommandToFlow(cmdList.getFlowSize(), id, interp);
     }
     
-    // function to remove command from the command list
+    // function to remove command from the end of command list
     public void removeFromFlow(ScriptStruct cmdList) {
-        //cmdList.removeCommandFromFlow(attachedCommand);
+        cmdList.removeCommandFromFlow(cmdList.getFlowSize()-1);
     }
     
     //allows the changing of a command block's home location, if need be

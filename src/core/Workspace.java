@@ -6,29 +6,35 @@ import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;    //for sidebar shape
 import javafx.scene.paint.Color;        //for sidebar color
 import javafx.scene.layout.VBox;        //for vertical ordering of sidebar objects
-import javafx.scene.layout.BorderPane;        //for vertical ordering of sidebar objects
-import javafx.scene.layout.StackPane;        //for vertical ordering of sidebar objects
-import javafx.geometry.Insets;            //for sidebar spacing
+import javafx.scene.layout.BorderPane;  //for vertical ordering of sidebar objects
+import javafx.scene.layout.StackPane;   //for vertical ordering of sidebar objects
+import javafx.geometry.Insets;          //for sidebar spacing
+import java.util.ArrayList;             //for backend ArrayList
 
 //Import Event Handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 //import javafx.scene.image.Image;
-//I know import .* is gross, but I had to import, like, 6 things to get the background
 //import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+//import our other packages
 import prefabs.ExportButton;
 import prefabs.CommandBlock;
 import structure.Command;
 import structure.ScriptStruct;
+import structure.Interpreter;
+
+
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
     double defaultWindowHeight = 600;
     ScriptStruct commandList;
+    ArrayList<Interpreter> interpreterList;
+    Interpreter interp;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -42,6 +48,8 @@ public class Workspace extends Application {
     @Override
     public void init() {
         commandList = new ScriptStruct();
+        interpreterList = Interpreter.generateInterpreters();
+        interp = interpreterList.get(0);
     }
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override
@@ -85,38 +93,32 @@ public class Workspace extends Application {
         //root.setLeft(blocks);
         //Add canvas to the scene
         root.setCenter(mainCanvas);
-	mainCanvas.getChildren().add(blocks);
+        mainCanvas.getChildren().add(blocks);
         //Creating Event handler for click to add block
 
-        System.out.println("Creating START Block");
-        Command s = new Command("START", "baseBlock");
-        CommandBlock start = new CommandBlock(1,2,Color.BLACK,s);
-        start.addToFlow(commandList);
+        // creating start block
+        Command s = new Command("start", "");
+        CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
         blocks.getChildren().add(start);
         
-        System.out.println("Creating END Block");
-        Command e = new Command("END", "baseBlock");
-        CommandBlock end = new CommandBlock(1,2,Color.BLACK,e);
-        end.addToFlow(commandList);
+        // creating end block
+        Command e = new Command("end", "");
+        CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
         blocks.getChildren().add(end);
         
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
-                System.out.println("Mouse click handled");
-                
-                // removing end block
-                end.removeFromFlow(commandList);
+                // removing end block from GUI
                 blocks.getChildren().remove(end);
                 
-                // appending new command block
-                Command c = new Command("echo HelloWorld", "baseBlock");
+                // appending new command block to GUI and to commandList
+                commandList.addCommandToFlow(commandList.getFlowSize(), "echo", interp);
+                Command c = commandList.getCommand(commandList.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
-                block.addToFlow(commandList);
                 blocks.getChildren().add(block);
                 
-                // appending end block
-                end.addToFlow(commandList);
+                // appending end block to GUI
                 blocks.getChildren().add(end);
             }
         };
