@@ -75,7 +75,7 @@ public class ScriptStruct{
        If index is out of range, prints error to terminal and does nothing. */
     public void removeCommandFromFlow(int i){
         if(i < getFlowSize() && i >= 0){
-//             System.out.println(flow.get(i).getName()+" removed from flow");
+            System.out.println(flow.get(i).getName()+" removed from flow");
             flow.remove(i);
         }else{ //index is out of range and will err
             System.err.println("ERROR@ScriptStruct.removeCommandFromFlow()\n" +
@@ -95,7 +95,12 @@ public class ScriptStruct{
         throws IOException{
 
         //add interpreter path to top of script, plus newline
-        br.write(interp.getPath() + "\n\n");
+        try{
+            br.write(interp.getPath() + "\n\n");
+        }catch(IOException e){
+            System.out.println("Caught exception " + e);
+            return;
+        }
         System.out.println(interp.getPath());
 
         //iterate through every element in 'flow'
@@ -136,10 +141,9 @@ public class ScriptStruct{
        Will return -1 if file cannot be created or opened. */
     public boolean export(Interpreter interp) throws IOException{
         ///variables
-        File out = createOutFile(); /* all error-handling should be handled by
-            createOutFile() */
+        File out = createOutFile(); 
         BufferedWriter br;
-        boolean toReturn = false;
+        boolean toReturn = true;
 
         //check for null
         if(out != null){

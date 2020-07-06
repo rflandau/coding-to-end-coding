@@ -15,7 +15,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 //import javafx.scene.image.Image;
-//I know import .* is gross, but I had to import, like, 6 things to get the background
 //import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -96,14 +95,12 @@ public class Workspace extends Application {
         //Creating Event handler for click to add block
 
         // creating start block
-        commandList.addCommandToFlow(commandList.getFlowSize(), "start", interp);
-        Command s = commandList.getCommand(commandList.getFlowSize()-1);
+        Command s = new Command("start", "");
         CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
         blocks.getChildren().add(start);
         
         // creating end block
-        commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
-        Command e = commandList.getCommand(commandList.getFlowSize()-1);
+        Command e = new Command("end", "");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
         blocks.getChildren().add(end);
         
@@ -111,26 +108,25 @@ public class Workspace extends Application {
             @Override
             public void handle(MouseEvent e){
                 // removing end block
-                commandList.removeCommandFromFlow(commandList.getFlowSize()-1);
                 blocks.getChildren().remove(end);
                 
                 // appending new command block
-                commandList.addCommandToFlow(commandList.getFlowSize(), "helloworld", interp);
+                commandList.addCommandToFlow(commandList.getFlowSize(), "echo", interp);
                 Command c = commandList.getCommand(commandList.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 blocks.getChildren().add(block);
                 
                 // appending end block
-                commandList.addCommandToFlow(commandList.getFlowSize(), "end", interp);
                 blocks.getChildren().add(end);
                 
                 // print statements for debugging (NOTE remove this block)
+                System.out.println(interp.getPath());
                 int size = commandList.getFlowSize();
-                System.out.println("\n");
                 for(int i = 0; i < size; i ++) {
                     Command cmd = commandList.getCommand(i);
                     System.out.println(cmd.getSyntax());
                 }
+                System.out.println("\n");
             }
         };
         //Linking the eventhandler to the canvas rectangle
