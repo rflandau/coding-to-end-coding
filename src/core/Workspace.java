@@ -6,9 +6,10 @@ import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;    //for sidebar shape
 import javafx.scene.paint.Color;        //for sidebar color
 import javafx.scene.layout.VBox;        //for vertical ordering of sidebar objects
-import javafx.scene.layout.BorderPane;        //for vertical ordering of sidebar objects
-import javafx.scene.layout.StackPane;        //for vertical ordering of sidebar objects
-import javafx.geometry.Insets;            //for sidebar spacing
+import javafx.scene.layout.BorderPane;  //for vertical ordering of sidebar objects
+import javafx.scene.layout.StackPane;   //for vertical ordering of sidebar objects
+import javafx.geometry.Insets;          //for sidebar spacing
+import java.util.ArrayList;             //for backend ArrayList
 
 //Import Event Handling
 import javafx.event.EventHandler;
@@ -18,13 +19,14 @@ import javafx.scene.input.MouseEvent;
 //import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+//import our other packages
 import prefabs.ExportButton;
 import prefabs.CommandBlock;
 import structure.Command;
 import structure.ScriptStruct;
 import structure.Interpreter;
 
-import java.util.ArrayList;
+
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
@@ -107,26 +109,17 @@ public class Workspace extends Application {
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
-                // removing end block
+                // removing end block from GUI
                 blocks.getChildren().remove(end);
                 
-                // appending new command block
+                // appending new command block to GUI and to commandList
                 commandList.addCommandToFlow(commandList.getFlowSize(), "echo", interp);
                 Command c = commandList.getCommand(commandList.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 blocks.getChildren().add(block);
                 
-                // appending end block
+                // appending end block to GUI
                 blocks.getChildren().add(end);
-                
-                // print statements for debugging (NOTE remove this block)
-                System.out.println(interp.getPath());
-                int size = commandList.getFlowSize();
-                for(int i = 0; i < size; i ++) {
-                    Command cmd = commandList.getCommand(i);
-                    System.out.println(cmd.getSyntax());
-                }
-                System.out.println("\n");
             }
         };
         //Linking the eventhandler to the canvas rectangle

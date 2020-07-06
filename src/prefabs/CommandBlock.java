@@ -4,14 +4,16 @@ package prefabs;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
-//container
 import javafx.scene.layout.StackPane;
-//event handling
+
+//import event handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+
+//import our other packages
 import structure.Command;
 import structure.ScriptStruct;
 import core.Main;
