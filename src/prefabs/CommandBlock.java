@@ -40,7 +40,6 @@ public class CommandBlock extends StackPane {
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
     
-
     //Command Blocks take their position, a JFX color, and the Command object they represent
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
         //creating the jfx container
