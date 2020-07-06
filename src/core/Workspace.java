@@ -37,7 +37,6 @@ public class Workspace extends Application {
     init is called right before start, before the application comes into being
     Stuff for its parts shouldn't be made here, but anything that needs to be
     prepared for the starting of the app that isn't JavaFX can go here
-    The superclass definition also does nothing, so I commented this out
     */
     @Override
     public void init() {
@@ -130,7 +129,7 @@ public class Workspace extends Application {
     
     /*
     stop is like init, but it goes right after the application ends
-    The superclass definition also does nothing, so I commented this out
+    The superclass definition does nothing, so I commented this out
     @Override
     public void stop() {
 
