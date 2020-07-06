@@ -37,21 +37,6 @@ public class ScriptStruct{
     public Command getCommand(int i)        { return flow.get(i); }
 
     /* addCommandToFlow
-       Takes a command and inserts it into flow at the specified index.
-       If index is out of range, prints error to terminal and does nothing.
-       DEPRECIATED. */
-//     public void addCommandToFlow(int i, Command cmd){
-//         if (i <= getFlowSize() && i >= 0){
-//             System.out.println(cmd.getName()+" added to flow");
-//             flow.add(i, cmd);
-//         }else{
-//             System.err.println("ERROR@ScriptStruct.addCommandToFlow()\n" +
-//                 "---Given index (" + i + ") is out of range.");
-//         }
-//         return;
-//     }
-
-    /* addCommandToFlow
         Takes an id for a command, duplicates it from the current interpreter,
         and adds the new command to flow.
         Alternative to addCommandToFlow() so Commands do not have to be passed.
