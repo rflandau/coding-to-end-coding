@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 public class TestApp extends Application {
 
@@ -21,14 +22,36 @@ public class TestApp extends Application {
         circ.setOnDragDetected(new circDrag(circ));
         circ.setOnMouseReleased(new circDrop(circ));
         Group root = new Group(new CommandBlock(
-                1, 
-                2, 
+                100, 
+                200, 
                 Color.YELLOW, 
                 new Command(
                         "echo HelloWorld", "baseBlock"
                 )
+        ),new CommandBlock(
+                700, 
+                500, 
+                Color.GREEN, 
+                new Command(
+                        "echo HelloWorld", "baseBlock"
+                )
         ), circ);
-        Scene scene = new Scene(root, 800, 600);
+        Pane testBox = new Pane(new CommandBlock(
+                100, 
+                200, 
+                Color.YELLOW, 
+                new Command(
+                        "echo HelloWorld", "baseBlock"
+                )
+        ),new CommandBlock(
+                700, 
+                500, 
+                Color.GREEN, 
+                new Command(
+                        "echo HelloWorld", "baseBlock"
+                )
+        ));
+        Scene scene = new Scene(testBox, 800, 600);
         
         //add scene to stage
         stage.setScene(scene);
