@@ -21,27 +21,27 @@ public class Interpreter{
         commands = h;
     }
     //subroutines---------------------------------------------------------------
-	//getters/setters
-	public String getName()			{return name;}
-		   void   setName(String n)	{name = n;}
-	public String getPath()			{return path;}
-		   void   setPath(String p)	{path = p;}
+    //getters/setters
+    public String getName()            {return name;}
+           void   setName(String n)    {name = n;}
+    public String getPath()            {return path;}
+           void   setPath(String p)    {path = p;}
 
-	/* getCommand
-	Returns a command from the commands ht, searching by ID. */
-	public Command getCommand(String id){
-		return commands.get(id);
-	}
+    /* getCommand
+    Returns a command from the commands ht, searching by ID. */
+    public Command getCommand(String id){
+        return commands.get(id);
+    }
 
     /* addCommand
     A wrapper for Hashtable.put() that wards duplicates.
-	Protected because commands should only ever be added by an internal,
-	initialize subroutine.
+    Protected because commands should only ever be added by an internal,
+    initialize subroutine.
     Returns false on failure. */
     boolean addCommand(String id, Command c){
         boolean toReturn = false;
         String error = "ERROR@Interpreter.addCommand()\n" +
-		"---" + id + " is already a key in commands and was not added.";
+        "---" + id + " is already a key in commands and was not added.";
         //if key already exists, fail
         if(commands.containsKey(id)){
             System.err.println(error); toReturn = false;
@@ -64,10 +64,11 @@ public class Interpreter{
 
         //create bash Interpreter object
         bash = new Interpreter("bash", "#!/bin/bash", ht);
-		//generate test bash command
-		bash.addCommand("helloworld",
-			new Command("Hello World", "echo \"Hello World\""));
-
+        
+        //generate test bash command
+        bash.addCommand("echo",
+            new Command("Hello World", "echo \"Hello World\""));
+        
         //add bash to AL
         toReturn.add(bash);
         return toReturn;
