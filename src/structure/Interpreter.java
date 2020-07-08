@@ -74,6 +74,9 @@ public class Interpreter{
         return toReturn;
     }
     
+    
+    /* getCommands
+    used to return an ArrayList of Command objects to the GUI */
     public ArrayList<Command> getCommands(){
         ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
         return commandList;
