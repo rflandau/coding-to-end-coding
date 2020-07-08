@@ -41,10 +41,8 @@ public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
     double defaultWindowHeight = 600;
-    ScriptStruct commandList;
-    ArrayList<Interpreter> interpreterList;
+    ScriptStruct commandList, structure;
     ArrayList<Command> sidebarCommands;
-    Interpreter interp;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -57,10 +55,9 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-        commandList = new ScriptStruct();
-        interpreterList = Interpreter.generateInterpreters();
-        interp = interpreterList.get(0);
-        sidebarCommands = interp.getCommands();
+		structure = commandList = new ScriptStruct();
+
+        sidebarCommands = structure.getTemplateCommands();
     }
     
     @Override
@@ -124,11 +121,17 @@ public class Workspace extends Application {
         // creating start block
         Command s = new Command("start");
         CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
+<<<<<<< HEAD
         flowchart.getChildren().add(start);
         
+=======
+        blocks.getChildren().add(start);
+
+>>>>>>> Renamed SS in workspace (maintained old name until full conversion)
         // creating end block
         Command e = new Command("end");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
+<<<<<<< HEAD
         flowchart.getChildren().add(end);
         
         // setting up button pane
@@ -137,10 +140,15 @@ public class Workspace extends Application {
         exportPane.getChildren().add(button);
         
         // event handler
+=======
+        blocks.getChildren().add(end);
+
+>>>>>>> Renamed SS in workspace (maintained old name until full conversion)
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
                 // removing end block from GUI
+<<<<<<< HEAD
                 flowchart.getChildren().remove(end);
                 
                 // appending new command block to GUI and to commandList
@@ -149,6 +157,16 @@ public class Workspace extends Application {
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 flowchart.getChildren().add(block);
                 
+=======
+                blocks.getChildren().remove(end);
+
+                // appending new command block to GUI and to commandList
+                commandList.addCommandToFlow(commandList.getFlowSize(), "echo", structure.getCurInterp());
+                Command c = commandList.getCommand(commandList.getFlowSize()-1);
+                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+                blocks.getChildren().add(block);
+
+>>>>>>> Renamed SS in workspace (maintained old name until full conversion)
                 // appending end block to GUI
                 flowchart.getChildren().add(end);
             }
@@ -159,4 +177,16 @@ public class Workspace extends Application {
         stage.setScene(scene);
         stage.show();
     }
+<<<<<<< HEAD
+=======
+
+    /*
+    stop is like init, but it goes right after the application ends
+    The superclass definition also does nothing, so I commented this out
+    @Override
+    public void stop() {
+
+    }
+    */
+>>>>>>> Renamed SS in workspace (maintained old name until full conversion)
 }

@@ -22,10 +22,10 @@ public class Interpreter{
     }
     //subroutines---------------------------------------------------------------
     //getters/setters
-    public String getName()            {return name;}
-           void   setName(String n)    {name = n;}
-    public String getPath()            {return path;}
-           void   setPath(String p)    {path = p;}
+    String getName()            {return name;}
+    void   setName(String n)    {name = n;}
+    String getPath()            {return path;}
+	void   setPath(String p)    {path = p;}
 
     /* getCommand
     Returns a command from the commands ht, searching by ID. */
@@ -51,14 +51,14 @@ public class Interpreter{
 
         return toReturn;
     }
-    
+
     /* getCommands
     used to return an ArrayList of Command objects to the GUI */
     public ArrayList<Command> getCommands(){
         ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
         return commandList;
     }
-    
+
     //static subroutines--------------------------------------------------------
     /* generateInterpreters
     Used to populate the ArrayList of interpreter objects (as well as fill their
@@ -72,11 +72,17 @@ public class Interpreter{
 
         //create bash Interpreter object
         bash = new Interpreter("bash", "#!/bin/bash", ht);
-        
+
         //generate test bash command
+<<<<<<< HEAD
         String name = "Hello World";
         bash.addCommand(name, new Command(name, "echo \"Hello World\"", bash.getName()));
         
+=======
+        bash.addCommand("echo",
+            new Command("Hello World", "echo \"Hello World\""));
+
+>>>>>>> Renamed SS in workspace (maintained old name until full conversion)
         //add bash to AL
         toReturn.add(bash);
         return toReturn;

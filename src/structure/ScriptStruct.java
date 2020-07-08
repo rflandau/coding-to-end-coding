@@ -10,7 +10,7 @@ import java.io.FileWriter;
 
 /* ScriptStruct
   Represents the main generation class for storing the flowchart and outputting
-  to the selected out-lang.
+  to the selected out-lang. Intended as the public face of the back-end.
   '.export()' is the public-facing method for printing the script. */
 
 public class ScriptStruct{
@@ -18,15 +18,21 @@ public class ScriptStruct{
     /*'Flow' holds command representations of the GUI flowchart. */
     public ArrayList<Command> flow;
     //'out' holds the path to the desired output file
-    String outPath;
+    String outPath = "out.txt";
+	//interpreter fields
+    ArrayList<Interpreter> interpreterList;
+	Interpreter interp;
     //constructors--------------------------------------------------------------
+	/* The SS constructor creates flow, sets all fields, and initalizes the
+	 	interpreters */
+	// default constructor
     public ScriptStruct(){
         flow = new ArrayList<Command>();
-        outPath = "out.txt";
+		initialize();
     }
     // with specified output path
     public ScriptStruct(String o){
-        flow = new ArrayList<Command>();
+		this(); //chain default constructor
         outPath = o;
     }
     //subroutines---------------------------------------------------------------
@@ -35,6 +41,52 @@ public class ScriptStruct{
     public void    setOutPath(String o)     { outPath = o; }
     public int     getFlowSize()            { return flow.size(); }
     public Command getCommand(int i)        { return flow.get(i); }
+
+	//interpreter functions
+	/* initalize
+	*/
+	public void initialize(){
+		interpreterList = Interpreter.generateInterpreters();
+		interp = interpreterList.get(0);
+	}
+
+	/* changeInterpreter
+	Tries to set the current interp to the one at index 'i'.
+	Returns false and does nothing if 'i' is out of bounds. */
+	public boolean changeInterpreter(int i){
+		if (0 <= i && i < interpreterList.size()){ //i is within bounds
+			interp = interpreterList.get(i);
+			return true;
+		} else return false;
+	}
+	/* changeInterpreter
+	Tries to set the current interp to the one named 'name'.
+	Returns false if 'name' could not be found w/in interpreterList. */
+	public boolean changeInterpreter(String name){
+		boolean found = false;
+		//search interpList until interp found or we fall off
+		for(int i = 0; i < interpreterList.size() && !found; i++){
+			//check interp name against given name
+			if (name.equals(interpreterList.get(i).getName())){
+				interp = interpreterList.get(i); //set interp
+				found = true;
+			}
+		}
+		//return whether or not it was found
+		return found;
+	}
+
+	/*
+	*/
+	public ArrayList<Command> getTemplateCommands(){
+		return interp.getCommands();
+	}
+
+	public Interpreter getCurInterp(){
+		return interp;
+	}
+
+
 
     /* addCommandToFlow
         Takes an id for a command, duplicates it from the current interpreter,
@@ -70,6 +122,7 @@ public class ScriptStruct{
     }
 
     /* writeScript
+	   hHlper function for export().
        Writes a (multi-line) string of the completed script, built from the
        items in 'flow'.
        Uses Global.curInterp to figure out langauge, so make sure it is set
@@ -102,7 +155,7 @@ public class ScriptStruct{
     }
 
     /* createOutFile
-        Helper function for export.
+        Helper function for export().
         Tests the output file and returns a File on success.*/
     private File createOutFile(){
         File toReturn;
@@ -122,11 +175,11 @@ public class ScriptStruct{
     }
 
     /* export
-       Calls generateScript to return the script before printing it to 'out'.
+       Calls writeScript to return the script before printing it to 'out'.
        Will return -1 if file cannot be created or opened. */
     public boolean export(Interpreter interp) throws IOException{
         ///variables
-        File out = createOutFile(); 
+        File out = createOutFile();
         BufferedWriter br;
         boolean toReturn = true;
 
