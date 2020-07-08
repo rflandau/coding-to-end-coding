@@ -50,6 +50,7 @@ public class Workspace extends Application {
         commandList = new ScriptStruct();
         interpreterList = Interpreter.generateInterpreters();
         interp = interpreterList.get(0);
+        ArrayList<Command> sidebarCommands = interp.getCommands();
     }
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override

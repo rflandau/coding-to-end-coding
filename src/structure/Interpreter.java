@@ -73,4 +73,9 @@ public class Interpreter{
         toReturn.add(bash);
         return toReturn;
     }
+    
+    public ArrayList<Command> getCommands(){
+        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
+        return commandList;
+    }
 }
