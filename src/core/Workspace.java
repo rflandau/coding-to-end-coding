@@ -69,7 +69,7 @@ public class Workspace extends Application {
         blocks.setPadding(new Insets(10));
         rightSidebar.setPadding(new Insets(10));    //this number puts a buffer around the box
         mainCanvas.setPadding(new Insets(10));
-        ExportButton button = new ExportButton(150, 100);
+        ExportButton button = new ExportButton(150, 100, commandList, interp);
         Rectangle sidebarRect = new Rectangle(
                                 150,
                                 defaultWindowHeight - button.getHeight(),
