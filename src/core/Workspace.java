@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;  //for vertical ordering of sidebar objec
 import javafx.scene.layout.StackPane;   //for vertical ordering of sidebar objects
 import javafx.geometry.Insets;          //for sidebar spacing
 import java.util.ArrayList;             //for backend ArrayList
+import java.util.Hashtable;
 
 //Import Event Handling
 import javafx.event.EventHandler;
@@ -26,8 +27,6 @@ import structure.Command;
 import structure.ScriptStruct;
 import structure.Interpreter;
 
-
-
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
@@ -43,7 +42,6 @@ public class Workspace extends Application {
     init is called right before start, before the application comes into being
     Stuff for its parts shouldn't be made here, but anything that needs to be
     prepared for the starting of the app that isn't JavaFX can go here
-    The superclass definition also does nothing, so I commented this out
     */
     @Override
     public void init() {
@@ -105,7 +103,8 @@ public class Workspace extends Application {
         Command e = new Command("end", "");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
         blocks.getChildren().add(end);
-        
+	//Export button event
+	
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
@@ -132,7 +131,7 @@ public class Workspace extends Application {
     
     /*
     stop is like init, but it goes right after the application ends
-    The superclass definition also does nothing, so I commented this out
+    The superclass definition does nothing, so I commented this out
     @Override
     public void stop() {
 

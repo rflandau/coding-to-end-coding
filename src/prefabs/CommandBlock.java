@@ -1,3 +1,11 @@
+/*
+ * TO-DO
+ *  switching from holding a Command object to a Command object's id
+ *  functionality for replacing the Command Blocks in the side bar
+ *  functionality for correcting command block position
+ */
+
+
 package prefabs;
 
 //visuals
@@ -12,11 +20,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.geometry.Pos;
 
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
-import core.Main;
 import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
@@ -36,6 +44,7 @@ public class CommandBlock extends StackPane {
     Command attachedCommand;
     double homeX;
     double homeY;
+    Paint commandColor;
     livesOn home;    //where the CommandBlock originally came from
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
@@ -51,13 +60,16 @@ public class CommandBlock extends StackPane {
         //setting home (where the Command Block is on the sidebar)
         this.homeX = xPos;
         this.homeY = yPos;
-        this.home = livesOn.SIDEBAR;
+        this.home = livesOn.WORKSPACE;
 
-        //creating the visual shape and name label
+        //creating the visual shape and name label (and saving the block's color)
+        this.commandColor = color;
         Rectangle rect = new Rectangle(CommandBlock.width, CommandBlock.height, color);
         Label text = new Label(cmd.getName());
 
         //adds visuals to the container
+        StackPane.setAlignment(rect, Pos.CENTER);
+        StackPane.setAlignment(text, Pos.CENTER);
         this.getChildren().addAll(rect, text);
 
         //placing the Command Block in the correct spot
@@ -65,7 +77,14 @@ public class CommandBlock extends StackPane {
             
         //adding drag and drop events
         this.setOnDragDetected(new onCommandBlockDrag(this));
-        this.setOnDragDropped(new onCommandBlockDrop(this));
+        this.setOnMouseDragged(new onCommandBlockMove(this));
+        this.setOnMouseReleased(new onCommandBlockDrop(this));
+        /*
+         * Be careful, these events calculate position based on the top-left corner of the
+         * command block. I hardcoded in an offset based off of the above static values, but
+         * if we ever stop using those we'll have to come back to this.
+         * It will probably involve CommandBlocks simply knowing their own size.
+         */
     }
     
     
@@ -83,7 +102,20 @@ public class CommandBlock extends StackPane {
     public void setHome(livesOn newHome) {
         this.home = newHome;
     }
+    
+    //returns a deep copy of the command block this method is called on
+    //can we just steal java.lang.obj.clone for this?
+    public CommandBlock Copy() {
+        //we use translateX and translateY as these most accurately represent where the block should be
+        return new CommandBlock(
+                this.getTranslateX(), 
+                this.getTranslateY(), 
+                this.commandColor, 
+                this.attachedCommand);
+    }
+
 }
+
 
 class onCommandBlockDrag implements EventHandler<MouseEvent>{
     CommandBlock targetBlock;
@@ -96,15 +128,35 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     //what happens when the user starts dragging the command block
     @Override
     public void handle(MouseEvent event) {
-        //this warns as unused, but drag gets returned when the event is dispatched
-        //it being returned starts the drag
-        @SuppressWarnings("unused")
-        Dragboard drag = targetBlock.startDragAndDrop(TransferMode.ANY);
+        System.out.println("Starting drag");
+        
+        targetBlock.startFullDrag();
+        
         event.consume();
     }
 }
 
-class onCommandBlockDrop implements EventHandler<DragEvent>{
+class onCommandBlockMove implements EventHandler<MouseEvent>{
+    CommandBlock targetBlock;
+
+    onCommandBlockMove(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
+    
+    //what happens when the user continuously drags the command block
+    @Override
+    public void handle(MouseEvent event) {
+        targetBlock.relocate(
+                event.getSceneX() - CommandBlock.width/2, 
+                event.getSceneY() - CommandBlock.height/2
+        );
+        
+        event.consume();
+    }
+}
+
+class onCommandBlockDrop implements EventHandler<MouseEvent>{
     CommandBlock targetBlock;
 
     onCommandBlockDrop(CommandBlock block){
@@ -114,7 +166,7 @@ class onCommandBlockDrop implements EventHandler<DragEvent>{
 
     //what happens when the user drops the command block
     @Override
-    public void handle(DragEvent event) {
+    public void handle(MouseEvent event) {
         //if this block was dragged from the sidebar...
         if(targetBlock.home == CommandBlock.livesOn.SIDEBAR) {
             //set following if to true for temp value
@@ -132,11 +184,14 @@ class onCommandBlockDrop implements EventHandler<DragEvent>{
             if(false/*The block landed on the sidebar*/) {
             //delete it
             }
-
-            //the drag-drop event will set the new position automatically (i think)
+            //else, move it to this new position
+            else {
+                targetBlock.relocate(
+                        event.getSceneX() - CommandBlock.width/2, 
+                        event.getSceneY() - CommandBlock.height/2
+                );
+            }
         }
-
-        event.setDropCompleted(true);
 
         event.consume();
     }
