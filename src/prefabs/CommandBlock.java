@@ -16,7 +16,6 @@ import javafx.scene.input.TransferMode;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
-import core.Main;
 import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
