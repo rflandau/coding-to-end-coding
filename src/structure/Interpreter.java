@@ -51,6 +51,14 @@ public class Interpreter{
 
         return toReturn;
     }
+    
+    /* getCommands
+    used to return an ArrayList of Command objects to the GUI */
+    public ArrayList<Command> getCommands(){
+        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
+        return commandList;
+    }
+    
     //static subroutines--------------------------------------------------------
     /* generateInterpreters
     Used to populate the ArrayList of interpreter objects (as well as fill their
@@ -72,13 +80,5 @@ public class Interpreter{
         //add bash to AL
         toReturn.add(bash);
         return toReturn;
-    }
-    
-    
-    /* getCommands
-    used to return an ArrayList of Command objects to the GUI */
-    public ArrayList<Command> getCommands(){
-        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
-        return commandList;
     }
 }
