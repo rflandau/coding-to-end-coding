@@ -55,8 +55,7 @@ public class Interpreter{
     /* getCommands
     used to return an ArrayList of Command objects to the GUI */
     public ArrayList<Command> getCommands(){
-        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
-        return commandList;
+        return commandList new ArrayList<Command>(commands.values());
     }
 
     //static subroutines--------------------------------------------------------

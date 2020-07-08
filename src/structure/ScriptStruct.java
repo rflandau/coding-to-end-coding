@@ -42,7 +42,7 @@ public class ScriptStruct{
     public int     getFlowSize()            { return flow.size(); }
     public Command getCommand(int i)        { return flow.get(i); }
 
-	//interpreter functions
+	//interpreter subroutines
 	/* initalize
 	*/
 	public void initialize(){
@@ -76,6 +76,7 @@ public class ScriptStruct{
 		return found;
 	}
 
+	//other subroutines
 	/*
 	*/
 	public ArrayList<Command> getTemplateCommands(){
