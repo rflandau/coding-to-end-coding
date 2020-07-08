@@ -34,6 +34,7 @@ public class Workspace extends Application {
     double defaultWindowHeight = 600;
     ScriptStruct commandList;
     ArrayList<Interpreter> interpreterList;
+    ArrayList<Command> sidebarCommands;
     Interpreter interp;
 
     //Applications do not need constructors
@@ -50,7 +51,7 @@ public class Workspace extends Application {
         commandList = new ScriptStruct();
         interpreterList = Interpreter.generateInterpreters();
         interp = interpreterList.get(0);
-        ArrayList<Command> sidebarCommands = interp.getCommands();
+        sidebarCommands = interp.getCommands();
     }
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override
