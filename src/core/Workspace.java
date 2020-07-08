@@ -32,10 +32,8 @@ public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
     double defaultWindowWidth = 800;
     double defaultWindowHeight = 600;
-    ScriptStruct commandList;
-    ArrayList<Interpreter> interpreterList;
+    ScriptStruct commandList, structure;
     ArrayList<Command> sidebarCommands;
-    Interpreter interp;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -48,10 +46,9 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-        commandList = new ScriptStruct();
-        interpreterList = Interpreter.generateInterpreters();
-        interp = interpreterList.get(0);
-        sidebarCommands = interp.getCommands();
+		structure = commandList = new ScriptStruct();
+
+        sidebarCommands = structure.getTemplateCommands();
     }
     //"/resources/images/WorkspaceBackgroundTile.png"
     @Override
@@ -102,24 +99,24 @@ public class Workspace extends Application {
         Command s = new Command("start", "");
         CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
         blocks.getChildren().add(start);
-        
+
         // creating end block
         Command e = new Command("end", "");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
         blocks.getChildren().add(end);
-        
+
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
                 // removing end block from GUI
                 blocks.getChildren().remove(end);
-                
+
                 // appending new command block to GUI and to commandList
-                commandList.addCommandToFlow(commandList.getFlowSize(), "echo", interp);
+                commandList.addCommandToFlow(commandList.getFlowSize(), "echo", structure.getCurInterp());
                 Command c = commandList.getCommand(commandList.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 blocks.getChildren().add(block);
-                
+
                 // appending end block to GUI
                 blocks.getChildren().add(end);
             }
@@ -131,7 +128,7 @@ public class Workspace extends Application {
         //show scene
         stage.show();
     }
-    
+
     /*
     stop is like init, but it goes right after the application ends
     The superclass definition also does nothing, so I commented this out
