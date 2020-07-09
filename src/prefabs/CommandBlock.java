@@ -13,7 +13,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-
 //import event handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -49,6 +48,7 @@ public class CommandBlock extends StackPane {
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
     
+    
     //Command Blocks take their position, a JFX color, and the Command object they represent
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
         //creating the jfx container
@@ -74,7 +74,7 @@ public class CommandBlock extends StackPane {
 
         //placing the Command Block in the correct spot
         this.relocate(xPos, yPos);
-            
+	
         //adding drag and drop events
         this.setOnDragDetected(new onCommandBlockDrag(this));
         this.setOnMouseDragged(new onCommandBlockMove(this));
