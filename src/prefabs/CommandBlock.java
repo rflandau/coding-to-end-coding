@@ -24,7 +24,6 @@ import javafx.scene.input.MouseDragEvent;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
-import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
     /*
@@ -47,8 +46,7 @@ public class CommandBlock extends StackPane {
     livesOn home;    //where the CommandBlock originally came from
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
-    
-    
+
     //Command Blocks take their position, a JFX color, and the Command object they represent
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
         //creating the jfx container
@@ -74,7 +72,7 @@ public class CommandBlock extends StackPane {
 
         //placing the Command Block in the correct spot
         this.relocate(xPos, yPos);
-	
+
         //adding drag and drop events
         this.setOnDragDetected(new onCommandBlockDrag(this));
         this.setOnMouseDragged(new onCommandBlockMove(this));
@@ -87,20 +85,20 @@ public class CommandBlock extends StackPane {
          * It will probably involve CommandBlocks simply knowing their own size.
          */
     }
-    
+
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
         this.home = newHome;
     }
-    
+
     //returns a deep copy of the command block this method is called on
     //can we just steal java.lang.obj.clone for this?
     public CommandBlock Copy() {
         //we use translateX and translateY as these most accurately represent where the block should be
         return new CommandBlock(
-                this.getTranslateX(), 
-                this.getTranslateY(), 
-                this.commandColor, 
+                this.getTranslateX(),
+                this.getTranslateY(),
+                this.commandColor,
                 this.attachedCommand);
     }
 
@@ -119,11 +117,11 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent event) {
         System.out.println("Starting drag");
-        
+
         targetBlock.setMouseTransparent(true);
-        
+
         targetBlock.startFullDrag();
-        
+
         event.consume();
     }
 }
@@ -135,15 +133,15 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
         super();
         this.targetBlock = block;
     }
-    
+
     //what happens when the user continuously drags the command block
     @Override
     public void handle(MouseEvent event) {
         targetBlock.relocate(
-                event.getSceneX() - CommandBlock.width/2, 
+                event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
         );
-        
+
         event.consume();
     }
 }
@@ -179,12 +177,12 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
             //else, move it to this new position
             else {
                 targetBlock.relocate(
-                        event.getSceneX() - CommandBlock.width/2, 
+                        event.getSceneX() - CommandBlock.width/2,
                         event.getSceneY() - CommandBlock.height/2
                 );
             }
         }
-        
+
         targetBlock.setMouseTransparent(false);
 
         event.consume();
@@ -198,11 +196,11 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
         super();
         this.targetBlock = block;
     }
-    
+
     //what happens when something (probably a Command Block) is dragged over this
     @Override
     public void handle(MouseEvent event) {
-        
+
     }
-    
+
 }
