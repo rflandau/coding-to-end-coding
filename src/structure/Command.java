@@ -16,9 +16,9 @@ public class Command{
                                 syntax,
                                 interpreter,
                                 tooltip;
-    private ArrayList<String>   flags, 
+    private ArrayList<String>   flags,
                                 arguments;
-    
+
     //constructors--------------------------------------------------------------
     // default constructor (used when members need to be assigned manually)
     public Command(){
@@ -30,20 +30,18 @@ public class Command{
         this.name = name;
     }
     // a better constructor
-    public Command(String name, String syntax, String interpreter){
-        this.name = name;
+    public Command(String name, String syntax){
+        this(name);
         this.syntax = syntax.trim(); //trim whitespace from syntax
         //^trim may cause issues in Python? A problem for later.
-        this.interpreter = interpreter.trim();
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
     // the ultimate constructor
-    public Command(String name, String syntax, String interpreter, String tooltip,
-                   ArrayList<String> flags, ArrayList<String> arguments){
-        this.name = name;
-        this.syntax = syntax;
-        this.interpreter = interpreter;
+    public Command(String name, String syntax,
+					String tooltip, ArrayList<String> flags,
+					ArrayList<String> arguments){
+        this(name, syntax);
         this.tooltip = tooltip;
         for(int i = 0; i < flags.size(); i ++){
             flags.add(i, flags.get(i));
@@ -70,7 +68,7 @@ public class Command{
             arguments.add(i, a.get(i));
         }
     }
-    
+
     //subroutines---------------------------------------------------------------
     //getters/setters
     public String getName()                     { return name; }

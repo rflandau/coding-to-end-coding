@@ -39,10 +39,11 @@ import structure.Interpreter;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
-    double defaultWindowWidth = 800;
-    double defaultWindowHeight = 600;
-    ScriptStruct commandList, structure;
-    ArrayList<Command> sidebarCommands;
+    double 				defaultWindowWidth = 800,
+						defaultWindowHeight = 600;
+    ScriptStruct 		commandList,
+						structure;
+    ArrayList<Command> 	sidebarCommands;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -135,7 +136,7 @@ public class Workspace extends Application {
         flowchart.getChildren().add(end);
         
         // setting up button pane
-        ExportButton button = new ExportButton(100, 50, commandList, interp);
+        ExportButton button = new ExportButton(100, 50, commandList, structure.getCurInterp());
         exportPane.setRightAnchor(button, 145.0);
         exportPane.getChildren().add(button);
         
@@ -178,8 +179,12 @@ public class Workspace extends Application {
         stage.show();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
+=======
+}
+>>>>>>> Minor stylistic changes.
     /*
     stop is like init, but it goes right after the application ends
     The superclass definition also does nothing, so I commented this out
