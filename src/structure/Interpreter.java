@@ -11,9 +11,9 @@ its file. The command can then be duplicated and added to flow. */
 
 public class Interpreter{
     //variables-----------------------------------------------------------------
-    String name; //name of the interpreter
-    String path; //execution path to the interpreter (probably with #!)
-    Hashtable<String, Command> commands; //all available commands; id -> Command
+    String 						name, //name of the interpreter
+     							path; //execution call to the interpreter
+    Hashtable<String, Command> 	commands; //all available commands; id -> Command
     //constructors--------------------------------------------------------------
     public Interpreter(String n, String p, Hashtable<String, Command> h){
         name = n;
@@ -55,7 +55,7 @@ public class Interpreter{
     /* getCommands
     used to return an ArrayList of Command objects to the GUI */
     public ArrayList<Command> getCommands(){
-        return commandList new ArrayList<Command>(commands.values());
+        return new ArrayList<Command>(commands.values());
     }
 
     //static subroutines--------------------------------------------------------
@@ -73,7 +73,7 @@ public class Interpreter{
         bash = new Interpreter("bash", "#!/bin/bash", ht);
 
         //generate test bash command
-        bash.addCommand("echo",
+        bash.addCommand("Hello World",
             new Command("Hello World", "echo \"Hello World\""));
 
         //add bash to AL
