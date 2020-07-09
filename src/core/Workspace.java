@@ -108,7 +108,7 @@ public class Workspace extends Application {
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
-            CommandBlock b = new CommandBlock(1,2,Color.WHITE,c);
+            CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,commandList);
             sidebar.getChildren().add(b);
         }
         
@@ -121,12 +121,12 @@ public class Workspace extends Application {
         
         // creating start block
         Command s = new Command("start");
-        CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
+        CommandBlock start = new CommandBlock(1,2,Color.GREY,s,commandList);
         flowchart.getChildren().add(start);
         
         // creating end block
         Command e = new Command("end");
-        CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
+        CommandBlock end = new CommandBlock(1,2,Color.GREY,e,commandList);
         flowchart.getChildren().add(end);
         
         // setting up button pane
@@ -144,7 +144,7 @@ public class Workspace extends Application {
                 // appending new command block to GUI and to commandList
                 commandList.addCommandToFlow(commandList.getFlowSize(), "Hello World", interp);
                 Command c = commandList.getCommand(commandList.getFlowSize()-1);
-                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,commandList);
                 flowchart.getChildren().add(block);
                 
                 // appending end block to GUI

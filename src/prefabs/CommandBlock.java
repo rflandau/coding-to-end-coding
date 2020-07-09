@@ -50,19 +50,23 @@ public class CommandBlock extends StackPane {
     double homeY;
     Paint commandColor;
     livesOn home;    //where the CommandBlock originally came from
+    int listIndex;
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
     ContextMenu contextMenu;
     MenuItem deleteBlock;
+
+    ScriptStruct commandList;
     
     //Command Blocks take their position, a JFX color, and the Command object they represent
-    public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
+    public CommandBlock(double xPos, double yPos, Paint color, Command cmd, ScriptStruct cmdL) {
         //creating the jfx container
         super();
 
         //storing the represented Command object
         this.attachedCommand = cmd;
-
+	commandList = cmdL;
+	
         //setting home (where the Command Block is on the sidebar)
         this.homeX = xPos;
         this.homeY = yPos;
@@ -125,11 +129,14 @@ public class CommandBlock extends StackPane {
                 this.getTranslateX(), 
                 this.getTranslateY(), 
                 this.commandColor, 
-                this.attachedCommand);
+                this.attachedCommand,
+		commandList);
     }
 
     public void Delete(){
 	System.out.println("Delete Called");
+	//There is currently no way to find the index so this is commented out
+	//commandList.removeCommandFromFlow(listIndex);
     }
 }
 
