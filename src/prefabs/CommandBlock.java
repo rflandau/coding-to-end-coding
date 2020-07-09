@@ -50,6 +50,7 @@ public class CommandBlock extends StackPane {
     double homeY;
     Paint commandColor;
     livesOn home;    //where the CommandBlock originally came from
+    //currently uninitialized
     int listIndex;
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
@@ -135,6 +136,7 @@ public class CommandBlock extends StackPane {
 
     public void Delete(){
 	System.out.println("Delete Called");
+	this.getChildren().remove(0,2);
 	//There is currently no way to find the index so this is commented out
 	//commandList.removeCommandFromFlow(listIndex);
     }
