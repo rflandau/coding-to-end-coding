@@ -37,8 +37,8 @@ public class CommandBlock extends StackPane {
       for size and color, so it's trivial to create a constructor that takes
       size, position, and color
     */
-    static double width = 100;
-    static double height = 100;
+    public static double width = 100;
+    public static double height = 100;
     static enum livesOn{
         SIDEBAR,
         WORKSPACE
@@ -50,6 +50,7 @@ public class CommandBlock extends StackPane {
     double homeY;
     Paint commandColor;
     livesOn home;    //where the CommandBlock originally came from
+    boolean draggable; //if the CommandBlock can be dragged or not
     //currently uninitialized
     int listIndex;
     //I'm not sure if blocks will need to store their linked list connections, if they do
@@ -66,12 +67,15 @@ public class CommandBlock extends StackPane {
 
         //storing the represented Command object
         this.attachedCommand = cmd;
-	commandList = cmdL;
+        this.commandList = cmdL;
 	
         //setting home (where the Command Block is on the sidebar)
         this.homeX = xPos;
         this.homeY = yPos;
         this.home = livesOn.WORKSPACE;
+        
+        //setting movablitiy
+        this.draggable = true;
 
         //creating the visual shape and name label (and saving the block's color)
         this.commandColor = color;
@@ -117,13 +121,41 @@ public class CommandBlock extends StackPane {
 	});
     }
     
+    //accessor for a command block's home
+    public livesOn getHome() {
+        return this.home;
+    }
+    
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
         this.home = newHome;
     }
     
+    //accessor for if the block can be dragged
+    public boolean getDraggable() {
+        return this.draggable;
+    }
+    
+    //changes draggability by toggling event listeners
+    public void setDraggable(boolean wantsToMove) {
+        if(wantsToMove) {
+            this.setOnDragDetected(new onCommandBlockDrag(this));
+            this.setOnMouseDragged(new onCommandBlockMove(this));
+            this.setOnMouseReleased(new onCommandBlockDrop(this));
+            this.setOnMouseDragEntered(new onCommandBlockHover(this));
+        }
+        else {
+            this.setOnDragDetected(null);
+            this.setOnMouseDragged(null);
+            this.setOnMouseReleased(null);
+            this.setOnMouseDragEntered(null);
+        }
+        
+        this.draggable = wantsToMove;
+    }
+    
     //returns a deep copy of the command block this method is called on
-    //can we just steal java.lang.obj.clone for this?
+    //can we just steal java.lang.obj.clone for this? probably, will test later
     public CommandBlock Copy() {
         //we use translateX and translateY as these most accurately represent where the block should be
         return new CommandBlock(
@@ -155,9 +187,18 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     //what happens when the user starts dragging the command block
     @Override
     public void handle(MouseEvent event) {
-        System.out.println("Starting drag");
+        System.out.println("Starting drag at " + event.getScreenY());
         
+        //expose other events to the mouse during the drag
         targetBlock.setMouseTransparent(true);
+        
+        //reset translates to match mouse position
+        targetBlock.setTranslateX(0);
+        targetBlock.setTranslateY(0);
+        targetBlock.relocate(
+                event.getSceneX() - CommandBlock.width/2, 
+                event.getSceneY() - CommandBlock.height/2
+        );
         
         targetBlock.startFullDrag();
         
@@ -219,6 +260,7 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                         event.getSceneX() - CommandBlock.width/2, 
                         event.getSceneY() - CommandBlock.height/2
                 );
+                System.out.println(event.getScreenY());
                 
                 //ask its container to align it, if it can handle CorrectPosRequestEvent
                 targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
@@ -242,10 +284,10 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
     //what happens when something (probably a Command Block) is dragged over this
     @Override
     public void handle(MouseEvent event) {
-        //when dragged over, the command block passes itself and the mouse's position to its container,
+        //when dragged over, the command block passes itself and the point of contact(?) to its container,
         //  if the container can handle a ReorderRequest
         targetBlock.getParent().fireEvent(
-                new ReorderRequestEvent(targetBlock, event.getSceneX(), event.getSceneY())
+                new ReorderRequestEvent(targetBlock, event.getScreenX(), event.getScreenY())
         );
     }
     
