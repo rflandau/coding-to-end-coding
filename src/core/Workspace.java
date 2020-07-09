@@ -1,6 +1,8 @@
 package core;
 
 // javafx
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -59,6 +61,12 @@ public class Workspace extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        //load the FXML
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        stage.setScene(new Scene(root));
+        stage.show();
+
+        /*
         // local variables
         AnchorPane root = new AnchorPane(),             // contains all GUI elements
                    sidebarPane = new AnchorPane(),      // contains sidebar with available commands
@@ -152,6 +160,6 @@ public class Workspace extends Application {
 
         stage.setTitle("Coding to End Coding");
         stage.setScene(scene);
-        stage.show();
+        stage.show(); */
     }
 }
