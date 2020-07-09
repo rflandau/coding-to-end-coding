@@ -29,8 +29,8 @@ public class Interpreter{
 
     /* getCommand
     Returns a command from the commands ht, searching by ID. */
-    public Command getCommand(String name){
-        return commands.get(name);
+    public Command getCommand(String cid){
+        return commands.get(cid);
     }
 
     /* addCommand
@@ -52,33 +52,5 @@ public class Interpreter{
         return toReturn;
     }
 
-    /* getCommands
-    used to return an ArrayList of Command objects to the GUI */
-    public ArrayList<Command> getCommands(){
-        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
-        return commandList;
-    }
-
     //static subroutines--------------------------------------------------------
-    /* generateInterpreters
-    Used to populate the ArrayList of interpreter objects (as well as fill their
-    fields).
-    NOTE: Currently just creates the test interpreter. */
-    public static ArrayList<Interpreter> generateInterpreters(){
-        //variables
-        Hashtable<String, Command> ht = new Hashtable<String, Command>();
-        Interpreter bash;
-        ArrayList<Interpreter> toReturn = new ArrayList<Interpreter>();
-
-        //create bash Interpreter object
-        bash = new Interpreter("bash", "#!/bin/bash", ht);
-
-        //generate test bash command
-        String name = "Hello World";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\"", bash.getName()));
-
-        //add bash to AL
-        toReturn.add(bash);
-        return toReturn;
-    }
 }

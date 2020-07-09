@@ -2,7 +2,7 @@ package structure;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.lang.StringBuilder;
+//import java.lang.StringBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedWriter;
@@ -15,7 +15,9 @@ import java.io.FileWriter;
 
 public class ScriptStruct{
     //variables-----------------------------------------------------------------
-    /*'Flow' holds command representations of the GUI flowchart. */
+	private final String defaultInterp = "bash";
+
+	/*'Flow' holds command representations of the GUI flowchart. */
     public ArrayList<Command> flow;
     //'out' holds the path to the desired output file
     String outPath = "out.txt";
@@ -43,12 +45,35 @@ public class ScriptStruct{
     public Command getCommand(int i)        { return flow.get(i); }
 
 	//interpreter subroutines
-	/* initalize
-	*/
+	/* initialize
+	Generates the interpreter list and sets the current interpreter to the
+	default interpreter (as specified in the field above). */
 	public void initialize(){
-		interpreterList = Interpreter.generateInterpreters();
-		interp = interpreterList.get(0);
+		interpreterList = generateInterpreters();
+		changeInterpreter(defaultInterp);
 	}
+
+	/* generateInterpreters
+    Used to populate the ArrayList of interpreter objects (as well as fill their
+    fields).
+    NOTE: Currently just creates the test interpreter. */
+    public static ArrayList<Interpreter> generateInterpreters(){
+        //variables
+        Hashtable<String, Command> ht = new Hashtable<String, Command>();
+        Interpreter bash;
+        ArrayList<Interpreter> toReturn = new ArrayList<Interpreter>();
+
+        //create bash Interpreter object
+        bash = new Interpreter("bash", "#!/bin/bash", ht);
+
+        //generate test bash command
+        String name = "Hello World";
+        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
+
+        //add bash to AL
+        toReturn.add(bash);
+        return toReturn;
+    }
 
 	/* changeInterpreter
 	Tries to set the current interp to the one at index 'i'.
@@ -57,7 +82,10 @@ public class ScriptStruct{
 		if (0 <= i && i < interpreterList.size()){ //i is within bounds
 			interp = interpreterList.get(i);
 			return true;
-		} else return false;
+		} else {
+			System.err.println("Could not find interp at entry " + i);
+			return false;
+		}
 	}
 	/* changeInterpreter
 	Tries to set the current interp to the one named 'name'.
@@ -72,21 +100,16 @@ public class ScriptStruct{
 				found = true;
 			}
 		}
-		//return whether or not it was found
-		return found;
+		if (!found) System.out.println("Could not find interp '" + name +"'");
+		return found;//return whether or not it was found
 	}
 
 	//other subroutines
-	/*
-	*/
+	/* getTemplateCommands
+	Returns an ArrayList of all commands in the current interp.*/
 	public ArrayList<Command> getTemplateCommands(){
-		return interp.getCommands();
+		return new ArrayList<Command>(interp.commands.values());
 	}
-
-	public Interpreter getCurInterp(){
-		return interp;
-	}
-
 
 
     /* addCommandToFlow
@@ -94,15 +117,14 @@ public class ScriptStruct{
         and adds the new command to flow.
         Alternative to addCommandToFlow() so Commands do not have to be passed.
         Does nothing if id is not found in interpreter hash. */
-    public void addCommandToFlow(int i, String id, Interpreter interp){
+    public void addCommandToFlow(int i, String id){
         Command fetched, cmd;
 
-        if (i <= getFlowSize() && i >= 0){
-            if((fetched = interp.getCommand(id)) != null){
-                cmd = new Command(fetched);//duplicate command from fetched com
-                flow.add(i, cmd);
-            }
-            else System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
+        if (0 <= i && i <= getFlowSize()){ //validate index
+            if((fetched = interp.getCommand(id)) != null) //check the id exists
+                flow.add(i, new Command(fetched));
+            else
+				System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
                 "---Command with ID " + id + "could not be found.");
         }else System.err.println("ERROR@ScriptStruct.addCommandToFlow()\n" +
                 "---Given index (" + i + ") is out of range.");
@@ -178,7 +200,7 @@ public class ScriptStruct{
     /* export
        Calls writeScript to return the script before printing it to 'out'.
        Will return -1 if file cannot be created or opened. */
-    public boolean export(Interpreter interp) throws IOException{
+    public boolean export() throws IOException{
         ///variables
         File out = createOutFile();
         BufferedWriter br;

@@ -16,7 +16,6 @@ import javafx.scene.input.TransferMode;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
-import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
     /*
@@ -38,7 +37,7 @@ public class CommandBlock extends StackPane {
     livesOn home;    //where the CommandBlock originally came from
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
-    
+
     //Command Blocks take their position, a JFX color, and the Command object they represent
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
         //creating the jfx container
@@ -61,12 +60,12 @@ public class CommandBlock extends StackPane {
 
         //placing the Command Block in the correct spot
         this.relocate(xPos, yPos);
-            
+
         //adding drag and drop events
         this.setOnDragDetected(new onCommandBlockDrag(this));
         this.setOnDragDropped(new onCommandBlockDrop(this));
     }
-    
+
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
         this.home = newHome;

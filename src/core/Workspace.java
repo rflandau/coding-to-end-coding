@@ -33,16 +33,15 @@ import prefabs.ExportButton;
 import prefabs.CommandBlock;
 import structure.Command;
 import structure.ScriptStruct;
-import structure.Interpreter;
 
 
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
-    double defaultWindowWidth = 800;
-    double defaultWindowHeight = 600;
-    ScriptStruct commandList, structure;
-    ArrayList<Command> sidebarCommands;
+    double              defaultWindowWidth = 800,
+                        defaultWindowHeight = 600;
+    ScriptStruct        structure;
+    ArrayList<Command>  sidebarCommands;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -55,7 +54,7 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-		structure = commandList = new ScriptStruct();
+		structure = new ScriptStruct();
 
         sidebarCommands = structure.getTemplateCommands();
     }
@@ -129,7 +128,7 @@ public class Workspace extends Application {
         flowchart.getChildren().add(end);
 
         // setting up button pane
-        ExportButton button = new ExportButton(100, 50, commandList, interp);
+        ExportButton button = new ExportButton(100, 50, structure);
         exportPane.setRightAnchor(button, 145.0);
         exportPane.getChildren().add(button);
 
@@ -140,9 +139,10 @@ public class Workspace extends Application {
                 // removing end block from GUI
                 flowchart.getChildren().remove(end);
 
-                // appending new command block to GUI and to commandList
-                commandList.addCommandToFlow(commandList.getFlowSize(), "Hello World", interp);
-                Command c = commandList.getCommand(commandList.getFlowSize()-1);
+                // appending new command block to GUI and to structure
+                structure.addCommandToFlow(
+                        structure.getFlowSize(), "Hello World");
+                Command c = structure.getCommand(structure.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 flowchart.getChildren().add(block);
 
