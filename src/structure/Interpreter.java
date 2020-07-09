@@ -5,7 +5,7 @@ import java.util.Hashtable;
 /* Interpreter
 Represents a specific interpreter and its associated command blocks' codes.
 NYI: Each interp's commands is populated on load from the command library.
-The hashtable of an interp pairs id of a specific command block to a Command
+The hashtable of an interp pairs name of a specific command block to a Command
 instance. The command instance is the basic info of a command, as loaded from
 its file. The command can then be duplicated and added to flow. */
 
@@ -13,7 +13,7 @@ public class Interpreter{
     //variables-----------------------------------------------------------------
     String name; //name of the interpreter
     String path; //execution path to the interpreter (probably with #!)
-    Hashtable<String, Command> commands; //all available commands; id -> Command
+    Hashtable<String, Command> commands; //all available commands; name -> Command
     //constructors--------------------------------------------------------------
     public Interpreter(String n, String p, Hashtable<String, Command> h){
         name = n;
@@ -29,8 +29,8 @@ public class Interpreter{
 
     /* getCommand
     Returns a command from the commands ht, searching by ID. */
-    public Command getCommand(String id){
-        return commands.get(id);
+    public Command getCommand(String name){
+        return commands.get(name);
     }
 
     /* addCommand
@@ -38,19 +38,27 @@ public class Interpreter{
     Protected because commands should only ever be added by an internal,
     initialize subroutine.
     Returns false on failure. */
-    boolean addCommand(String id, Command c){
+    boolean addCommand(String name, Command c){
         boolean toReturn = false;
         String error = "ERROR@Interpreter.addCommand()\n" +
-        "---" + id + " is already a key in commands and was not added.";
+        "---" + name + " is already a key in commands and was not added.";
         //if key already exists, fail
-        if(commands.containsKey(id)){
+        if(commands.containsKey(name)){
             System.err.println(error); toReturn = false;
         }else{
-            commands.put(id, c); toReturn = true;
+            commands.put(name, c); toReturn = true;
         }
 
         return toReturn;
     }
+    
+    /* getCommands
+    used to return an ArrayList of Command objects to the GUI */
+    public ArrayList<Command> getCommands(){
+        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
+        return commandList;
+    }
+    
     //static subroutines--------------------------------------------------------
     /* generateInterpreters
     Used to populate the ArrayList of interpreter objects (as well as fill their
@@ -66,8 +74,8 @@ public class Interpreter{
         bash = new Interpreter("bash", "#!/bin/bash", ht);
         
         //generate test bash command
-        bash.addCommand("echo",
-            new Command("Hello World", "echo \"Hello World\""));
+        String name = "Hello World";
+        bash.addCommand(name, new Command(name, "echo \"Hello World\"", bash.getName()));
         
         //add bash to AL
         toReturn.add(bash);
