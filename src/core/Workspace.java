@@ -1,6 +1,6 @@
 package core;
 
-// javafx 
+// javafx
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -39,11 +39,10 @@ import structure.Interpreter;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
-    double 				defaultWindowWidth = 800,
-						defaultWindowHeight = 600;
-    ScriptStruct 		commandList,
-						structure;
-    ArrayList<Command> 	sidebarCommands;
+    double defaultWindowWidth = 800;
+    double defaultWindowHeight = 600;
+    ScriptStruct commandList, structure;
+    ArrayList<Command> sidebarCommands;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -60,7 +59,7 @@ public class Workspace extends Application {
 
         sidebarCommands = structure.getTemplateCommands();
     }
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         // local variables
@@ -76,7 +75,7 @@ public class Workspace extends Application {
                    flowchartScroll = new ScrollBar();   // scrollbar for flowchart
         VBox       sidebar = new VBox(),                // contains available commands
                    flowchart = new VBox();              // contains flowchart
-        
+
         // left and right panes
         vertical.getItems().addAll(sidebarPane, rightPane);
         vertical.setOrientation(Orientation.HORIZONTAL);
@@ -86,7 +85,7 @@ public class Workspace extends Application {
         AnchorPane.setBottomAnchor(vertical, 15.0);
         AnchorPane.setLeftAnchor(vertical, 15.0);
         root.getChildren().addAll(vertical);
-        
+
         // top and bottom panes on right panel
         horizontal.getItems().addAll(flowchartPane, exportPane);
         horizontal.setOrientation(Orientation.VERTICAL);
@@ -96,7 +95,7 @@ public class Workspace extends Application {
         AnchorPane.setBottomAnchor(horizontal, 0.0);
         AnchorPane.setLeftAnchor(horizontal, 0.0);
         rightPane.getChildren().addAll(horizontal);
-        
+
         // setting up sidebar
         sidebar.setSpacing(10);
         sidebarPane.setTopAnchor(sidebar, 10.0);
@@ -104,94 +103,57 @@ public class Workspace extends Application {
         sidebarScroll.setOrientation(Orientation.VERTICAL);
         sidebarPane.getChildren().add(sidebar);
         sidebar.setAlignment(Pos.CENTER);
-        
+
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c);
             sidebar.getChildren().add(b);
         }
-        
+
         // setting up flowchart
         flowchartPane.setTopAnchor(flowchart, 10.0);
         flowchartPane.setRightAnchor(flowchart, 145.0);
         flowchartScroll.setOrientation(Orientation.VERTICAL);
         flowchartPane.getChildren().add(flowchart);
         flowchart.setAlignment(Pos.CENTER);
-        
+
         // creating start block
         Command s = new Command("start");
         CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
-<<<<<<< HEAD
         flowchart.getChildren().add(start);
-        
-=======
-        blocks.getChildren().add(start);
 
->>>>>>> Renamed SS in workspace (maintained old name until full conversion)
         // creating end block
         Command e = new Command("end");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
-<<<<<<< HEAD
         flowchart.getChildren().add(end);
-        
+
         // setting up button pane
-        ExportButton button = new ExportButton(100, 50, commandList, structure.getCurInterp());
+        ExportButton button = new ExportButton(100, 50, commandList, interp);
         exportPane.setRightAnchor(button, 145.0);
         exportPane.getChildren().add(button);
-        
-        // event handler
-=======
-        blocks.getChildren().add(end);
 
->>>>>>> Renamed SS in workspace (maintained old name until full conversion)
+        // event handler
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
                 // removing end block from GUI
-<<<<<<< HEAD
                 flowchart.getChildren().remove(end);
-                
+
                 // appending new command block to GUI and to commandList
                 commandList.addCommandToFlow(commandList.getFlowSize(), "Hello World", interp);
                 Command c = commandList.getCommand(commandList.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 flowchart.getChildren().add(block);
-                
-=======
-                blocks.getChildren().remove(end);
 
-                // appending new command block to GUI and to commandList
-                commandList.addCommandToFlow(commandList.getFlowSize(), "echo", structure.getCurInterp());
-                Command c = commandList.getCommand(commandList.getFlowSize()-1);
-                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
-                blocks.getChildren().add(block);
-
->>>>>>> Renamed SS in workspace (maintained old name until full conversion)
                 // appending end block to GUI
                 flowchart.getChildren().add(end);
             }
         };
         sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-        
+
         stage.setTitle("Coding to End Coding");
         stage.setScene(scene);
         stage.show();
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-=======
-}
->>>>>>> Minor stylistic changes.
-    /*
-    stop is like init, but it goes right after the application ends
-    The superclass definition also does nothing, so I commented this out
-    @Override
-    public void stop() {
-
-    }
-    */
->>>>>>> Renamed SS in workspace (maintained old name until full conversion)
 }
