@@ -61,6 +61,14 @@ public class CommandBlock extends StackPane {
     ScriptStruct commandList;
     
     //Command Blocks take their position, a JFX color, and the Command object they represent
+    /*
+      Argument Desciptors:
+        xPos, the x coordinate of the command block
+	yPos, the y coordinate of the command block
+	color, the color of the command block
+	cmd, the command that the command block contains and represents
+	cmdL, the ScriptStruct reference
+    */
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd, ScriptStruct cmdL) {
         //creating the jfx container
         super();
