@@ -38,7 +38,9 @@ public class TestApp extends Application {
         VerticalSortingPane VSP = new VerticalSortingPane(start, end);
         
         VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, new Command("start"), commandList));
-        VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, new Command("end"), commandList));
+        VSP.addCommandBlock(new CommandBlock(5433,4234,Color.GREEN, new Command("end"), commandList));
+        VSP.addCommandBlock(new CommandBlock(0,0,Color.YELLOW, new Command("end"), commandList));
+        VSP.addCommandBlock(new CommandBlock(9,200,Color.RED, new Command("end"), commandList));
         
         Scene scene = new Scene(VSP, 800, 600);
         

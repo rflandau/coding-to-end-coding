@@ -50,6 +50,11 @@ public class VerticalSortingPane extends Pane {
         //guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
         double guessedIndex = (newItem.getLayoutY() + newItem.getTranslateY()) / CommandBlock.height;
         
+        //if it's above the list, put it below the top anchor (which is index 0)
+        if(guessedIndex < 0) {guessedIndex = 1;}
+        //if it's below the list, put it above the bottom anchor (which is index ...size() - 1)
+        if(guessedIndex >= this.getChildren().size()) {guessedIndex = this.getChildren().size() - 2;}
+        
         //I cast gussedIndex to int here instead of making it an int because PEMDAS is a stinker
         this.getChildren().add((int)guessedIndex, newItem);
         this.refreshPane();
@@ -83,7 +88,8 @@ public class VerticalSortingPane extends Pane {
             double misalignment = node.getLayoutY() % CommandBlock.height;
             double adjustmentValue = misalignment <= 50 ? misalignment : -(CommandBlock.height - misalignment);
             //adjust the actual height
-            node.setLayoutY(node.getLayoutY() - adjustmentValue);
+            //I don't know why, but it's always off by 1...
+            node.setLayoutY(node.getLayoutY() - adjustmentValue + 1);
             //update index, if needed
             this.changeIndex((int)(node.getLayoutY() / CommandBlock.height), node);
         }
@@ -133,8 +139,10 @@ public class VerticalSortingPane extends Pane {
         for(Node node : nodeList) {
             //correct its position based on index
             node.setTranslateX(0);
+            node.setLayoutX(0);
             //careful, another command block dependency
             node.setTranslateY(nodeList.indexOf(node) * CommandBlock.height);
+            node.setLayoutY(0);
         }
     }
     
