@@ -21,6 +21,12 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseDragEvent;
+//Context Menu(separated so if it gets moved its clear what can go)
+import javafx.event.ActionEvent;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.ContextMenuEvent;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
@@ -47,7 +53,8 @@ public class CommandBlock extends StackPane {
     livesOn home;    //where the CommandBlock originally came from
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
-    
+    ContextMenu contextMenu;
+    MenuItem deleteBlock;
     
     //Command Blocks take their position, a JFX color, and the Command object they represent
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
@@ -86,6 +93,24 @@ public class CommandBlock extends StackPane {
          * if we ever stop using those we'll have to come back to this.
          * It will probably involve CommandBlocks simply knowing their own size.
          */
+	//Init ContextMenu
+	contextMenu = new ContextMenu();
+	deleteBlock = new MenuItem("Delete Command");
+
+	//ContextMenu Behavior
+	deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
+	    @Override
+	    public void handle(ActionEvent event){
+		Delete();
+	    }
+	});
+	contextMenu.getItems().addAll(deleteBlock);
+	rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+	    @Override
+	    public void handle(ContextMenuEvent event){
+		contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+	    }
+	});
     }
     
     //allows the changing of a command block's home location, if need be
@@ -104,6 +129,9 @@ public class CommandBlock extends StackPane {
                 this.attachedCommand);
     }
 
+    public void Delete(){
+	System.out.println("Delete Called");
+    }
 }
 
 
