@@ -34,7 +34,7 @@ class onExportClickEvent implements EventHandler<ActionEvent> {
     //put the stuff you want the button to do in this method here
     @Override
     public void handle(ActionEvent actionEvent) {
-        System.out.print("hello!");
+        System.out.println("Starting Export...");
 	//temp implementation of the export button
 	try{
 	    ss.export(i);
