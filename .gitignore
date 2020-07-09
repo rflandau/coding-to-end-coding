@@ -77,6 +77,7 @@ local.properties
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/
 
 # Generated files
 .idea/**/contentModel.xml
@@ -118,7 +119,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
-
+*.iml
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -166,7 +167,7 @@ fabric.properties
 ### Java ###
 # Compiled class file
 *.class
-
+out.txt
 # Log file
 *.log
 
