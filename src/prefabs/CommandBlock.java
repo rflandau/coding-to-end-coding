@@ -16,9 +16,6 @@ import javafx.scene.layout.StackPane;
 //import event handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseDragEvent;
 //Context Menu(separated so if it gets moved its clear what can go)
@@ -31,6 +28,8 @@ import javafx.scene.input.ContextMenuEvent;
 import structure.Command;
 import structure.ScriptStruct;
 import structure.Interpreter;
+import customEvents.CorrectPosRequestEvent;
+import customEvents.ReorderRequestEvent;
 
 public class CommandBlock extends StackPane {
     /*
@@ -134,6 +133,7 @@ public class CommandBlock extends StackPane {
     }
 }
 
+///CUSTOM EVENTS
 
 class onCommandBlockDrag implements EventHandler<MouseEvent>{
     CommandBlock targetBlock;
@@ -210,6 +210,9 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                         event.getSceneX() - CommandBlock.width/2, 
                         event.getSceneY() - CommandBlock.height/2
                 );
+                
+                //ask its container to align it, if it can handle CorrectPosRequestEvent
+                targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
             }
         }
         
@@ -230,7 +233,11 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
     //what happens when something (probably a Command Block) is dragged over this
     @Override
     public void handle(MouseEvent event) {
-        
+        //when dragged over, the command block passes itself and the mouse's position to its container,
+        //  if the container can handle a ReorderRequest
+        targetBlock.getParent().fireEvent(
+                new ReorderRequestEvent(targetBlock, event.getSceneX(), event.getSceneY())
+        );
     }
     
 }
