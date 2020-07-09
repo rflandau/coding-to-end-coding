@@ -47,6 +47,7 @@ public class CommandBlock extends StackPane {
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
     
+    
     //Command Blocks take their position, a JFX color, and the Command object they represent
     public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
         //creating the jfx container
@@ -72,7 +73,7 @@ public class CommandBlock extends StackPane {
 
         //placing the Command Block in the correct spot
         this.relocate(xPos, yPos);
-            
+	
         //adding drag and drop events
         this.setOnDragDetected(new onCommandBlockDrag(this));
         this.setOnMouseDragged(new onCommandBlockMove(this));
@@ -85,17 +86,6 @@ public class CommandBlock extends StackPane {
          * It will probably involve CommandBlocks simply knowing their own size.
          */
     }
-    
-    
-//       // function to add command to the end of command list
-//     public void addToFlow(ScriptStruct cmdList, String id, Interpreter interp){
-//         cmdList.addCommandToFlow(cmdList.getFlowSize(), id, interp);
-//     }
-//     
-//     // function to remove command from the end of command list
-//     public void removeFromFlow(ScriptStruct cmdList) {
-//         cmdList.removeCommandFromFlow(cmdList.getFlowSize()-1);
-//     }
     
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
