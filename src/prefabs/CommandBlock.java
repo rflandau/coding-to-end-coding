@@ -154,6 +154,11 @@ public class CommandBlock extends StackPane {
         this.draggable = wantsToMove;
     }
     
+    //returns the attached command's name/id
+    public String getCommandName() {
+        return this.attachedCommand.getName();
+    }
+    
     //returns a deep copy of the command block this method is called on
     //can we just steal java.lang.obj.clone for this? probably, will test later
     public CommandBlock Copy() {

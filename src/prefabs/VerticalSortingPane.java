@@ -1,10 +1,17 @@
 package prefabs;
 //this might be more appropriate to put in some other package, but it'll go here for right now
 
+//visual/layout stuff
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+//functionality stuff
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+//our stuff
+import structure.Command;
+import structure.Interpreter;
+import structure.ScriptStruct;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
 //A CommandBlock import isn't needed here, as it's currently in the same package
@@ -19,21 +26,61 @@ import customEvents.ReorderRequestEvent;
 public class VerticalSortingPane extends Pane {
     CommandBlock topAnchor;
     CommandBlock bottomAnchor;
+    ScriptStruct commandStruct;
+    Interpreter commandInterp;
     
-    public VerticalSortingPane(CommandBlock topAnch, CommandBlock botAnch) {
+    //constructor that generates new CommandBlocks for the anchors
+    public VerticalSortingPane(ScriptStruct cmdStruct, Interpreter cmdInterp) {
         super();
         
         //defining custom event handlers
         this.addEventHandler(ReorderRequestEvent.VSPReorderEvent, new onReorderRequest(this));
         this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent, new onCorrectPosRequest(this));
         
+        //setting attached structures
+        this.commandStruct = cmdStruct;
+        this.commandInterp = cmdInterp;
+        
+        //creating anchors
+        this.topAnchor = new CommandBlock(0, 0, Color.GREY, new Command("start"), this.commandStruct);
+        this.bottomAnchor = new CommandBlock(0, 0, Color.GREY, new Command("end"), this.commandStruct);
+        //anchoring them
+        this.topAnchor.setDraggable(false);
+        this.bottomAnchor.setDraggable(false);
+        //making them visible
+        this.getChildren().add(0, this.topAnchor);
+        this.getChildren().add(this.bottomAnchor);
+        //adding to command flow
+        commandStruct.addCommandToFlow(0, this.topAnchor.getCommandName(), this.commandInterp);
+        commandStruct.addCommandToFlow(1, this.bottomAnchor.getCommandName(), this.commandInterp);
+        
+        //order the VSP
+        this.refreshPane();
+    }
+    
+    //constructor that uses pre-generated CommandBlocks
+    public VerticalSortingPane(CommandBlock topAnch, CommandBlock botAnch, 
+            ScriptStruct cmdStruct, Interpreter cmdInterp) {
+        super();
+        
+        //defining custom event handlers
+        this.addEventHandler(ReorderRequestEvent.VSPReorderEvent, new onReorderRequest(this));
+        this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent, new onCorrectPosRequest(this));
+        
+        //setting attached ScriptStruct
+        this.commandStruct = cmdStruct;
+        this.commandInterp = cmdInterp;
+        
         //setting anchors
         this.topAnchor = topAnch;
         this.bottomAnchor = botAnch;
+        //anchoring them
         this.topAnchor.setDraggable(false);
         this.bottomAnchor.setDraggable(false);
+        //making them visible
         this.getChildren().add(0, this.topAnchor);
         this.getChildren().add(this.bottomAnchor);
+        //it is assumed that these anchors are already in the command flow
         
         //adding additional elements
         //this.addCommandBlock();
@@ -58,15 +105,42 @@ public class VerticalSortingPane extends Pane {
         //I cast gussedIndex to int here instead of making it an int because PEMDAS is a stinker
         this.getChildren().add((int)guessedIndex, newItem);
         this.refreshPane();
+        
+        //add it to the actual command flow
+        this.commandStruct.addCommandToFlow((int)guessedIndex, newItem.getCommandName(), this.commandInterp);
     }
     
     //removes an item to the VSP and automatically resorts the list
     //returns the command block, as it isn't actually destroyed
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
+        int oldItemIndex = this.getChildren().indexOf(oldItem);
         this.getChildren().remove(oldItem);
         this.refreshPane();
         
+        //remove it from the command flow
+        this.commandStruct.removeCommandFromFlow(oldItemIndex);
+        
         return oldItem;
+    }
+    
+    //returns the topAnchor command block
+    public CommandBlock getTopAnchor() {
+        return this.topAnchor;
+    }
+    
+    //returns the bottomAnchor command block
+    public CommandBlock getBottomAnchor() {
+        return this.bottomAnchor;
+    }
+    
+    //returns the ScriptStruct object assigned to the VSP
+    public ScriptStruct getCommandStruct() {
+        return this.commandStruct;
+    }
+    
+    //returns the Interpreter object assigned to the VSP
+    public Interpreter getCommandInterp() {
+        return this.commandInterp;
     }
     
     ///PRIVATE MANIPULATION METHODS
@@ -86,7 +160,7 @@ public class VerticalSortingPane extends Pane {
              * professional wrestler
              */
             double misalignment = node.getLayoutY() % CommandBlock.height;
-            double adjustmentValue = misalignment <= 50 ? misalignment : -(CommandBlock.height - misalignment);
+            double adjustmentValue = misalignment <= CommandBlock.height/2 ? misalignment : -(CommandBlock.height - misalignment);
             //adjust the actual height
             //I don't know why, but it's always off by 1...
             node.setLayoutY(node.getLayoutY() - adjustmentValue + 1);
@@ -131,8 +205,14 @@ public class VerticalSortingPane extends Pane {
         
         if(nodeList.indexOf(this.bottomAnchor) != nodeList.size() - 1) {
             //we don't use changeIndex because bottomAnchor always needs a new, non-existing one
+            this.commandStruct.removeCommandFromFlow(nodeList.indexOf(this.bottomAnchor));
             nodeList.remove(this.bottomAnchor);
             nodeList.add(this.bottomAnchor);
+            this.commandStruct.addCommandToFlow(
+                    nodeList.indexOf(this.bottomAnchor), 
+                    this.bottomAnchor.getCommandName(), 
+                    this.commandInterp
+            );
         }
         
         //for each node in nodeList...
@@ -151,8 +231,12 @@ public class VerticalSortingPane extends Pane {
     //changes a node's index in the observable list
     void changeIndex(int newIndex, CommandBlock movingItem) {
         ObservableList<Node> nodeList = this.getChildren();
+        //remove from old places
+        this.commandStruct.removeCommandFromFlow(nodeList.indexOf(movingItem));
         nodeList.remove(movingItem);
+        //placing into new places
         nodeList.add(newIndex, movingItem);
+        this.commandStruct.addCommandToFlow(newIndex, movingItem.getCommandName(), this.commandInterp);
     }
 
 }

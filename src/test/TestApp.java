@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import prefabs.CommandBlock;
 import prefabs.VerticalSortingPane;
 import structure.Command;
+import structure.Interpreter;
 import structure.ScriptStruct;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -21,6 +22,7 @@ import javafx.scene.layout.Pane;
 
 public class TestApp extends Application {
     ScriptStruct commandList;
+    Interpreter commandInterp;
     CommandBlock start;
     CommandBlock end;
     
@@ -29,13 +31,14 @@ public class TestApp extends Application {
     @Override
     public void init() {
         commandList = new ScriptStruct();
-        start = new CommandBlock(1,2,Color.GREY, new Command("start"), commandList);
-        end = new CommandBlock(1,2,Color.GREY, new Command("end"), commandList);
+        commandInterp = Interpreter.generateInterpreters().get(0);
+        //start = new CommandBlock(1,2,Color.GREY, new Command("start"), commandList);
+        //end = new CommandBlock(1,2,Color.GREY, new Command("end"), commandList);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        VerticalSortingPane VSP = new VerticalSortingPane(start, end);
+        VerticalSortingPane VSP = new VerticalSortingPane(commandList, commandInterp);
         
         VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, new Command("start"), commandList));
         VSP.addCommandBlock(new CommandBlock(5433,4234,Color.GREEN, new Command("end"), commandList));
