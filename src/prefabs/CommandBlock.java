@@ -21,7 +21,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.geometry.Pos;
-
+import javafx.scene.input.MouseDragEvent;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
@@ -79,6 +79,7 @@ public class CommandBlock extends StackPane {
         this.setOnDragDetected(new onCommandBlockDrag(this));
         this.setOnMouseDragged(new onCommandBlockMove(this));
         this.setOnMouseReleased(new onCommandBlockDrop(this));
+        this.setOnMouseDragEntered(new onCommandBlockHover(this));
         /*
          * Be careful, these events calculate position based on the top-left corner of the
          * command block. I hardcoded in an offset based off of the above static values, but
@@ -129,6 +130,8 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent event) {
         System.out.println("Starting drag");
+        
+        targetBlock.setMouseTransparent(true);
         
         targetBlock.startFullDrag();
         
@@ -192,7 +195,25 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                 );
             }
         }
+        
+        targetBlock.setMouseTransparent(false);
 
         event.consume();
     }
+}
+
+class onCommandBlockHover implements EventHandler<MouseEvent>{
+    CommandBlock targetBlock;
+
+    onCommandBlockHover(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
+    
+    //what happens when something (probably a Command Block) is dragged over this
+    @Override
+    public void handle(MouseEvent event) {
+        
+    }
+    
 }

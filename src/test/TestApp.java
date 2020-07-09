@@ -99,18 +99,3 @@ class circDrop implements EventHandler<MouseEvent>{
         event.consume();
     }
 }
-
-class dragDropMouseFollow extends AnimationTimer{
-    Node target;
-    
-    dragDropMouseFollow(Node node){
-        this.target = node;
-    }
-
-    @Override
-    public void handle(long now) {
-        //'now' is the current time on the timer. It goes unused here, but abstracts be like this so...
-        this.target.relocate();
-    }
-    
-}
