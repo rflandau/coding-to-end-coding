@@ -14,7 +14,6 @@ public class Command{
     // basic info
     private String              name,
                                 syntax,
-                                interpreter,
                                 tooltip;
     private ArrayList<String>   flags, 
                                 arguments;
@@ -30,20 +29,18 @@ public class Command{
         this.name = name;
     }
     // a better constructor
-    public Command(String name, String syntax, String interpreter){
+    public Command(String name, String syntax){
         this.name = name;
         this.syntax = syntax.trim(); //trim whitespace from syntax
         //^trim may cause issues in Python? A problem for later.
-        this.interpreter = interpreter.trim();
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
     // the ultimate constructor
-    public Command(String name, String syntax, String interpreter, String tooltip,
+    public Command(String name, String syntax, String tooltip,
                    ArrayList<String> flags, ArrayList<String> arguments){
         this.name = name;
         this.syntax = syntax;
-        this.interpreter = interpreter;
         this.tooltip = tooltip;
         for(int i = 0; i < flags.size(); i ++){
             flags.add(i, flags.get(i));
@@ -57,7 +54,6 @@ public class Command{
     public Command(Command c){
         name = c.getName();
         syntax = c.getSyntax();
-        interpreter = c.getInterpreter();
         tooltip = c.getTooltip();
         flags = new ArrayList<String>();
         ArrayList<String> f = c.getFlags();
@@ -77,8 +73,6 @@ public class Command{
     public void   setName(String n)             { name = n; }
     public String getSyntax()                   { return syntax; }
     public void   setSyntax(String s)           { syntax = s; }
-    public String getInterpreter()              { return interpreter; }
-    public void   setInterpreter(String i)      { interpreter = i; }
     public String getTooltip()                  { return tooltip; }
     public void   setTooltip(String t)          { tooltip = t; }
     public ArrayList<String> getFlags()         { return flags; }

@@ -75,7 +75,16 @@ public class Interpreter{
         
         //generate test bash command
         String name = "Hello World";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\"", bash.getName()));
+        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
+        
+        name = "These";
+        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
+        name = "are";
+        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
+        name = "test";
+        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
+        name = "commands.";
+        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
         
         //add bash to AL
         toReturn.add(bash);
