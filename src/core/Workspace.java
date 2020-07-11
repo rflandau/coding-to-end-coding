@@ -63,6 +63,9 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
         //load the FXML
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+	root.exportButton.setOnAction((event)->{
+		System.out.println("exportButton");
+	});
         stage.setScene(new Scene(root));
         stage.show();
 
