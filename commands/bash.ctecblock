@@ -1,0 +1,34 @@
+INTERPRETER 
+NAME bash
+TIP  bash interpreter
+PATH #!//bin/bash
+---
+COMMAND
+NAME echo
+TIP prints ARG to the command line
+INT bash
+CMD echo
+ARG printThis
+---
+COMMAND
+NAME move
+TIP moves file from fileFrom to fileTo or renames fileFrom as fileTo
+INT bash
+CMD mv
+ARG fileFrom fileTo
+---
+COMMAND
+NAME list
+TIP lists files in a directory
+INT bash
+CMD ls
+ARG
+FLAG -l
+---
+COMMAND
+NAME remove
+TIP deletes the file fileName
+INT bash
+CMD rm
+ARG fileName
+FLAG -r -f
