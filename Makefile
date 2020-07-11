@@ -1,5 +1,5 @@
 JFX       = lib/javafx-sdk-14.0.1/lib
-MOD       = --add-modules javafx.controls
+MOD       = --add-modules javafx.controls,javafx.fxml
 SRC       = @sources.txt
 CLASS     = classes
 JC        = javac
@@ -21,5 +21,3 @@ test:
 ci:
 	git commit -am "soft tabs and makefile changes"
 	git push
-
-	
