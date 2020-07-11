@@ -10,6 +10,7 @@ MAIN      = core.Main
 
 all:
 	${JC} ${JCFLAGS} ${SRC}
+	cp resources/fxml/main.fxml classes/core/main.fxml
 
 clean:
 	rm -r classes
