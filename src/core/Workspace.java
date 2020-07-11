@@ -60,8 +60,7 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-		structure = new ScriptStruct();
-
+	structure = new ScriptStruct();
         sidebarCommands = structure.getTemplateCommands();
     }
 
@@ -75,10 +74,10 @@ public class Workspace extends Application {
 	}
 	//unpack all items
 	SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
-	AnchorPane  sideBar = (AnchorPane) scenePane.getItems().get(0);
+	AnchorPane  sidebar = (AnchorPane) scenePane.getItems().get(0);
 	AnchorPane  mainCanvas = (AnchorPane) scenePane.getItems().get(1);
-	ScrollBar   sidebarScroll = (ScrollBar) sideBar.getChildren().get(0);
-	VBox        sideBarVbox = (VBox) sideBar.getChildren().get(1);
+	ScrollBar   sidebarScroll = (ScrollBar) sidebar.getChildren().get(0);
+	VBox        sidebarVbox = (VBox) sidebar.getChildren().get(1);
 	SplitPane   canvasSplit = (SplitPane) mainCanvas.getChildren().get(0);
 	AnchorPane  canvasPane = (AnchorPane) canvasSplit.getItems().get(0);
 	AnchorPane  bottomPanel = (AnchorPane) canvasSplit.getItems().get(1);
@@ -105,7 +104,14 @@ public class Workspace extends Application {
 	//End of Event Handlers
 	//----------------------------------------------------------
 	//Linking Event Handlers to items
-	sideBar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
+	sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
+
+	// populating available commands
+        for(int i = 0; i < sidebarCommands.size(); i ++){
+            Command c = sidebarCommands.get(i);
+            CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
+            sidebarVbox.getChildren().add(b);
+        }
 	
         stage.setScene(new Scene(root));
         stage.show();
