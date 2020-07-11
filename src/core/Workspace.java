@@ -209,7 +209,7 @@ public class Workspace extends Application {
     public void addCommandBlock(VBox blockBox){
 	int index = structure.getFlowSize();
 	Command c = new Command("echo Hello World");
-	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,structure);
 	int len = blockBox.getChildren().size();
 	Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
 	blockBox.getChildren().remove(len-1);

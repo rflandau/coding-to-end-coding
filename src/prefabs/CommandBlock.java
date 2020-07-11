@@ -21,9 +21,16 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseDragEvent;
+//Context Menu(separated so if it gets moved its clear what can go)
+import javafx.event.ActionEvent;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.ContextMenuEvent;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
+import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
     /*
@@ -46,14 +53,28 @@ public class CommandBlock extends StackPane {
     livesOn home;    //where the CommandBlock originally came from
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
+    ContextMenu contextMenu;
+    MenuItem deleteBlock;
 
+    ScriptStruct commandList;
+    
     //Command Blocks take their position, a JFX color, and the Command object they represent
-    public CommandBlock(double xPos, double yPos, Paint color, Command cmd) {
+    /*
+      Argument Desciptors:
+        xPos, the x coordinate of the command block
+	yPos, the y coordinate of the command block
+	color, the color of the command block
+	cmd, the command that the command block contains and represents
+	cmdL, the ScriptStruct reference
+    */
+
+    public CommandBlock(double xPos, double yPos, Paint color, Command cmd, ScriptStruct cmdL) {
         //creating the jfx container
         super();
 
         //storing the represented Command object
         this.attachedCommand = cmd;
+        this.commandList = cmdL;
 
         //setting home (where the Command Block is on the sidebar)
         this.homeX = xPos;
@@ -84,6 +105,24 @@ public class CommandBlock extends StackPane {
          * if we ever stop using those we'll have to come back to this.
          * It will probably involve CommandBlocks simply knowing their own size.
          */
+	//Init ContextMenu
+	contextMenu = new ContextMenu();
+	deleteBlock = new MenuItem("Delete Command");
+
+	//ContextMenu Behavior
+	deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
+	    @Override
+	    public void handle(ActionEvent event){
+		Delete();
+	    }
+	});
+	contextMenu.getItems().addAll(deleteBlock);
+	rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+	    @Override
+	    public void handle(ContextMenuEvent event){
+		contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+	    }
+	});
     }
 
     //allows the changing of a command block's home location, if need be
@@ -99,7 +138,14 @@ public class CommandBlock extends StackPane {
                 this.getTranslateX(),
                 this.getTranslateY(),
                 this.commandColor,
-                this.attachedCommand);
+                this.attachedCommand,
+		this.commandList);
+    }
+    public void Delete(){
+	System.out.println("Delete Called");
+	this.getChildren().remove(0,2);
+	//There is currently no way to find the index so this is commented out
+	//commandList.removeCommandFromFlow(listIndex);
     }
 
 }
