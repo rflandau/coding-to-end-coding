@@ -15,38 +15,49 @@ public class Command{
     private String              name,
                                 syntax,
                                 tooltip;
-    private ArrayList<String>   flags, 
+    private ArrayList<String>   flags,
                                 arguments;
-    
+
     //constructors--------------------------------------------------------------
     // default constructor (used when members need to be assigned manually)
     public Command(){
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
+    
     // a good constructor (used for start and end blocks)
     public Command(String name){
         this.name = name;
     }
+    
     // a better constructor
     public Command(String name, String syntax){
-        this.name = name;
+        this(name);
         this.syntax = syntax.trim(); //trim whitespace from syntax
         //^trim may cause issues in Python? A problem for later.
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
+    
     // the ultimate constructor
-    public Command(String name, String syntax, String tooltip,
-                   ArrayList<String> flags, ArrayList<String> arguments){
+    public Command(String name,
+                   String syntax,
+                   String tooltip,
+                   ArrayList<String> flags,
+                   ArrayList<String> arguments){
         this.name = name;
         this.syntax = syntax;
         this.tooltip = tooltip;
-        for(int i = 0; i < flags.size(); i ++){
+        
+        flags = new ArrayList<String>();
+        int flagSize = flags.size();
+        for(int i = 0; i < flagSize; i ++){
             flags.add(i, flags.get(i));
         }
+        
         arguments = new ArrayList<String>();
-        for(int i = 0; i < arguments.size(); i ++){
+        int argumentSize = arguments.size();
+        for(int i = 0; i < argumentSize; i ++){
             arguments.add(i, arguments.get(i));
         }
     }
@@ -66,7 +77,7 @@ public class Command{
             arguments.add(i, a.get(i));
         }
     }
-    
+
     //subroutines---------------------------------------------------------------
     //getters/setters
     public String getName()                     { return name; }

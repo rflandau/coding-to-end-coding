@@ -1,6 +1,6 @@
 package core;
 
-// javafx 
+// javafx
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,21 +12,13 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-// import javafx.scene.Group;
-// import javafx.scene.shape.Rectangle;    //for sidebar shape
-// import javafx.scene.layout.BorderPane;  //for vertical ordering of sidebar objects
-// import javafx.scene.layout.StackPane;   //for vertical ordering of sidebar objects
-// import javafx.geometry.Insets;          //for sidebar spacing
-
 import java.util.ArrayList;             //for backend ArrayList
 import java.util.Hashtable;
+import java.lang.System;
 
 //Import Event Handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
-//import javafx.scene.image.Image;
-//import javafx.scene.layout.*;
 
 
 //import our other packages
@@ -34,16 +26,13 @@ import prefabs.ExportButton;
 import prefabs.CommandBlock;
 import structure.Command;
 import structure.ScriptStruct;
-import structure.Interpreter;
 
 public class Workspace extends Application {
     //hard-coded window sizes, can be changed later
-    double defaultWindowWidth = 800;
-    double defaultWindowHeight = 600;
-    ScriptStruct commandList;
-    ArrayList<Interpreter> interpreterList;
-    ArrayList<Command> sidebarCommands;
-    Interpreter interp;
+    double              defaultWindowWidth = 800,
+                        defaultWindowHeight = 600;
+    ScriptStruct        structure;
+    ArrayList<Command>  sidebarCommands;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -55,12 +44,10 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-        commandList = new ScriptStruct();
-        interpreterList = Interpreter.generateInterpreters();
-        interp = interpreterList.get(0);
-        sidebarCommands = interp.getCommands();
+        structure = new ScriptStruct();
+        sidebarCommands = structure.getTemplateCommands();
     }
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         // local variables
@@ -77,6 +64,11 @@ public class Workspace extends Application {
         VBox       sidebar = new VBox(),                // contains available commands
                    flowchart = new VBox();              // contains flowchart
         
+        // if import error, exit
+        if (sidebarCommands == null){
+            System.exit(1);
+        }
+        
         // left and right panes
         vertical.getItems().addAll(sidebarPane, rightPane);
         vertical.setOrientation(Orientation.HORIZONTAL);
@@ -86,7 +78,7 @@ public class Workspace extends Application {
         AnchorPane.setBottomAnchor(vertical, 15.0);
         AnchorPane.setLeftAnchor(vertical, 15.0);
         root.getChildren().addAll(vertical);
-        
+
         // top and bottom panes on right panel
         horizontal.getItems().addAll(flowchartPane, exportPane);
         horizontal.setOrientation(Orientation.VERTICAL);
@@ -96,7 +88,7 @@ public class Workspace extends Application {
         AnchorPane.setBottomAnchor(horizontal, 0.0);
         AnchorPane.setLeftAnchor(horizontal, 0.0);
         rightPane.getChildren().addAll(horizontal);
-        
+
         // setting up sidebar
         sidebar.setSpacing(10);
         sidebarPane.setTopAnchor(sidebar, 10.0);
@@ -104,55 +96,55 @@ public class Workspace extends Application {
         sidebarScroll.setOrientation(Orientation.VERTICAL);
         sidebarPane.getChildren().add(sidebar);
         sidebar.setAlignment(Pos.CENTER);
-        
+
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c);
             sidebar.getChildren().add(b);
         }
-        
+
         // setting up flowchart
         flowchartPane.setTopAnchor(flowchart, 10.0);
         flowchartPane.setRightAnchor(flowchart, 145.0);
         flowchartScroll.setOrientation(Orientation.VERTICAL);
         flowchartPane.getChildren().add(flowchart);
         flowchart.setAlignment(Pos.CENTER);
-        
+
         // creating start block
         Command s = new Command("start");
         CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
         flowchart.getChildren().add(start);
-        
+
         // creating end block
         Command e = new Command("end");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
         flowchart.getChildren().add(end);
-        
+
         // setting up button pane
-        ExportButton button = new ExportButton(100, 50, commandList, interp);
+        ExportButton button = new ExportButton(100, 50, structure);
         exportPane.setRightAnchor(button, 145.0);
         exportPane.getChildren().add(button);
-        
+
         // event handler
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
                 // removing end block from GUI
                 flowchart.getChildren().remove(end);
-                
-                // appending new command block to GUI and to commandList
-                commandList.addCommandToFlow(commandList.getFlowSize(), "Hello World", interp);
-                Command c = commandList.getCommand(commandList.getFlowSize()-1);
+
+                // appending new command block to GUI and to structure
+                structure.addCommandToFlow(structure.getFlowSize(), "Hello World");
+                Command c = structure.getCommand(structure.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 flowchart.getChildren().add(block);
-                
+
                 // appending end block to GUI
                 flowchart.getChildren().add(end);
             }
         };
         sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-        
+
         stage.setTitle("Coding to End Coding");
         stage.setScene(scene);
         stage.show();
