@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.SplitPane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.shape.Rectangle; 
+import javafx.scene.shape.Rectangle;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -86,21 +86,19 @@ public class Workspace extends Application {
 	ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 	//------------------------------------------------------------
 	//Beginning of Event Handlers
-	exportButton.setOnAction(new EventHandler<ActionEvent>() {
-	    @Override public void handle(ActionEvent e){
-		try{
-		    structure.export();
-		}catch(IOException ex){
-		    System.out.println("Export button IOexception:"+ex);
-		}
+	exportButton.setOnAction(new EventHandler<ActionEvent>(){
+		@Override
+		public void handle(ActionEvent e){
+			try{
+		    	structure.export();
+			}catch(IOException ex){
+		    	System.out.println("Export button IOexception:"+ex);
+			}
 	    }
 	});
-	EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e){
-		addCommandBlock(canvasBox);
-            }
-        };
+	EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>(){
+		@Override public void handle(MouseEvent e){addCommandBlock(canvasBox);}
+    };
 	//End of Event Handlers
 	//----------------------------------------------------------
 	//Linking Event Handlers to items
@@ -212,14 +210,18 @@ public class Workspace extends Application {
         stage.setScene(scene);
         stage.show(); */
     }
+
+
+	/*
+	*/
     public void addCommandBlock(VBox blockBox){
-	int index = structure.getFlowSize();
-	Command c = new Command("echo Hello World");
-	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,structure);
-	int len = blockBox.getChildren().size();
-	Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
-	blockBox.getChildren().remove(len-1);
-	blockBox.getChildren().add(block);
-	blockBox.getChildren().add(endBlock);
+		int index = structure.getFlowSize();
+		Command c = new Command("echo Hello World");
+		CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,structure);
+		int len = blockBox.getChildren().size();
+		Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
+		blockBox.getChildren().remove(len-1);
+		blockBox.getChildren().add(block);
+		blockBox.getChildren().add(endBlock);
     }
 }
