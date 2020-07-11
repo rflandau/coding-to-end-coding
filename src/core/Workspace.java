@@ -31,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 
 //import our other packages
 import prefabs.ExportButton;
+import prefabs.VerticalSortingPane;
 import prefabs.CommandBlock;
 import structure.Command;
 import structure.ScriptStruct;
@@ -74,8 +75,8 @@ public class Workspace extends Application {
                    horizontal = new SplitPane();        // horizontal window divider
         ScrollBar  sidebarScroll = new ScrollBar(),     // scrollbar for left sidebar
                    flowchartScroll = new ScrollBar();   // scrollbar for flowchart
-        VBox       sidebar = new VBox(),                // contains available commands
-                   flowchart = new VBox();              // contains flowchart
+        VBox       sidebar = new VBox();                // contains available commands
+        VerticalSortingPane flowchart = new VerticalSortingPane(commandList, interp); // contains flowchart
         
         // left and right panes
         vertical.getItems().addAll(sidebarPane, rightPane);
@@ -117,17 +118,17 @@ public class Workspace extends Application {
         flowchartPane.setRightAnchor(flowchart, 145.0);
         flowchartScroll.setOrientation(Orientation.VERTICAL);
         flowchartPane.getChildren().add(flowchart);
-        flowchart.setAlignment(Pos.CENTER);
+        //flowchart.setAlignment(Pos.CENTER);   VSPs automatically align to their centers
         
-        // creating start block
-        Command s = new Command("start");
+        // creating start block                 Not needed, VSP constructor does this automatically
+        /*Command s = new Command("start");
         CommandBlock start = new CommandBlock(1,2,Color.GREY,s,commandList);
         flowchart.getChildren().add(start);
         
         // creating end block
         Command e = new Command("end");
         CommandBlock end = new CommandBlock(1,2,Color.GREY,e,commandList);
-        flowchart.getChildren().add(end);
+        flowchart.getChildren().add(end);*/
         
         // setting up button pane
         ExportButton button = new ExportButton(100, 50, commandList, interp);
@@ -138,8 +139,17 @@ public class Workspace extends Application {
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e){
+                //adding new command block
+                //VSP handles the reordering the list and command flow automatically
+                flowchart.addCommandBlock(new CommandBlock(
+                        0, //VSP cares not for block position
+                        0, 
+                        Color.WHITE,
+                        interp.getCommand("Hello World"), 
+                        commandList)
+                );
                 // removing end block from GUI
-                flowchart.getChildren().remove(end);
+                /*flowchart.getChildren().remove(end);
                 
                 // appending new command block to GUI and to commandList
                 commandList.addCommandToFlow(commandList.getFlowSize(), "Hello World", interp);
@@ -148,7 +158,7 @@ public class Workspace extends Application {
                 flowchart.getChildren().add(block);
                 
                 // appending end block to GUI
-                flowchart.getChildren().add(end);
+                flowchart.getChildren().add(end);*/
             }
         };
         sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
