@@ -11,15 +11,24 @@ its file. The command can then be duplicated and added to flow. */
 
 public class Interpreter{
     //variables-----------------------------------------------------------------
-    String name; //name of the interpreter
-    String path; //execution path to the interpreter (probably with #!)
+    String name, //name of the interpreter
+           path, //execution path to the interpreter (probably with #!)
+           tooltip; // tool tip for tollover events
     Hashtable<String, Command> commands; //all available commands; name -> Command
     //constructors--------------------------------------------------------------
-    public Interpreter(String n, String p, Hashtable<String, Command> h){
+    public Interpreter(String n, String p){
         name = n;
         path = p;
-        commands = h;
+        commands = new Hashtable<String, Command>();
     }
+    
+    public Interpreter(String n, String p, String t){
+        name = n;
+        path = p;
+        tooltip = t;
+        commands = new Hashtable<String, Command>();
+    }
+    
     //subroutines---------------------------------------------------------------
     //getters/setters
     String getName()            {return name;}

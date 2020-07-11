@@ -2,11 +2,7 @@ package structure;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-//import java.lang.StringBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
 
 /* ScriptStruct
   Represents the main generation class for storing the flowchart and outputting
@@ -15,28 +11,33 @@ import java.io.FileWriter;
 
 public class ScriptStruct{
     //variables-----------------------------------------------------------------
-	private final String defaultInterp = "bash";
+    private final String defaultInterp = "bash";
 
-	/*'Flow' holds command representations of the GUI flowchart. */
+    /*'Flow' holds command representations of the GUI flowchart. */
     public ArrayList<Command> flow;
     //'out' holds the path to the desired output file
-    String outPath = "out.txt";
-	//interpreter fields
-    ArrayList<Interpreter> interpreterList;
-	Interpreter interp;
+    String outPath;
+    
+    //interpreter fields
+    Hashtable<String, Interpreter> interpreterList;
+    Interpreter interp;
     //constructors--------------------------------------------------------------
-	/* The SS constructor creates flow, sets all fields, and initalizes the
-	 	interpreters */
-	// default constructor
+    /* The SS constructor creates flow, sets all fields, and initalizes the
+         interpreters */
+    // default constructor
     public ScriptStruct(){
         flow = new ArrayList<Command>();
-		initialize();
+        outPath = "out.txt";
+        interpreterList = generateInterpreters();
+        changeInterpreter(defaultInterp);
     }
+    
     // with specified output path
     public ScriptStruct(String o){
-		this(); //chain default constructor
+        this(); //chain default constructor
         outPath = o;
     }
+    
     //subroutines---------------------------------------------------------------
     //getters/setters
     public String  getOutPath()             { return outPath; }
@@ -44,73 +45,190 @@ public class ScriptStruct{
     public int     getFlowSize()            { return flow.size(); }
     public Command getCommand(int i)        { return flow.get(i); }
 
-	//interpreter subroutines
-	/* initialize
-	Generates the interpreter list and sets the current interpreter to the
-	default interpreter (as specified in the field above). */
-	public void initialize(){
-		interpreterList = generateInterpreters();
-		changeInterpreter(defaultInterp);
-	}
-
-	/* generateInterpreters
-    Used to populate the ArrayList of interpreter objects (as well as fill their
+    //interpreter subroutines
+    /* generateInterpreters
+    Used to populate the Hashtable of interpreter objects (as well as fill their
     fields).
     NOTE: Currently just creates the test interpreter. */
-    public static ArrayList<Interpreter> generateInterpreters(){
-        //variables
-        Hashtable<String, Command> ht = new Hashtable<String, Command>();
-        Interpreter bash;
-        ArrayList<Interpreter> toReturn = new ArrayList<Interpreter>();
-
-        //create bash Interpreter object
-        bash = new Interpreter("bash", "#!/bin/bash", ht);
-
-        //generate test bash command
-        String name = "Hello World";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
-
-        //add bash to AL
-        toReturn.add(bash);
-        return toReturn;
+    public static Hashtable<String, Interpreter> generateInterpreters(){
+        String path = "../commands/bash.ctecblock";
+        try{
+            Hashtable<String, Interpreter> interpreters = new Hashtable<String, Interpreter>();
+            BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
+            parse(reader, interpreters);
+            
+            return interpreters;
+        }catch(FileNotFoundException ex){
+            System.out.println("file " + path + " not found.\n");
+        }
+        
+        return null;
     }
 
-	/* changeInterpreter
-	Tries to set the current interp to the one at index 'i'.
-	Returns false and does nothing if 'i' is out of bounds. */
-	public boolean changeInterpreter(int i){
-		if (0 <= i && i < interpreterList.size()){ //i is within bounds
-			interp = interpreterList.get(i);
-			return true;
-		} else {
-			System.err.println("Could not find interp at entry " + i);
-			return false;
-		}
-	}
-	/* changeInterpreter
-	Tries to set the current interp to the one named 'name'.
-	Returns false if 'name' could not be found w/in interpreterList. */
-	public boolean changeInterpreter(String name){
-		boolean found = false;
-		//search interpList until interp found or we fall off
-		for(int i = 0; i < interpreterList.size() && !found; i++){
-			//check interp name against given name
-			if (name.equals(interpreterList.get(i).getName())){
-				interp = interpreterList.get(i); //set interp
-				found = true;
-			}
-		}
-		if (!found) System.out.println("Could not find interp '" + name +"'");
-		return found;//return whether or not it was found
-	}
+    /* changeInterpreter
+    Tries to set the current interp to the one at index 'i'.
+    Returns false and does nothing if 'i' is out of bounds. */
+    public boolean changeInterpreter(int i){
+        if (0 <= i && i < interpreterList.size()){ //i is within bounds
+            interp = interpreterList.get(i);
+            return true;
+        } else {
+            System.err.println("Could not find interp at entry " + i);
+            return false;
+        }
+    }
+    
+    /* changeInterpreter
+    Tries to set the current interp to the one named 'name'.
+    Returns false if 'name' could not be found w/in interpreterList. */
+    public boolean changeInterpreter(String name){
+        boolean found = false;
+        
+        if(interpreterList.get(name) != null) {
+        found = true;
+            interp = interpreterList.get(name);
+        }
 
-	//other subroutines
-	/* getTemplateCommands
-	Returns an ArrayList of all commands in the current interp.*/
-	public ArrayList<Command> getTemplateCommands(){
-		return new ArrayList<Command>(interp.commands.values());
-	}
-
+        if (!found) System.out.println("Could not find interp '" + name +"'");
+        return found;//return whether or not it was found
+    }
+    
+    /* parse
+    parses input file and adds interpreters or commands as needed */
+    private static void parse(BufferedReader reader, Hashtable<String, Interpreter> interpreters){
+        // variables
+        String string;
+        
+        // reads input file and determines if current entry is a command,
+        // an interpreter, or garbage input
+        try{
+            while((string = reader.readLine()) != null){
+                String[] data = string.split(" ");
+                if(data[0].equals("INTERPRETER")){
+                    newInterpreter(reader, interpreters);
+                }else if(data[0].equals("COMMAND")){
+                    newCommand(reader, interpreters);
+                }else{
+                    System.out.println("File formatting error" + data[0]);
+                }
+            }
+        }catch(IOException ex){
+            System.out.println("IO Exception");
+            return;
+        }
+    }
+    
+    /* newInterpreter
+    Parses input file and adds interpreter to interpreters hashtable*/
+    private static int newInterpreter(BufferedReader reader, Hashtable<String, Interpreter> interpreters) {
+        // variables
+        String name = "",
+               path = "",
+               tooltip = "";
+        int    returnVal = 0;
+        
+        try{
+            // this must be declared here because java
+            String string;
+            
+            while((string = reader.readLine()) != null){
+            String[] data = string.split(" ");
+                // if delimiter, end while loop
+                if(data[0].equals("---")){
+                    break;
+                }
+                
+                // check length and assign variable values
+                if(data.length > 1){
+                    if(data[0].equals("NAME")){
+                        name = data[1];
+                    }else if(data[0].equals("PATH")){
+                        path = data[1];
+                    } else if(data[0].equals("TIP")){
+                        tooltip = data[1];
+                    }else{
+                        break;
+                    }
+                }
+            }
+            
+            // make a shiny new interpreter
+            interpreters.put(name, new Interpreter(name, path, tooltip));
+        }catch(IOException ex){
+            System.out.println("IO Exception");
+            returnVal = -1;
+        }
+        
+        return returnVal;
+    }
+    
+    /* newCommand
+    Parses input file and adds command to commands ArrayList in the appropriate
+    interpreter in interpreters */
+    private static int newCommand(BufferedReader reader, Hashtable<String, Interpreter> interpreters) {
+        // variables
+        ArrayList<String> arguments = new ArrayList<String>(),
+                          flags = new ArrayList<String>();
+        String            name = "",
+                          interpreter = "",
+                          command = "",
+                          tooltip = "";
+        int               returnVal = 0;
+        
+        try{
+            // this must be declared here because java
+            String string;
+            
+            while((string = reader.readLine()) != null){
+            String[] data = string.split(" ");
+                // if delimiter, end while loop
+                if(data[0].equals("---")){
+                    break;
+                }
+                
+                // check length and assign variable values
+                if(data.length > 1){
+                    if(data[0].equals("NAME")){
+                        name = data[1];
+                    }else if(data[0].equals("INT")){
+                        interpreter = data[1];
+                    }else if(data[0].equals("CMD")){
+                        command = data[1];
+                    }else if(data[0].equals("TIP")){
+                        tooltip = data[1];
+                    }else if(data[0].equals("ARG")){
+                        for(int i = 1; i < data.length; i ++){
+                            arguments.add(i-1, data[i]);
+                        }
+                    }else if(data[0].equals("FLAG")){
+                        for(int i = 1; i < data.length; i ++){
+                            flags.add(i-1, data[i]);
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+            
+            // make a shiny new command
+            interpreters.get(interpreter).addCommand(name, new Command(name, command, tooltip, flags, arguments));
+        }catch(IOException ex){
+            System.out.println("IO Exception");
+            returnVal = -1;
+        }
+        
+        return returnVal;
+    }
+    
+    //other subroutines
+    /* getTemplateCommands
+    Returns an ArrayList of all commands in the current interp.*/
+    public ArrayList<Command> getTemplateCommands(){
+        if(interp != null){
+            return new ArrayList<Command>(interp.commands.values());
+        }
+        return null;
+    }
 
     /* addCommandToFlow
         Takes an id for a command, duplicates it from the current interpreter,
@@ -124,7 +242,7 @@ public class ScriptStruct{
             if((fetched = interp.getCommand(id)) != null) //check the id exists
                 flow.add(i, new Command(fetched));
             else
-				System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
+                System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
                 "---Command with ID " + id + "could not be found.");
         }else System.err.println("ERROR@ScriptStruct.addCommandToFlow()\n" +
                 "---Given index (" + i + ") is out of range.");
@@ -145,7 +263,7 @@ public class ScriptStruct{
     }
 
     /* writeScript
-	   hHlper function for export().
+       hHlper function for export().
        Writes a (multi-line) string of the completed script, built from the
        items in 'flow'.
        Uses Global.curInterp to figure out langauge, so make sure it is set

@@ -12,21 +12,13 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-// import javafx.scene.Group;
-// import javafx.scene.shape.Rectangle;    //for sidebar shape
-// import javafx.scene.layout.BorderPane;  //for vertical ordering of sidebar objects
-// import javafx.scene.layout.StackPane;   //for vertical ordering of sidebar objects
-// import javafx.geometry.Insets;          //for sidebar spacing
-
 import java.util.ArrayList;             //for backend ArrayList
 import java.util.Hashtable;
+import java.lang.System;
 
 //Import Event Handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
-//import javafx.scene.image.Image;
-//import javafx.scene.layout.*;
 
 
 //import our other packages
@@ -52,8 +44,7 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-		structure = new ScriptStruct();
-
+        structure = new ScriptStruct();
         sidebarCommands = structure.getTemplateCommands();
     }
 
@@ -72,7 +63,12 @@ public class Workspace extends Application {
                    flowchartScroll = new ScrollBar();   // scrollbar for flowchart
         VBox       sidebar = new VBox(),                // contains available commands
                    flowchart = new VBox();              // contains flowchart
-
+        
+        // if import error, exit
+        if (sidebarCommands == null){
+            System.exit(1);
+        }
+        
         // left and right panes
         vertical.getItems().addAll(sidebarPane, rightPane);
         vertical.setOrientation(Orientation.HORIZONTAL);
@@ -138,8 +134,7 @@ public class Workspace extends Application {
                 flowchart.getChildren().remove(end);
 
                 // appending new command block to GUI and to structure
-                structure.addCommandToFlow(
-                        structure.getFlowSize(), "Hello World");
+                structure.addCommandToFlow(structure.getFlowSize(), "Hello World");
                 Command c = structure.getCommand(structure.getFlowSize()-1);
                 CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
                 flowchart.getChildren().add(block);
