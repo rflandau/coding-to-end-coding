@@ -1,9 +1,0 @@
-Hello World
----
-prints "Hello World" to standard out.
----
-#!/bin/bash | 0
-echo "Hello World"
-
-#!/bin/perl | 0
-printf "Hello World"
