@@ -104,7 +104,9 @@ public class Workspace extends Application {
         };
 	//End of Event Handlers
 	//----------------------------------------------------------
+	//Linking Event Handlers to items
 	sideBar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
+	
         stage.setScene(new Scene(root));
         stage.show();
 
@@ -205,7 +207,6 @@ public class Workspace extends Application {
         stage.show(); */
     }
     public void addCommandBlock(VBox blockBox){
-	System.out.println("addCommandBlock Called");
 	int index = structure.getFlowSize();
 	Command c = new Command("echo Hello World");
 	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
