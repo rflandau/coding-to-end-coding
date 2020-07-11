@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;             //for backend ArrayList
 import java.util.Hashtable;
+import java.io.IOException;
 
 //Import Event Handling
 import javafx.event.EventHandler;
@@ -43,6 +44,7 @@ public class Workspace extends Application {
                         defaultWindowHeight = 600;
     ScriptStruct        structure;
     ArrayList<Command>  sidebarCommands;
+    AnchorPane root;
 
     //Applications do not need constructors
     //However, the program arguments from launch can be accessed with getParameters()
@@ -62,10 +64,12 @@ public class Workspace extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //load the FXML
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-	root.exportButton.setOnAction((event)->{
-		System.out.println("exportButton");
-	});
+	try{
+	    root = (AnchorPane) FXMLLoader.load(getClass().getResource("main.fxml"));
+	}catch(IOException ie){
+	    System.out.println("Exception on FXML load: "+ie);
+	}
+	
         stage.setScene(new Scene(root));
         stage.show();
 

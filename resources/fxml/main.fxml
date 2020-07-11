@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<fx:root fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="792.0" prefWidth="1189.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="issuetrackinglite.IssueTrackingLiteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="792.0" prefWidth="1189.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.Workspace">
    <children>
       <SplitPane fx:id="scenePane" dividerPositions="0.29797979797979796" layoutY="-1.0" prefHeight="792.0" prefWidth="1189.0">
         <items>
@@ -58,4 +58,4 @@
         </items>
       </SplitPane>
    </children>
-</fx:root>
+</AnchorPane>
