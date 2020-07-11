@@ -90,23 +90,26 @@ public class Workspace extends Application {
     //create non-fxml items
     VerticalSortingPane sidebarVSP = new VerticalSortingPane();  // contains available commands
     CommandFlowVSP canvasBoxVSP = new CommandFlowVSP(structure); // contains flowchart
-    sidebarVbox.getChildren().add(sidebarVSP);
+    //sidebarVbox.getChildren().add(sidebarVSP);
     canvasBox.getChildren().add(canvasBoxVSP);
     //------------------------------------------------------------
 	//Beginning of Event Handlers
 	exportButton.setOnAction(new EventHandler<ActionEvent>(){
-		@Override
-		public void handle(ActionEvent e){
-			try{
-		    	structure.export();
-			}catch(IOException ex){
-		    	System.out.println("Export button IOexception:"+ex);
-			}
+	    @Override
+	    public void handle(ActionEvent e){
+		try{
+		    structure.export();
+		}catch(IOException ex){
+		    System.out.println("Export button IOexception:"+ex);
+		}
 	    }
 	});
 	EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>(){
-		@Override public void handle(MouseEvent e){addCommandBlock(canvasBoxVSP);}
-    };
+	    @Override
+	    public void handle(MouseEvent e){
+		addCommandBlock(canvasBoxVSP);
+	    }
+	};
 	//End of Event Handlers
 	//----------------------------------------------------------
 	//Linking Event Handlers to items
@@ -116,7 +119,7 @@ public class Workspace extends Application {
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
-            sidebarVSP.addCommandBlock(b);
+            sidebarVbox.getChildren().add(b);
         }
 	
         stage.setScene(new Scene(root));
@@ -212,14 +215,16 @@ public class Workspace extends Application {
 	/*
 	*/
     public void addCommandBlock(CommandFlowVSP blockBox){
-		int index = structure.getFlowSize();
-		Command c = new Command("echo Hello World");
-		CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,structure);
-                blockBox.addCommandBlock(block);
-		/*int len = blockBox.getChildren().size();
-		Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
-		blockBox.getChildren().remove(len-1);
-		blockBox.getChildren().add(block);
-		blockBox.getChildren().add(endBlock);*/
+	int index = structure.getFlowSize();
+	Command c = new Command("Hello World");
+	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,structure);
+	blockBox.addCommandBlock(block);
+	/*
+	  int len = blockBox.getChildren().size();
+	  Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
+	  blockBox.getChildren().remove(len-1);
+	  blockBox.getChildren().add(block);
+	  blockBox.getChildren().add(endBlock);
+	*/
     }
 }
