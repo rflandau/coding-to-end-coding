@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,16 +30,8 @@
                            <children>
                               <VBox fx:id="canvasVbox" alignment="CENTER" layoutX="355.0" layoutY="14.0" prefHeight="675.0" prefWidth="100.0">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" text="start">
-                                       <graphic>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bec6cf98" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                                       </graphic>
-                                    </Label>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" text="end">
-                                       <graphic>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bec6cf99" height="100.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                                       </graphic>
-                                    </Label>
+                                    <Rectangle arcHeight="1.0" arcWidth="5.0" fill="#9e9e9e" height="40.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
+                                    <Rectangle arcHeight="1.0" arcWidth="5.0" fill="#757575" height="40.0" layoutX="10.0" layoutY="328.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
                                  </children>
                               </VBox>
                               <ScrollBar fx:id="canvasScroll" layoutX="788.0" orientation="VERTICAL" prefHeight="704.0" prefWidth="17.0" />

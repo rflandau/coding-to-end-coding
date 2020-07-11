@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.SplitPane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.shape.Rectangle; 
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -84,7 +85,8 @@ public class Workspace extends Application {
 	Button      exportButton = (Button) bottomPanel.getChildren().get(0);
 	VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
 	ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
-
+	//------------------------------------------------------------
+	//Beginning of Event Handlers
 	exportButton.setOnAction(new EventHandler<ActionEvent>() {
 	    @Override public void handle(ActionEvent e){
 		try{
@@ -94,6 +96,15 @@ public class Workspace extends Application {
 		}
 	    }
 	});
+	EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e){
+		addCommandBlock(canvasBox);
+            }
+        };
+	//End of Event Handlers
+	//----------------------------------------------------------
+	sideBar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
         stage.setScene(new Scene(root));
         stage.show();
 
@@ -192,5 +203,16 @@ public class Workspace extends Application {
         stage.setTitle("Coding to End Coding");
         stage.setScene(scene);
         stage.show(); */
+    }
+    public void addCommandBlock(VBox blockBox){
+	System.out.println("addCommandBlock Called");
+	int index = structure.getFlowSize();
+	Command c = new Command("echo Hello World");
+	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
+	int len = blockBox.getChildren().size();
+	Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
+	blockBox.getChildren().remove(len-1);
+	blockBox.getChildren().add(block);
+	blockBox.getChildren().add(endBlock);
     }
 }
