@@ -1,5 +1,4 @@
 package structure;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 /* Interpreter
@@ -22,15 +21,15 @@ public class Interpreter{
     }
     //subroutines---------------------------------------------------------------
     //getters/setters
-    public String getName()            {return name;}
-           void   setName(String n)    {name = n;}
-    public String getPath()            {return path;}
-           void   setPath(String p)    {path = p;}
+    String getName()            {return name;}
+    void   setName(String n)    {name = n;}
+    String getPath()            {return path;}
+	void   setPath(String p)    {path = p;}
 
     /* getCommand
     Returns a command from the commands ht, searching by ID. */
-    public Command getCommand(String name){
-        return commands.get(name);
+    public Command getCommand(String cid){
+        return commands.get(cid);
     }
 
     /* addCommand
@@ -43,51 +42,14 @@ public class Interpreter{
         String error = "ERROR@Interpreter.addCommand()\n" +
         "---" + name + " is already a key in commands and was not added.";
         //if key already exists, fail
-        if(commands.containsKey(name)){
-            System.err.println(error); toReturn = false;
-        }else{
+        if(commands.containsKey(name))
+            System.err.println(error);
+        else{
             commands.put(name, c); toReturn = true;
         }
 
         return toReturn;
     }
-    
-    /* getCommands
-    used to return an ArrayList of Command objects to the GUI */
-    public ArrayList<Command> getCommands(){
-        ArrayList<Command> commandList = new ArrayList<Command>(commands.values());
-        return commandList;
-    }
-    
-    //static subroutines--------------------------------------------------------
-    /* generateInterpreters
-    Used to populate the ArrayList of interpreter objects (as well as fill their
-    fields).
-    NOTE: Currently just creates the test interpreter. */
-    public static ArrayList<Interpreter> generateInterpreters(){
-        //variables
-        Hashtable<String, Command> ht = new Hashtable<String, Command>();
-        Interpreter bash;
-        ArrayList<Interpreter> toReturn = new ArrayList<Interpreter>();
 
-        //create bash Interpreter object
-        bash = new Interpreter("bash", "#!/bin/bash", ht);
-        
-        //generate test bash command
-        String name = "Hello World";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
-        
-        name = "These";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
-        name = "are";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
-        name = "test";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
-        name = "commands.";
-        bash.addCommand(name, new Command(name, "echo \"Hello World\""));
-        
-        //add bash to AL
-        toReturn.add(bash);
-        return toReturn;
-    }
+    //static subroutines--------------------------------------------------------
 }

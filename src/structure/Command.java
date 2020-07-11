@@ -1,7 +1,6 @@
 package structure;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 /* Command
   Represents a command block and corresponding output code.
@@ -15,9 +14,9 @@ public class Command{
     private String              name,
                                 syntax,
                                 tooltip;
-    private ArrayList<String>   flags, 
+    private ArrayList<String>   flags,
                                 arguments;
-    
+
     //constructors--------------------------------------------------------------
     // default constructor (used when members need to be assigned manually)
     public Command(){
@@ -30,17 +29,17 @@ public class Command{
     }
     // a better constructor
     public Command(String name, String syntax){
-        this.name = name;
+        this(name);
         this.syntax = syntax.trim(); //trim whitespace from syntax
         //^trim may cause issues in Python? A problem for later.
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
     // the ultimate constructor
-    public Command(String name, String syntax, String tooltip,
-                   ArrayList<String> flags, ArrayList<String> arguments){
-        this.name = name;
-        this.syntax = syntax;
+    public Command(String name, String syntax,
+					String tooltip, ArrayList<String> flags,
+					ArrayList<String> arguments){
+        this(name, syntax);
         this.tooltip = tooltip;
         for(int i = 0; i < flags.size(); i ++){
             flags.add(i, flags.get(i));
@@ -66,7 +65,7 @@ public class Command{
             arguments.add(i, a.get(i));
         }
     }
-    
+
     //subroutines---------------------------------------------------------------
     //getters/setters
     public String getName()                     { return name; }
@@ -80,12 +79,14 @@ public class Command{
         for(int i = 0; i < f.size(); i ++){
             flags.add(i, f.get(i));
         }
+        return;
     }
     public ArrayList<String> getArguments()     { return arguments; }
     public void   setArguments(ArrayList<String> a) {
         for(int i = 0; i < a.size(); i ++){
             arguments.add(i, a.get(i));
         }
+        return; 
     }
 
     //static subroutines--------------------------------------------------------
