@@ -1,7 +1,6 @@
 package structure;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 /* Command
   Represents a command block and corresponding output code.
@@ -80,12 +79,14 @@ public class Command{
         for(int i = 0; i < f.size(); i ++){
             flags.add(i, f.get(i));
         }
+        return;
     }
     public ArrayList<String> getArguments()     { return arguments; }
     public void   setArguments(ArrayList<String> a) {
         for(int i = 0; i < a.size(); i ++){
             arguments.add(i, a.get(i));
         }
+        return; 
     }
 
     //static subroutines--------------------------------------------------------
