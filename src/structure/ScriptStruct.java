@@ -193,7 +193,7 @@ public class ScriptStruct{
                 // check length and assign variable values
                 if(data.length > 1){
                     if(data[0].equals("NAME")){
-                        for(int i = 1; i < data.length-1; i ++){
+                        for(int i = 1; i <= data.length-1; i ++){
                             name += data[i];
                             name += " ";
                         }
@@ -202,7 +202,7 @@ public class ScriptStruct{
                     }else if(data[0].equals("CMD")){
                         command = data[1];
                     }else if(data[0].equals("TIP")){
-                        for(int i = 1; i < data.length-1; i ++){
+                        for(int i = 1; i <= data.length-1; i ++){
                             tooltip += data[i];
                             tooltip += " ";
                         }
