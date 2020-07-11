@@ -33,6 +33,7 @@ import structure.ScriptStruct;
 import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
+	//variables-----------------------------------------------------------------
     /*
       I'm assuming that every block is the same size. Rectangle has a native constructor
       for size and color, so it's trivial to create a constructor that takes
@@ -57,7 +58,7 @@ public class CommandBlock extends StackPane {
     MenuItem deleteBlock;
 
     ScriptStruct commandList;
-
+	//constructors--------------------------------------------------------------
     //Command Blocks take their position, a JFX color, and the Command object they represent
     /*
       Argument Desciptors:
@@ -123,6 +124,7 @@ public class CommandBlock extends StackPane {
 			}
 		});
 	}
+	//subroutines---------------------------------------------------------------
 
     //allows the changing of a command block's home location, if need be
     public void setHome(livesOn newHome) {
@@ -131,7 +133,10 @@ public class CommandBlock extends StackPane {
 
     //returns a deep copy of the command block this method is called on
     //can we just steal java.lang.obj.clone for this?
-	public CommandBlock Copy() {
+	/*@max, No! Do not use clone! The obj.clone call is a joke. If you need a
+	deep copy of an obj make it as a subroutine or a constructor (see Command
+	for an example constructor) */
+	public CommandBlock copy() {
 		//we use translateX and translateY as these most accurately represent where the block should be
 		return new CommandBlock(
 		this.getTranslateX(),
@@ -149,7 +154,11 @@ public class CommandBlock extends StackPane {
 
 }
 
+	//static subroutines--------------------------------------------------------
 
+//event handlers classes--------------------------------------------------------
+/* onCommandBlockDrag
+*/
 class onCommandBlockDrag implements EventHandler<MouseEvent>{
 	CommandBlock targetBlock;
 
@@ -171,6 +180,8 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
 	}
 }
 
+/* onCommandBlockMove
+*/
 class onCommandBlockMove implements EventHandler<MouseEvent>{
 	CommandBlock targetBlock;
 
@@ -191,6 +202,8 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
 	}
 }
 
+/* onCommandBlockDrop
+*/
 class onCommandBlockDrop implements EventHandler<MouseEvent>{
 	CommandBlock targetBlock;
 
@@ -222,9 +235,8 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
 			//else, move it to this new position
 			else {
 				targetBlock.relocate(
-				event.getSceneX() - CommandBlock.width/2,
-				event.getSceneY() - CommandBlock.height/2
-				);
+					event.getSceneX() - CommandBlock.width/2,
+					event.getSceneY() - CommandBlock.height/2);
 			}
 		}
 
@@ -234,6 +246,8 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
 	}
 }
 
+/* onCommandBlockHover
+*/
 class onCommandBlockHover implements EventHandler<MouseEvent>{
 	CommandBlock targetBlock;
 
