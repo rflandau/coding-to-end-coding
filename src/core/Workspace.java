@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import prefabs.ExportButton;
 import prefabs.VerticalSortingPane;
 import prefabs.CommandBlock;
+import prefabs.CommandFlowVSP;
 import structure.Command;
 import structure.ScriptStruct;
 import structure.Interpreter;
@@ -75,8 +76,9 @@ public class Workspace extends Application {
                    horizontal = new SplitPane();        // horizontal window divider
         ScrollBar  sidebarScroll = new ScrollBar(),     // scrollbar for left sidebar
                    flowchartScroll = new ScrollBar();   // scrollbar for flowchart
-        VBox       sidebar = new VBox();                // contains available commands
-        VerticalSortingPane flowchart = new VerticalSortingPane(commandList, interp); // contains flowchart
+        //I'm sorry the class names are so long
+        VerticalSortingPane sidebar = new VerticalSortingPane();            // contains available commands
+        CommandFlowVSP flowchart = new CommandFlowVSP(commandList, interp); // contains flowchart
         
         // left and right panes
         vertical.getItems().addAll(sidebarPane, rightPane);
@@ -99,18 +101,18 @@ public class Workspace extends Application {
         rightPane.getChildren().addAll(horizontal);
         
         // setting up sidebar
-        sidebar.setSpacing(10);
+        //sidebar.setSpacing(10);   //VSPs don't have spacing (but maybe the should...)
         sidebarPane.setTopAnchor(sidebar, 10.0);
         sidebarPane.setLeftAnchor(sidebar, 145.0);
         sidebarScroll.setOrientation(Orientation.VERTICAL);
         sidebarPane.getChildren().add(sidebar);
-        sidebar.setAlignment(Pos.CENTER);
+        //sidebar.setAlignment(Pos.CENTER); //VSPs auto-align to center
         
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,commandList);
-            sidebar.getChildren().add(b);
+            sidebar.addCommandBlock(b);
         }
         
         // setting up flowchart
@@ -120,15 +122,7 @@ public class Workspace extends Application {
         flowchartPane.getChildren().add(flowchart);
         //flowchart.setAlignment(Pos.CENTER);   VSPs automatically align to their centers
         
-        // creating start block                 Not needed, VSP constructor does this automatically
-        /*Command s = new Command("start");
-        CommandBlock start = new CommandBlock(1,2,Color.GREY,s,commandList);
-        flowchart.getChildren().add(start);
-        
-        // creating end block
-        Command e = new Command("end");
-        CommandBlock end = new CommandBlock(1,2,Color.GREY,e,commandList);
-        flowchart.getChildren().add(end);*/
+        //CommandFlowVSP constructor creates its own anchors
         
         // setting up button pane
         ExportButton button = new ExportButton(100, 50, commandList, interp);
@@ -148,17 +142,6 @@ public class Workspace extends Application {
                         interp.getCommand("Hello World"), 
                         commandList)
                 );
-                // removing end block from GUI
-                /*flowchart.getChildren().remove(end);
-                
-                // appending new command block to GUI and to commandList
-                commandList.addCommandToFlow(commandList.getFlowSize(), "Hello World", interp);
-                Command c = commandList.getCommand(commandList.getFlowSize()-1);
-                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,commandList);
-                flowchart.getChildren().add(block);
-                
-                // appending end block to GUI
-                flowchart.getChildren().add(end);*/
             }
         };
         sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
