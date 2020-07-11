@@ -207,9 +207,6 @@ public class Workspace extends Application {
         stage.show(); */
     }
 
-
-    /*
-    */
     public void addCommandBlock(VBox blockBox){
         int index = structure.getFlowSize();
         Command c = new Command("echo Hello World");

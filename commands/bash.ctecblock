@@ -9,6 +9,7 @@ TIP prints ARG to the command line
 INT bash
 CMD echo
 ARG printThis
+FLAG -n -e -E
 ---
 COMMAND
 NAME move
@@ -16,14 +17,14 @@ TIP moves file from fileFrom to fileTo or renames fileFrom as fileTo
 INT bash
 CMD mv
 ARG fileFrom fileTo
+FLAG --backup -b -f -i -n -S -t -T -u -v
 ---
 COMMAND
 NAME list
 TIP lists files in a directory
 INT bash
 CMD ls
-ARG
-FLAG -l
+FLAG -a -A --author -b -B -c -C -d -D -f -E -g -G -h -H -i -I - k -l -L -m -n -N -o -p -q -Q -r -R -s -S -t -T -u -U -x -x -X -Z -1
 ---
 COMMAND
 NAME remove
@@ -31,4 +32,21 @@ TIP deletes the file fileName
 INT bash
 CMD rm
 ARG fileName
+FLAG -f -i -I -r -R -d -v
+---
+COMMAND
+NAME copy
+TIP copies a file from fileFrom to fileTo
+INT bash
+CMD cp
+ARG fileFrom fileTo
+FLAG -a -b -d -f -i -H -l -L -n -P -p -r -s -S -t -T -u -v -x -Z
+---
+COMMAND
+NAME change directory
+TIP changes to a new file directory
+INT bash
+CMD cd
+ARG fileName
 FLAG -r -f
+

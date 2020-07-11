@@ -193,13 +193,19 @@ public class ScriptStruct{
                 // check length and assign variable values
                 if(data.length > 1){
                     if(data[0].equals("NAME")){
-                        name = data[1];
+                        for(int i = 1; i < data.length-1; i ++){
+                            name += data[i];
+                            name += " ";
+                        }
                     }else if(data[0].equals("INT")){
                         interpreter = data[1];
                     }else if(data[0].equals("CMD")){
                         command = data[1];
                     }else if(data[0].equals("TIP")){
-                        tooltip = data[1];
+                        for(int i = 1; i < data.length-1; i ++){
+                            tooltip += data[i];
+                            tooltip += " ";
+                        }
                     }else if(data[0].equals("ARG")){
                         for(int i = 1; i < data.length; i ++){
                             arguments.add(i-1, data[i]);
@@ -290,6 +296,7 @@ public class ScriptStruct{
         //iterate through every element in 'flow'
         for(int i = 0; i<flow.size(); i++){
             Command c = flow.get(i);
+            System.out.println(c.getName());
             br.write(c.getSyntax() + "\n");
         }
 
