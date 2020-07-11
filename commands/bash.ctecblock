@@ -49,4 +49,27 @@ INT bash
 CMD cd
 ARG fileName
 FLAG -r -f
-
+---
+COMMAND
+NAME search
+TIP search for files by name
+INT bash
+CMD grep
+ARG pattern fileName
+FLAG -V -E -F -G -P -e -f -i -v -w -x -y -c -L -l -m -o -q -s -b -H -h -n -T -u -Z -A -B -C -a -D -d -R -r -U -z
+---
+COMMAND
+NAME show file
+TIP shows the contents of a text file (unreliable output on non-text files)
+INT bash
+CMD cat
+ARG fileName
+FLAG -A -b -e -E -n -s -t -T -u -v
+---
+COMMAND
+NAME create file
+TIP creates a new file (don't forget to add the correct extension)
+INT bash
+CMD touch
+ARG fileName
+FLAG -a -c -d -f -h -m -r -t
