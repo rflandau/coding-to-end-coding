@@ -87,10 +87,12 @@ public class Workspace extends Application {
 	VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
 	ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 	//------------------------------------------------------------
-        //create non-fxml items
-        VerticalSortingPane sidebar = new VerticalSortingPane();            // contains available commands
-        CommandFlowVSP flowchart = new CommandFlowVSP(commandList, interp); // contains flowchart
-        //------------------------------------------------------------
+    //create non-fxml items
+    VerticalSortingPane sidebarVSP = new VerticalSortingPane();  // contains available commands
+    CommandFlowVSP canvasBoxVSP = new CommandFlowVSP(structure); // contains flowchart
+    sidebarVbox.getChildren().add(sidebarVSP);
+    canvasBox.getChildren().add(canvasBoxVSP);
+    //------------------------------------------------------------
 	//Beginning of Event Handlers
 	exportButton.setOnAction(new EventHandler<ActionEvent>(){
 		@Override
@@ -103,7 +105,7 @@ public class Workspace extends Application {
 	    }
 	});
 	EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>(){
-		@Override public void handle(MouseEvent e){addCommandBlock(canvasBox);}
+		@Override public void handle(MouseEvent e){addCommandBlock(canvasBoxVSP);}
     };
 	//End of Event Handlers
 	//----------------------------------------------------------
@@ -114,7 +116,7 @@ public class Workspace extends Application {
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
-            sidebarVbox.getChildren().add(b);
+            sidebarVSP.addCommandBlock(b);
         }
 	
         stage.setScene(new Scene(root));

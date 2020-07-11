@@ -20,15 +20,14 @@ public class CommandFlowVSP extends VerticalSortingPane {
     CommandBlock topAnchor;
     CommandBlock bottomAnchor;
     ScriptStruct commandStruct;
-    Interpreter commandInterp;
+    //Interpreter commandInterp;
     
     //constructor that generates new CommandBlocks for the anchors
-    public CommandFlowVSP(ScriptStruct cmdStruct, Interpreter cmdInterp) {
+    public CommandFlowVSP(ScriptStruct cmdStruct) {
         super();
         
         //setting attached structures
         this.commandStruct = cmdStruct;
-        this.commandInterp = cmdInterp;
         
         //creating anchors
         this.topAnchor = new CommandBlock(0, 0, Color.GREY, new Command("start"), this.commandStruct);
@@ -40,8 +39,8 @@ public class CommandFlowVSP extends VerticalSortingPane {
         this.getChildren().add(0, this.topAnchor);
         this.getChildren().add(this.bottomAnchor);
         //adding to command flow
-        commandStruct.addCommandToFlow(0, this.topAnchor.getCommandName(), this.commandInterp);
-        commandStruct.addCommandToFlow(1, this.bottomAnchor.getCommandName(), this.commandInterp);
+        commandStruct.addCommandToFlow(0, this.topAnchor.getCommandName());
+        commandStruct.addCommandToFlow(1, this.bottomAnchor.getCommandName());
         
         //order the VSP
         this.refreshPane();
@@ -54,7 +53,6 @@ public class CommandFlowVSP extends VerticalSortingPane {
         
         //setting attached ScriptStruct
         this.commandStruct = cmdStruct;
-        this.commandInterp = cmdInterp;
         
         //setting anchors
         this.topAnchor = topAnch;
@@ -90,7 +88,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         this.refreshPane();
         
         //add it to the actual command flow
-        this.commandStruct.addCommandToFlow((int)guessedIndex, newItem.getCommandName(), this.commandInterp);
+        this.commandStruct.addCommandToFlow((int)guessedIndex, newItem.getCommandName());
     }
     
     //removes an item to the VSP and automatically resorts the list
@@ -123,11 +121,6 @@ public class CommandFlowVSP extends VerticalSortingPane {
         return this.commandStruct;
     }
     
-    //returns the Interpreter object assigned to the VSP
-    public Interpreter getCommandInterp() {
-        return this.commandInterp;
-    }
-    
     ///PRIVATE MANIPULATION METHODS
     //for when the VSP needs to mess with its own stuff
     
@@ -158,8 +151,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
             nodeList.add(this.bottomAnchor);
             this.commandStruct.addCommandToFlow(
                     nodeList.indexOf(this.bottomAnchor), 
-                    this.bottomAnchor.getCommandName(), 
-                    this.commandInterp
+                    this.bottomAnchor.getCommandName()
             );
         }
         
@@ -176,7 +168,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //remove from old places
         this.commandStruct.removeCommandFromFlow(nodeList.indexOf(movingItem));
         super.changeIndex(newIndex, movingItem);
-        this.commandStruct.addCommandToFlow(newIndex, movingItem.getCommandName(), this.commandInterp);
+        this.commandStruct.addCommandToFlow(newIndex, movingItem.getCommandName());
     }
 
 }

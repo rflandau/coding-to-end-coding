@@ -132,6 +132,27 @@ public class CommandBlock extends StackPane {
     public void setHome(livesOn newHome) {
         this.home = newHome;
     }
+    
+    //gets the name of the command the block is currently carrying
+    public String getCommandName() {
+        return this.attachedCommand.getName();
+    }
+    
+    //toggles a command block's ability to move
+    public void setDraggable(boolean wantsToMove) {
+        if(wantsToMove) {
+            this.setOnDragDetected(new onCommandBlockDrag(this));
+            this.setOnMouseDragged(new onCommandBlockMove(this));
+            this.setOnMouseReleased(new onCommandBlockDrop(this));
+            this.setOnMouseDragEntered(new onCommandBlockHover(this));
+        }
+        else {
+            this.setOnDragDetected(new onCommandBlockDrag(null));
+            this.setOnMouseDragged(new onCommandBlockMove(null));
+            this.setOnMouseReleased(new onCommandBlockDrop(null));
+            this.setOnMouseDragEntered(new onCommandBlockHover(null));
+        }
+    }
 
     //returns a deep copy of the command block this method is called on
     //can we just steal java.lang.obj.clone for this?
@@ -153,13 +174,6 @@ public class CommandBlock extends StackPane {
 		//There is currently no way to find the index so this is commented out
 		//commandList.removeCommandFromFlow(listIndex);
 	}
-
-    public void Delete(){
-	System.out.println("Delete Called");
-	this.getChildren().remove(0,2);
-	//There is currently no way to find the index so this is commented out
-	//commandList.removeCommandFromFlow(listIndex);
-    }
 }
 
 ///CUSTOM EVENTS
@@ -277,17 +291,6 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
 		super();
 		this.targetBlock = block;
 	}
-
-	//what happens when something (probably a Command Block) is dragged over this
-	@Override
-	public void handle(MouseEvent event) {
-
-	}
-
-    onCommandBlockHover(CommandBlock block){
-        super();
-        this.targetBlock = block;
-    }
     
     //what happens when something (probably a Command Block) is dragged over this
     @Override
