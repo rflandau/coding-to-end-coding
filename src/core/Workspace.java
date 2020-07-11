@@ -2,6 +2,7 @@ package core;
 
 // javafx
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.application.Application;
@@ -13,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
 
 // import javafx.scene.Group;
 // import javafx.scene.shape.Rectangle;    //for sidebar shape
@@ -69,6 +71,19 @@ public class Workspace extends Application {
 	}catch(IOException ie){
 	    System.out.println("Exception on FXML load: "+ie);
 	}
+	//unpack all items
+	SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
+	AnchorPane  sideBar = (AnchorPane) scenePane.getItems().get(0);
+	AnchorPane  mainCanvas = (AnchorPane) scenePane.getItems().get(1);
+	ScrollBar   sidebarScroll = (ScrollBar) sideBar.getChildren().get(0);
+	VBox        sideBarVbox = (VBox) sideBar.getChildren().get(1);
+	SplitPane   canvasSplit = (SplitPane) mainCanvas.getChildren().get(0);
+	AnchorPane  canvasPane = (AnchorPane) canvasSplit.getItems().get(0);
+	AnchorPane  bottomPanel = (AnchorPane) canvasSplit.getItems().get(1);
+	Button      exportButton = (Button) bottomPanel.getChildren().get(0);
+	VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
+	ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
+
 	
         stage.setScene(new Scene(root));
         stage.show();
