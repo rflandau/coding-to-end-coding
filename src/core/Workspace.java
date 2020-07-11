@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import java.io.IOException;
 
 //Import Event Handling
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -84,7 +85,15 @@ public class Workspace extends Application {
 	VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
 	ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 
-	
+	exportButton.setOnAction(new EventHandler<ActionEvent>() {
+	    @Override public void handle(ActionEvent e){
+		try{
+		    structure.export();
+		}catch(IOException ex){
+		    System.out.println("Export button IOexception:"+ex);
+		}
+	    }
+	});
         stage.setScene(new Scene(root));
         stage.show();
 
