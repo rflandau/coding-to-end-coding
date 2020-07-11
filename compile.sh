@@ -14,4 +14,4 @@ javac -d classes \
 	--add-modules javafx.controls,javafx.fxml \
 	@sources.txt
 # Copy the fxml into the output dir
-cp src/core/main.fxml classes/core/main.fxml
+cp resources/fxml/main.fxml classes/core/main.fxml
