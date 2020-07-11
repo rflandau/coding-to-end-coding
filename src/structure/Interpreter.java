@@ -1,5 +1,4 @@
 package structure;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 /* Interpreter
@@ -52,9 +51,9 @@ public class Interpreter{
         String error = "ERROR@Interpreter.addCommand()\n" +
         "---" + name + " is already a key in commands and was not added.";
         //if key already exists, fail
-        if(commands.containsKey(name)){
-            System.err.println(error); toReturn = false;
-        }else{
+        if(commands.containsKey(name))
+            System.err.println(error);
+        else{
             commands.put(name, c); toReturn = true;
         }
 

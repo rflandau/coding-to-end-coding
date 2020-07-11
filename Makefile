@@ -1,5 +1,5 @@
 JFX       = lib/javafx-sdk-14.0.1/lib
-MOD       = --add-modules javafx.controls
+MOD       = --add-modules javafx.controls,javafx.fxml
 SRC       = @sources.txt
 CLASS     = classes
 JC        = javac
@@ -10,6 +10,7 @@ MAIN      = core.Main
 
 all:
 	${JC} ${JCFLAGS} ${SRC}
+	cp resources/fxml/main.fxml classes/core/main.fxml
 
 clean:
 	rm -r classes
@@ -21,5 +22,3 @@ test:
 ci:
 	git commit -am "soft tabs and makefile changes"
 	git push
-
-	
