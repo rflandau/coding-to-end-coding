@@ -1,6 +1,6 @@
 package test;
 
-/* Old code, but thomas is a hoarder so he's deleting it later
+//Old code, but thomas is a hoarder so he's deleting it later
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import prefabs.CommandBlock;
+import prefabs.CommandFlowVSP;
 import prefabs.VerticalSortingPane;
 import structure.Command;
 import structure.Interpreter;
@@ -17,34 +18,37 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+
+import java.util.ArrayList;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 public class TestApp extends Application {
-    ScriptStruct commandList;
+    ScriptStruct structure;
     Interpreter commandInterp;
     CommandBlock start;
     CommandBlock end;
+    ArrayList<Command> commands;
     
   //new CommandBlock(1,2,Color.WHITE, new Command(),commandList);
     
     @Override
     public void init() {
-        commandList = new ScriptStruct();
-        commandInterp = Interpreter.generateInterpreters().get(0);
-        //start = new CommandBlock(1,2,Color.GREY, new Command("start"), commandList);
-        //end = new CommandBlock(1,2,Color.GREY, new Command("end"), commandList);
+        structure = new ScriptStruct();
+        commands = structure.getTemplateCommands();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        VerticalSortingPane VSP = new VerticalSortingPane(commandList, commandInterp);
+        CommandFlowVSP VSP = new CommandFlowVSP(structure);
         
-        VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, new Command("start"), commandList));
-        VSP.addCommandBlock(new CommandBlock(5433,4234,Color.GREEN, new Command("end"), commandList));
-        VSP.addCommandBlock(new CommandBlock(0,0,Color.YELLOW, new Command("end"), commandList));
-        VSP.addCommandBlock(new CommandBlock(9,200,Color.RED, new Command("end"), commandList));
+        
+        VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(5433,4234,Color.GREEN, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(0,0,Color.YELLOW, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(9,200,Color.RED, commands.get(0), structure));
         
         Scene scene = new Scene(VSP, 800, 600);
         
@@ -54,4 +58,4 @@ public class TestApp extends Application {
         stage.show();
     }
 
-}*/
+}

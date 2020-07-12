@@ -89,22 +89,27 @@ public class VerticalSortingPane extends Pane {
     }
     
     void reorderItem(CommandBlock source, double guestY) {
-        //A node's scene position is the below values added together, I think
         //I modulo both values because I'm comparing source position to guest's point of contact.
         //By comparing the remainders, I can estimate which side it came from
-        double sourceY = source.getLayoutY() + source.getTranslateY();
+        
+        //0, 0 represents the location of source relative to itself
+        double sourceY = source.localToParent(0, 0).getY();
         System.out.println("source: " + sourceY);
         System.out.println("guest: " + guestY);
         
         //if the guest came from above the source...
         if(guestY > sourceY){   //I bet 1 shiny nickel that low y = up high, like in every other visual thing
             //shift the source down to make room for the guest
-            source.setLayoutY(source.getLayoutY() + CommandBlock.height);
+            System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
+            source.relocate(0, sourceY + CommandBlock.height);
+            System.out.println("Relocated from " + sourceY + " to " + source.localToParent(0, 0).getY());
         }
         //else the guest came from above the source
         else {
             //shift the source up to make room for the guest
-            source.setLayoutY(source.getLayoutY() - CommandBlock.height);
+            System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
+            source.relocate(0, sourceY - CommandBlock.height);
+            System.out.println("Relocated from " + sourceY + " to " + source.localToParent(0, 0).getY());
         }
     }
     
@@ -133,7 +138,13 @@ public class VerticalSortingPane extends Pane {
         
         //if removing the item from the list would move the destination position forward 1, move the index
         //      forward 1
-        if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;} 
+        if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;}
+        ///TEMP CODE
+        //check to see if something overshot where it should go
+        if(nodeList.size() - 1 < newIndex) {
+            newIndex = nodeList.size() - 1;
+            System.out.println("an item overshot the list");
+        }
         //remove from old places
         nodeList.remove(movingItem);
         //placing into new places

@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 //import event handling
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseDragEvent;
 //Context Menu(separated so if it gets moved its clear what can go)
@@ -47,10 +48,10 @@ public class CommandBlock extends StackPane {
 
     //instance variables
     Command attachedCommand;
-    double homeX;
-    double homeY;
     Paint commandColor;
     livesOn home;    //where the CommandBlock originally came from
+    double homeX;
+    double homeY;
     boolean draggable; //if the CommandBlock can be dragged or not
     //currently uninitialized
     int listIndex;
@@ -224,10 +225,13 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
 	//what happens when the user continuously drags the command block
 	@Override
 	public void handle(MouseEvent event) {
-		targetBlock.relocate(
-		event.getSceneX() - CommandBlock.width/2,
-		event.getSceneY() - CommandBlock.height/2
-		);
+	    //relocate needs parent-relative coordinates. The event gives scene-relative coordinates.
+	    //We need to go from scene to local to parent, which is why the methods below are used
+	    Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
+	            event.getSceneX() - CommandBlock.width/2,
+	            event.getSceneY() - CommandBlock.height/2
+	    ));
+		targetBlock.relocate(newPosition.getX(), newPosition.getY());
 
 		event.consume();
 	}
@@ -297,8 +301,12 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
     public void handle(MouseEvent event) {
         //when dragged over, the command block passes itself and the point of contact(?) to its container,
         //  if the container can handle a ReorderRequest
+        Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
+                event.getSceneX() - CommandBlock.width/2,
+                event.getSceneY() - CommandBlock.height/2
+        ));
         targetBlock.getParent().fireEvent(
-                new ReorderRequestEvent(targetBlock, event.getScreenX(), event.getScreenY())
+                new ReorderRequestEvent(targetBlock, newPosition.getX(), newPosition.getY())
         );
     }
     

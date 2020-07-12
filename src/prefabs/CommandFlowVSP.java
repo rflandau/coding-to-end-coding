@@ -127,7 +127,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //we just want the super method with commandflow trappings
         super.reorderItem(source, guestY);
         //update index of moved item, if needed
-        this.changeIndex((int)(source.getLayoutY() / CommandBlock.height), source);
+        this.changeIndex((int)(source.localToParent(0, 0).getY() / CommandBlock.height), source);
     }
     
     /*//refreshes the layout of the list. I expect this to be computationally expensive so use sparingly
