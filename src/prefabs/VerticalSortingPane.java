@@ -127,8 +127,13 @@ public class VerticalSortingPane extends Pane {
     ///PRIVATE HELPER METHODS
     
     //changes a node's index in the observable list
+    //this is done manually because list.set() replaces anything at the destination index
     void changeIndex(int newIndex, CommandBlock movingItem) {
         ObservableList<Node> nodeList = this.getChildren();
+        
+        //if removing the item from the list would move the destination position forward 1, move the index
+        //      forward 1
+        if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;} 
         //remove from old places
         nodeList.remove(movingItem);
         //placing into new places

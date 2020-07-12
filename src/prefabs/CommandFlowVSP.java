@@ -17,8 +17,8 @@ import structure.ScriptStruct;
  */
 
 public class CommandFlowVSP extends VerticalSortingPane {
-    CommandBlock topAnchor;
-    CommandBlock bottomAnchor;
+    //CommandBlock topAnchor;
+    //CommandBlock bottomAnchor;
     ScriptStruct commandStruct;
     //Interpreter commandInterp;
     
@@ -29,7 +29,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //setting attached structures
         this.commandStruct = cmdStruct;
         
-        //creating anchors
+        /*//creating anchors
         this.topAnchor = new CommandBlock(0, 0, Color.GREY, new Command("start"), this.commandStruct);
         this.bottomAnchor = new CommandBlock(0, 0, Color.GREY, new Command("end"), this.commandStruct);
         //anchoring them
@@ -38,12 +38,11 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //making them visible
         this.getChildren().add(0, this.topAnchor);
         this.getChildren().add(this.bottomAnchor);
-        //adding to command flow
-        commandStruct.addCommandToFlow(0, this.topAnchor.getCommandName());
-        commandStruct.addCommandToFlow(1, this.bottomAnchor.getCommandName());
+
+        
         
         //order the VSP
-        this.refreshPane();
+        this.refreshPane();*/
     }
     
     //constructor that uses pre-generated CommandBlocks
@@ -54,7 +53,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //setting attached ScriptStruct
         this.commandStruct = cmdStruct;
         
-        //setting anchors
+        /*//setting anchors
         this.topAnchor = topAnch;
         this.bottomAnchor = botAnch;
         //anchoring them
@@ -66,7 +65,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //it is assumed that these anchors are already in the command flow
         
         //order the VSP
-        this.refreshPane();
+        this.refreshPane();*/
     }
     
     ///PUBLIC MANIPULATION METHODS
@@ -75,7 +74,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
     //adds an item to the VSP and automatically sorts it in
     @Override
     public void addCommandBlock(CommandBlock newItem) {
-        //guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
+        /*//guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
         double guessedIndex = (newItem.getLayoutY() + newItem.getTranslateY()) / CommandBlock.height;
         
         //if it's above the list, put it below the top anchor (which is index 0)
@@ -85,10 +84,12 @@ public class CommandFlowVSP extends VerticalSortingPane {
         
         //I cast gussedIndex to int here instead of making it an int because PEMDAS is a stinker
         this.getChildren().add((int)guessedIndex, newItem);
-        this.refreshPane();
+        this.refreshPane();*/
+        
+        super.addCommandBlock(newItem);
         
         //add it to the actual command flow
-        this.commandStruct.addCommandToFlow((int)guessedIndex, newItem.getCommandName());
+        this.commandStruct.addCommandToFlow(this.getChildren().indexOf(newItem), newItem.getCommandName());
     }
     
     //removes an item to the VSP and automatically resorts the list
@@ -96,17 +97,14 @@ public class CommandFlowVSP extends VerticalSortingPane {
     @Override
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
         int oldItemIndex = this.getChildren().indexOf(oldItem);
-        
-        //we just want the super method with CommandFlow trimmings
-        CommandBlock removedItem = super.removeCommandBlock(oldItem);
-        
         //remove it from the command flow
         this.commandStruct.removeCommandFromFlow(oldItemIndex);
         
-        return removedItem;
+        //we just want the super method with CommandFlow trimmings
+        return super.removeCommandBlock(oldItem);
     }
     
-    //returns the topAnchor command block
+    /*//returns the topAnchor command block
     public CommandBlock getTopAnchor() {
         return this.topAnchor;
     }
@@ -114,7 +112,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
     //returns the bottomAnchor command block
     public CommandBlock getBottomAnchor() {
         return this.bottomAnchor;
-    }
+    }*/
     
     //returns the ScriptStruct object assigned to the VSP
     public ScriptStruct getCommandStruct() {
@@ -132,7 +130,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         this.changeIndex((int)(source.getLayoutY() / CommandBlock.height), source);
     }
     
-    //refreshes the layout of the list. I expect this to be computationally expensive so use sparingly
+    /*//refreshes the layout of the list. I expect this to be computationally expensive so use sparingly
     @Override
     void refreshPane() {
         //The ObservableList contains every visible child of this object in an indexed list
@@ -157,7 +155,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
         
         //we want the super version, just with the anchors figured out first
         super.refreshPane();
-    }
+    }*/
     
     ///PRIVATE HELPER METHODS
     
