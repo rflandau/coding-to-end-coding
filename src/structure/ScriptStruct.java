@@ -28,9 +28,12 @@ public class ScriptStruct{
          interpreters */
     // default constructor
     public ScriptStruct(){
+        //initalize
         flow = new ArrayList<Command>();
         outPath = "out.txt";
-        interpreterList = generateInterpreters();
+        interpreterList = new Hashtable<String, Interpreter>();
+        //interpreterList = generateInterpreters();
+        generateInterpreters();
         changeInterpreter(defaultInterp);
     }
 
@@ -50,61 +53,24 @@ public class ScriptStruct{
     //interpreter subroutines
     /* generateInterpreters
     Used to populate the Hashtable of interpreter objects (as well as fill their
-    fields).
-    NOTE: Currently just creates the test interpreter. */
-    public static Hashtable<String, Interpreter> generateInterpreters(){
+    fields).*/
+    void generateInterpreters(){
         String path = "../commands/bash.ctecblock"; //hard-coded atm
         try{
-            Hashtable<String, Interpreter> interpreters =
-                new Hashtable<String, Interpreter>();
             BufferedReader reader =
                 new BufferedReader(new FileReader(new File(path)));
             //parse the file
-            parse(reader, interpreters);
-
-            return interpreters;
+            parse(reader);
         }catch(FileNotFoundException ex){
             System.out.println("file " + path + " not found.\n");
         }
-
-        return null;
-    }
-
-    /* changeInterpreter
-    Tries to set the current interp to the one at index 'i'.
-    Returns false and does nothing if 'i' is out of bounds. */
-    public boolean changeInterpreter(int i){
-        boolean toReturn;
-
-        if (0 <= i && i < interpreterList.size()){ //i is within bounds
-            interp = interpreterList.get(i);
-            toReturn = true;
-        } else {
-            System.err.println("Could not find interp at entry " + i);
-            toReturn = false;
-        }
-        return toReturn;
-    }
-
-    /* changeInterpreter
-    Tries to set the current interp to the one named 'name'.
-    Returns false if 'name' could not be found w/in interpreterList. */
-    public boolean changeInterpreter(String name){
-        boolean found = false;
-
-        if(interpreterList.get(name) != null) {
-            found = true;
-            interp = interpreterList.get(name);
-        }
-
-        if (!found) System.out.println("Could not find interp '" + name +"'");
-        return found;//return whether or not it was found
+        return;
     }
 
     /* parse
-    Parses input file and adds interpreters or commands as needed */
-    private static void parse(BufferedReader reader,
-        Hashtable<String, Interpreter> interpreters){
+    Parses input file and adds interpreters or commands to interpreterList
+    as needed */
+    private void parse(BufferedReader reader){
         // variables
         String line;
 
@@ -114,9 +80,10 @@ public class ScriptStruct{
             while((line = reader.readLine()) != null){
                 line = line.trim();
                 if(line.equals("INTERPRETER"))
-                    newInterpreter(reader, interpreters);
-                else if(line.equals("COMMAND"))
-                    newCommand(reader, interpreters);
+                    newInterpreter(reader);
+                else if(line.equals("COMMAND")){
+                    newCommand(reader);
+                }
                 else //junk data
                     System.err.println("File formatting error" + line);
             }
@@ -130,8 +97,7 @@ public class ScriptStruct{
     /* newInterpreter
     Parses input file and adds interpreter to interpreters hashtable
     Runs until it hits the break sequence "---". */
-    private static int newInterpreter(BufferedReader reader,
-        Hashtable<String, Interpreter> interpreters) {
+    private int newInterpreter(BufferedReader reader) {
         // variables
         String name = "",
                path = "",
@@ -143,7 +109,7 @@ public class ScriptStruct{
             String string;
 
             while((string = reader.readLine()) != null){
-            String[] data = string.split(" ");
+            String[] data = string.trim().split(" ");
                 // if delimiter, end while loop
                 if(data[0].equals(BREAKSEQ)){
                     break;
@@ -164,7 +130,7 @@ public class ScriptStruct{
             }
 
             // make a shiny new interpreter
-            interpreters.put(name, new Interpreter(name, path, tooltip));
+            interpreterList.put(name, new Interpreter(name, path, tooltip));
         }catch(IOException ex){
             System.out.println("IO Exception");
             returnVal = -1;
@@ -176,7 +142,7 @@ public class ScriptStruct{
     /* newCommand
     Parses input file and adds command to commands ArrayList in the appropriate
     interpreter in interpreters */
-    private static int newCommand(BufferedReader reader, Hashtable<String, Interpreter> interpreters) {
+    private int newCommand(BufferedReader reader) {
         // variables
         ArrayList<String> arguments = new ArrayList<String>(),
                           flags = new ArrayList<String>();
@@ -191,18 +157,20 @@ public class ScriptStruct{
             String string;
 
             while((string = reader.readLine()) != null){
-            String[] data = string.split(" ");
+            String[] data = string.trim().split(" ");
                 // if delimiter, end while loop
                 if(data[0].equals("---")){
                     break;
                 }
 
                 // check length and assign variable values
+                //TODO change to switch/case
                 if(data.length > 1){
                     if(data[0].equals("NAME")){
                         for(int i = 1; i <= data.length-1; i ++){
                             name += data[i];
-                            name += " ";
+                            //add a space if not last entry
+                            if (i != data.length-1) name += " ";
                         }
                     }else if(data[0].equals("INT")){
                         interpreter = data[1];
@@ -211,7 +179,7 @@ public class ScriptStruct{
                     }else if(data[0].equals("TIP")){
                         for(int i = 1; i <= data.length-1; i ++){
                             tooltip += data[i];
-                            tooltip += " ";
+                            if (i != data.length-1) tooltip += " ";
                         }
                     }else if(data[0].equals("ARG")){
                         for(int i = 1; i < data.length; i ++){
@@ -227,13 +195,13 @@ public class ScriptStruct{
                 }
             }
 
-            // make a shiny new command
-            interpreters.get(interpreter).addCommand(name, new Command(name, command, tooltip, flags, arguments));
+            // make a shiny new command in the designated interpreter
+            interpreterList.get(interpreter).addCommand(name,
+                new Command(name, command, tooltip, flags, arguments));
         }catch(IOException ex){
             System.out.println("IO Exception");
             returnVal = -1;
         }
-
         return returnVal;
     }
 
@@ -245,6 +213,20 @@ public class ScriptStruct{
             return new ArrayList<Command>(interp.commands.values());
         }
         return null;
+    }
+    /* changeInterpreter
+    Tries to set the current interp to the one named 'name'.
+    Returns false if 'name' could not be found w/in interpreterList. */
+    public boolean changeInterpreter(String name){
+        boolean found = false;
+
+        if(interpreterList.get(name) != null) {
+            found = true;
+            interp = interpreterList.get(name);
+        }
+
+        if (!found) System.out.println("Could not find interp '" + name +"'");
+        return found;//return whether or not it was found
     }
 
     /* addCommandToFlow
@@ -289,7 +271,7 @@ public class ScriptStruct{
     Throws IOException if file to write to was not checked previously. Call
     createOutFile() for proper error-handling. */
     private void writeScript(BufferedWriter br, Interpreter interp)
-    throws IOException{
+        throws IOException{
 
         //add interpreter path to top of script, plus newline
         try{
@@ -353,6 +335,12 @@ public class ScriptStruct{
         } else toReturn = false; //return false on null
 
         return toReturn;
+    }
+
+    /* getCommandNamesInInterp
+    Returns all command names in current interp*/
+    public String getComTest(){
+        return interp.getCommand("move").getName();
     }
     //static subroutines--------------------------------------------------------
 }

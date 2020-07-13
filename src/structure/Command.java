@@ -23,12 +23,12 @@ public class Command{
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
-    
+
     // a good constructor (used for start and end blocks)
     public Command(String name){
         this.name = name;
     }
-    
+
     // a better constructor
     public Command(String name, String syntax){
         this(name);
@@ -37,7 +37,7 @@ public class Command{
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
-    
+
     // the ultimate constructor
     public Command(String name,
                    String syntax,
@@ -47,13 +47,13 @@ public class Command{
         this.name = name;
         this.syntax = syntax;
         this.tooltip = tooltip;
-        
+
         flags = new ArrayList<String>();
         int flagSize = flags.size();
         for(int i = 0; i < flagSize; i ++){
             flags.add(i, flags.get(i));
         }
-        
+
         arguments = new ArrayList<String>();
         int argumentSize = arguments.size();
         for(int i = 0; i < argumentSize; i ++){
@@ -97,8 +97,10 @@ public class Command{
         for(int i = 0; i < a.size(); i ++){
             arguments.add(i, a.get(i));
         }
-        return; 
+        return;
     }
-
+    public String toString(){
+        return name + " " + syntax;
+    }
     //static subroutines--------------------------------------------------------
 }

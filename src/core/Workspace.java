@@ -102,7 +102,7 @@ public class Workspace extends Application {
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
             sidebarVbox.getChildren().add(b);
         }
-    
+
         stage.setScene(new Scene(root));
         stage.show();
 
@@ -120,12 +120,12 @@ public class Workspace extends Application {
                    flowchartScroll = new ScrollBar();   // scrollbar for flowchart
         VBox       sidebar = new VBox(),                // contains available commands
                    flowchart = new VBox();              // contains flowchart
-        
+
         // if import error, exit
         if (sidebarCommands == null){
             System.exit(1);
         }
-        
+
         // left and right panes
         vertical.getItems().addAll(sidebarPane, rightPane);
         vertical.setOrientation(Orientation.HORIZONTAL);
