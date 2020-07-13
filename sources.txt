@@ -1,5 +1,6 @@
 ./src/prefabs/ExportButton.java
 ./src/prefabs/CommandBlock.java
+./src/prefabs/VerticalSortingPane.java
 ./src/core/Main.java
 ./src/core/Workspace.java
 ./src/structure/ScriptStruct.java
