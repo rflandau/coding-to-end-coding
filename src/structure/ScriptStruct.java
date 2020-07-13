@@ -227,7 +227,8 @@ public class ScriptStruct{
             }
 
             // make a shiny new command
-            interpreters.get(interpreter).addCommand(name, new Command(name, command, tooltip, flags, arguments));
+            interpreters.get(interpreter).addCommand(name,
+                new Command(name, command, tooltip, flags, arguments));
         }catch(IOException ex){
             System.out.println("IO Exception");
             returnVal = -1;
