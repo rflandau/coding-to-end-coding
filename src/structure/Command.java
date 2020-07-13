@@ -100,7 +100,7 @@ public class Command{
         return;
     }
     public String toString(){
-        return name + " " + syntax;
+        return name + " -> " + syntax;
     }
     //static subroutines--------------------------------------------------------
 }

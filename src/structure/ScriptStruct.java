@@ -2,7 +2,9 @@ package structure;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Collection;
 import java.io.*;
+import java.lang.StringBuilder;
 
 /* ScriptStruct
 Represents the main generation class for storing the flowchart and outputting
@@ -35,6 +37,7 @@ public class ScriptStruct{
         //interpreterList = generateInterpreters();
         generateInterpreters();
         changeInterpreter(defaultInterp);
+        System.out.println(this);
     }
 
     // with specified output path
@@ -50,7 +53,7 @@ public class ScriptStruct{
     public int     getFlowSize()            { return flow.size(); }
     public Command getCommand(int i)        { return flow.get(i); }
 
-    //interpreter subroutines
+    //build the interpreters
     /* generateInterpreters
     Used to populate the Hashtable of interpreter objects (as well as fill their
     fields).*/
@@ -67,6 +70,7 @@ public class ScriptStruct{
         return;
     }
 
+    //parse subroutines
     /* parse
     Parses input file and adds interpreters or commands to interpreterList
     as needed */
@@ -225,6 +229,7 @@ public class ScriptStruct{
         return found;//return whether or not it was found
     }
 
+    //interact with flow
     /* addCommandToFlow
     Takes an id for a command, duplicates it from the current interpreter,
     and adds the new command to flow.
@@ -258,6 +263,7 @@ public class ScriptStruct{
         return;
     }
 
+    //export____________________________________________________________________
     /* writeScript
     Helper function for export().
     Writes a (multi-line) string of the completed script, built from the
@@ -332,11 +338,27 @@ public class ScriptStruct{
 
         return toReturn;
     }
+    //other_____________________________________________________________________
+    /* toString
+    Prints the ScriptStruct in full, calling toStrings for commands and
+    interpreters. */
+    public String toString(){
+        StringBuilder toReturn = new StringBuilder(100); //ARBITRARY NUMBER
+        //get a list of all interpreters
+        ArrayList<Interpreter> interpArr = new
+            ArrayList<Interpreter>(interpreterList.values());
+        //loop through interpreters
+        for(Interpreter in : interpArr){
+            //add interp name and path
+            toReturn.append(in.toString() + "\n");
+            //add all commands
+            ArrayList<Command> comArr =
+                new ArrayList<Command>(in.commands.values());
+            for(Command c : comArr)
+                toReturn.append(c + "\n");
+        }
+        return toReturn.toString();
 
-    /* getCommandNamesInInterp
-    Returns all command names in current interp*/
-    public String getComTest(){
-        return interp.getCommand("move").getName();
     }
     //static subroutines--------------------------------------------------------
 }
