@@ -194,43 +194,35 @@ public class ScriptStruct{
                 if(data.length > 1){
                     switch(data[0]){ //check precursor string
                         case "NAME":
-                        //recombine the name
-                        for(int i = 1; i <= data.length-1; i ++){
-                            name += data[i];
-                            name += " ";
-                        } break;
-                        case "INT":
-                        interpreter = data[1]; break;
-                        case "CMD":
-                        command = data[1]; break;
+                            //recombine the name
+                            for(int i = 1; i <= data.length-1; i ++){
+                                name += data[i];
+                                name += " ";
+                            } break;
+                        case "INT": interpreter = data[1]; break;
+                        case "CMD": command = data[1]; break;
                         case "TIP":
-                        //recombine the tooltip
-                        for(int i = 1; i <= data.length-1; i ++){
-                            tooltip += data[i];
-                            tooltip += " ";
-                        } break;
+                            //recombine the tooltip
+                            for(int i = 1; i <= data.length-1; i ++){
+                                tooltip += data[i];
+                                tooltip += " ";
+                            } break;
                         case "ARG":
-                        //save every arg
-                        for(int i = 1; i < data.length; i ++){
-                            arguments.add(i-1, data[i]);
-                        } break;
+                            //save every arg
+                            for(int i = 1; i < data.length; i ++){
+                                arguments.add(i-1, data[i]);
+                            } break;
                         case "FLAG":
-                        for(int i = 1; i < data.length; i ++){
-                            flags.add(i-1, data[i]);
-                        } break;
+                            for(int i = 1; i < data.length; i ++){
+                                flags.add(i-1, data[i]);
+                            } break;
                         case "---":
-                        System.out.println("Command break found.");
-                        end = true; break;
+                            System.out.println("Command break found.");
+                            end = true; break;
                         default:
-                        System.out.println("Junk line found.");
-                        end = true;
-
-                    }
-                    else if(data[0].equals("FLAG")){
-
-                    }else{
-                        break;
-                    }
+                            System.out.println("Junk line found.");
+                            end = true;
+                    } //end switch
                 }
             }
 
