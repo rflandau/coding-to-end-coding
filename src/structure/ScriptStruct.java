@@ -37,7 +37,6 @@ public class ScriptStruct{
         //interpreterList = generateInterpreters();
         generateInterpreters();
         changeInterpreter(defaultInterp);
-        System.out.println(this);
     }
 
     // with specified output path
