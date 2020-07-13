@@ -57,11 +57,6 @@ public class ScriptStruct{
     void generateInterpreters(){
         String path = "../commands/bash.ctecblock"; //hard-coded atm
         try{
-<<<<<<< HEAD
-=======
-            Hashtable<String, Interpreter> interpreters =
-            new Hashtable<String, Interpreter>();
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
             BufferedReader reader =
             new BufferedReader(new FileReader(new File(path)));
             //parse the file
@@ -73,15 +68,9 @@ public class ScriptStruct{
     }
 
     /* parse
-<<<<<<< HEAD
     Parses input file and adds interpreters or commands to interpreterList
     as needed */
     private void parse(BufferedReader reader){
-=======
-    Parses input file and adds interpreters or commands as needed */
-    private static void parse(BufferedReader reader,
-    Hashtable<String, Interpreter> interpreters){
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
         // variables
         String line;
 
@@ -91,16 +80,10 @@ public class ScriptStruct{
             while((line = reader.readLine()) != null){
                 line = line.trim();
                 if(line.equals("INTERPRETER"))
-<<<<<<< HEAD
                     newInterpreter(reader);
                 else if(line.equals("COMMAND")){
                     newCommand(reader);
                 }
-=======
-                newInterpreter(reader, interpreters);
-                else if(line.equals("COMMAND"))
-                newCommand(reader, interpreters);
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
                 else //junk data
                 System.err.println("File formatting error" + line);
             }
@@ -114,12 +97,7 @@ public class ScriptStruct{
     /* newInterpreter
     Parses input file and adds interpreter to interpreters hashtable
     Runs until it hits the break sequence "---". */
-<<<<<<< HEAD
     private int newInterpreter(BufferedReader reader) {
-=======
-    private static int newInterpreter(BufferedReader reader,
-    Hashtable<String, Interpreter> interpreters) {
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
         // variables
         String name = "",
         path = "",
@@ -131,11 +109,7 @@ public class ScriptStruct{
             String string;
 
             while((string = reader.readLine()) != null){
-<<<<<<< HEAD
             String[] data = string.trim().split(" ");
-=======
-                String[] data = string.split(" ");
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
                 // if delimiter, end while loop
                 if(data[0].equals(BREAKSEQ)){
                     break;
@@ -177,24 +151,17 @@ public class ScriptStruct{
         try{
             // this must be declared here because java
             String  string;
-            boolean end = false;
 
-<<<<<<< HEAD
             while((string = reader.readLine()) != null){
             String[] data = string.trim().split(" ");
                 // if delimiter, end while loop
                 if(data[0].equals("---")){
                     break;
                 }
-=======
-            while(((string = reader.readLine()) != null) && !end){
-                String[] data = string.split(" ");
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
 
                 // check length and assign variable values
                 //TODO change to switch/case
                 if(data.length > 1){
-<<<<<<< HEAD
                     if(data[0].equals("NAME")){
                         for(int i = 1; i <= data.length-1; i ++){
                             name += data[i];
@@ -226,44 +193,6 @@ public class ScriptStruct{
 
             // make a shiny new command in the designated interpreter
             interpreterList.get(interpreter).addCommand(name,
-=======
-                    switch(data[0]){ //check precursor string
-                        case "NAME":
-                            //recombine the name
-                            for(int i = 1; i <= data.length-1; i ++){
-                                name += data[i];
-                                name += " ";
-                            } break;
-                        case "INT": interpreter = data[1]; break;
-                        case "CMD": command = data[1]; break;
-                        case "TIP":
-                            //recombine the tooltip
-                            for(int i = 1; i <= data.length-1; i ++){
-                                tooltip += data[i];
-                                tooltip += " ";
-                            } break;
-                        case "ARG":
-                            //save every arg
-                            for(int i = 1; i < data.length; i ++){
-                                arguments.add(i-1, data[i]);
-                            } break;
-                        case "FLAG":
-                            for(int i = 1; i < data.length; i ++){
-                                flags.add(i-1, data[i]);
-                            } break;
-                        case "---":
-                            System.out.println("Command break found.");
-                            end = true; break;
-                        default:
-                            System.out.println("Junk line found.");
-                            end = true;
-                    } //end switch
-                }
-            }
-
-            // make a shiny new command
-            interpreters.get(interpreter).addCommand(name,
->>>>>>> 6f40e7c6472ca701d46e6527e8a2848cb5b8d37a
                 new Command(name, command, tooltip, flags, arguments));
         }catch(IOException ex){
             System.out.println("IO Exception");
