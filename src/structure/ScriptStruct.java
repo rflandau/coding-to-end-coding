@@ -25,7 +25,7 @@ public class ScriptStruct{
     Interpreter interp;
     //constructors--------------------------------------------------------------
     /* The SS constructor creates flow, sets all fields, and initalizes the
-         interpreters */
+    interpreters */
     // default constructor
     public ScriptStruct(){
         flow = new ArrayList<Command>();
@@ -56,9 +56,9 @@ public class ScriptStruct{
         String path = "../commands/bash.ctecblock"; //hard-coded atm
         try{
             Hashtable<String, Interpreter> interpreters =
-                new Hashtable<String, Interpreter>();
+            new Hashtable<String, Interpreter>();
             BufferedReader reader =
-                new BufferedReader(new FileReader(new File(path)));
+            new BufferedReader(new FileReader(new File(path)));
             //parse the file
             parse(reader, interpreters);
 
@@ -104,7 +104,7 @@ public class ScriptStruct{
     /* parse
     Parses input file and adds interpreters or commands as needed */
     private static void parse(BufferedReader reader,
-        Hashtable<String, Interpreter> interpreters){
+    Hashtable<String, Interpreter> interpreters){
         // variables
         String line;
 
@@ -114,15 +114,15 @@ public class ScriptStruct{
             while((line = reader.readLine()) != null){
                 line = line.trim();
                 if(line.equals("INTERPRETER"))
-                    newInterpreter(reader, interpreters);
+                newInterpreter(reader, interpreters);
                 else if(line.equals("COMMAND"))
-                    newCommand(reader, interpreters);
+                newCommand(reader, interpreters);
                 else //junk data
-                    System.err.println("File formatting error" + line);
+                System.err.println("File formatting error" + line);
             }
         }catch(IOException ex){
             System.out.println("ERROR@ScriptStruct.parse()\n" +
-                "IO Exception: " + ex );
+            "IO Exception: " + ex );
             return;
         }
     }
@@ -131,11 +131,11 @@ public class ScriptStruct{
     Parses input file and adds interpreter to interpreters hashtable
     Runs until it hits the break sequence "---". */
     private static int newInterpreter(BufferedReader reader,
-        Hashtable<String, Interpreter> interpreters) {
+    Hashtable<String, Interpreter> interpreters) {
         // variables
         String name = "",
-               path = "",
-               tooltip = "";
+        path = "",
+        tooltip = "";
         int    returnVal = 0;
 
         try{
@@ -143,7 +143,7 @@ public class ScriptStruct{
             String string;
 
             while((string = reader.readLine()) != null){
-            String[] data = string.split(" ");
+                String[] data = string.split(" ");
                 // if delimiter, end while loop
                 if(data[0].equals(BREAKSEQ)){
                     break;
@@ -151,15 +151,11 @@ public class ScriptStruct{
 
                 // check length and assign variable values
                 if(data.length > 1){
-                    if(data[0].equals("NAME")){
-                        name = data[1];
-                    }else if(data[0].equals("PATH")){
-                        path = data[1];
-                    } else if(data[0].equals("TIP")){
-                        tooltip = data[1];
-                    }else{
-                        break;
-                    }
+                    if(data[0].equals("NAME"))      name = data[1];
+                    else if(data[0].equals("PATH")) path = data[1];
+                    else if(data[0].equals("TIP"))  tooltip = data[1];
+                    else break; //should this not just warn and continue?
+
                 }
             }
 
@@ -179,48 +175,59 @@ public class ScriptStruct{
     private static int newCommand(BufferedReader reader, Hashtable<String, Interpreter> interpreters) {
         // variables
         ArrayList<String> arguments = new ArrayList<String>(),
-                          flags = new ArrayList<String>();
+        flags = new ArrayList<String>();
         String            name = "",
-                          interpreter = "",
-                          command = "",
-                          tooltip = "";
+        interpreter = "",
+        command = "",
+        tooltip = "";
         int               returnVal = 0;
 
         try{
             // this must be declared here because java
-            String string;
+            String  string;
+            boolean end = false;
 
-            while((string = reader.readLine()) != null){
-            String[] data = string.split(" ");
-                // if delimiter, end while loop
-                if(data[0].equals("---")){
-                    break;
-                }
+            while(((string = reader.readLine()) != null) && !end){
+                String[] data = string.split(" ");
 
                 // check length and assign variable values
                 if(data.length > 1){
-                    if(data[0].equals("NAME")){
+                    switch(data[0]){ //check precursor string
+                        case "NAME":
+                        //recombine the name
                         for(int i = 1; i <= data.length-1; i ++){
                             name += data[i];
                             name += " ";
-                        }
-                    }else if(data[0].equals("INT")){
-                        interpreter = data[1];
-                    }else if(data[0].equals("CMD")){
-                        command = data[1];
-                    }else if(data[0].equals("TIP")){
+                        } break;
+                        case "INT":
+                        interpreter = data[1]; break;
+                        case "CMD":
+                        command = data[1]; break;
+                        case "TIP":
+                        //recombine the tooltip
                         for(int i = 1; i <= data.length-1; i ++){
                             tooltip += data[i];
                             tooltip += " ";
-                        }
-                    }else if(data[0].equals("ARG")){
+                        } break;
+                        case "ARG":
+                        //save every arg
                         for(int i = 1; i < data.length; i ++){
                             arguments.add(i-1, data[i]);
-                        }
-                    }else if(data[0].equals("FLAG")){
+                        } break;
+                        case "FLAG":
                         for(int i = 1; i < data.length; i ++){
                             flags.add(i-1, data[i]);
-                        }
+                        } break;
+                        case "---":
+                        System.out.println("Command break found.");
+                        end = true; break;
+                        default:
+                        System.out.println("Junk line found.");
+                        end = true;
+
+                    }
+                    else if(data[0].equals("FLAG")){
+
                     }else{
                         break;
                     }
