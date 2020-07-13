@@ -1,4 +1,4 @@
-INTERPRETER 
+INTERPRETER
 NAME bash
 TIP  bash interpreter
 PATH #!//bin/bash

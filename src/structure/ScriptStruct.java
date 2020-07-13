@@ -12,13 +12,14 @@ to the selected out-lang. Intended as the public face of the back-end.
 public class ScriptStruct{
     //variables-----------------------------------------------------------------
     @SuppressWarnings("FieldCanBeLocal")
-    private final String defaultInterp = "bash";
+    private final String defaultInterp      = "bash";
+    private static final String BREAKSEQ    = "---";
 
     /*'Flow' holds command representations of the GUI flowchart. */
     public ArrayList<Command> flow;
     //'out' holds the path to the desired output file
     String outPath;
-    
+
     //interpreter fields
     Hashtable<String, Interpreter> interpreterList;
     Interpreter interp;
@@ -32,13 +33,13 @@ public class ScriptStruct{
         interpreterList = generateInterpreters();
         changeInterpreter(defaultInterp);
     }
-    
+
     // with specified output path
     public ScriptStruct(String o){
         this(); //chain default constructor
         outPath = o;
     }
-    
+
     //subroutines---------------------------------------------------------------
     //getters/setters
     public String  getOutPath()             { return outPath; }
@@ -52,17 +53,20 @@ public class ScriptStruct{
     fields).
     NOTE: Currently just creates the test interpreter. */
     public static Hashtable<String, Interpreter> generateInterpreters(){
-        String path = "../commands/bash.ctecblock";
+        String path = "../commands/bash.ctecblock"; //hard-coded atm
         try{
-            Hashtable<String, Interpreter> interpreters = new Hashtable<String, Interpreter>();
-            BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
+            Hashtable<String, Interpreter> interpreters =
+                new Hashtable<String, Interpreter>();
+            BufferedReader reader =
+                new BufferedReader(new FileReader(new File(path)));
+            //parse the file
             parse(reader, interpreters);
-            
+
             return interpreters;
         }catch(FileNotFoundException ex){
             System.out.println("file " + path + " not found.\n");
         }
-        
+
         return null;
     }
 
@@ -87,7 +91,7 @@ public class ScriptStruct{
     Returns false if 'name' could not be found w/in interpreterList. */
     public boolean changeInterpreter(String name){
         boolean found = false;
-        
+
         if(interpreterList.get(name) != null) {
             found = true;
             interp = interpreterList.get(name);
@@ -96,52 +100,55 @@ public class ScriptStruct{
         if (!found) System.out.println("Could not find interp '" + name +"'");
         return found;//return whether or not it was found
     }
-    
+
     /* parse
-    parses input file and adds interpreters or commands as needed */
-    private static void parse(BufferedReader reader, Hashtable<String, Interpreter> interpreters){
+    Parses input file and adds interpreters or commands as needed */
+    private static void parse(BufferedReader reader,
+        Hashtable<String, Interpreter> interpreters){
         // variables
-        String string;
-        
+        String line;
+
         // reads input file and determines if current entry is a command,
         // an interpreter, or garbage input
         try{
-            while((string = reader.readLine()) != null){
-                String[] data = string.split(" ");
-                if(data[0].equals("INTERPRETER")){
+            while((line = reader.readLine()) != null){
+                line = line.trim();
+                if(line.equals("INTERPRETER"))
                     newInterpreter(reader, interpreters);
-                }else if(data[0].equals("COMMAND")){
+                else if(line.equals("COMMAND"))
                     newCommand(reader, interpreters);
-                }else{
-                    System.out.println("File formatting error" + data[0]);
-                }
+                else //junk data
+                    System.err.println("File formatting error" + line);
             }
         }catch(IOException ex){
-            System.out.println("IO Exception");
+            System.out.println("ERROR@ScriptStruct.parse()\n" +
+                "IO Exception: " + ex );
             return;
         }
     }
-    
+
     /* newInterpreter
-    Parses input file and adds interpreter to interpreters hashtable*/
-    private static int newInterpreter(BufferedReader reader, Hashtable<String, Interpreter> interpreters) {
+    Parses input file and adds interpreter to interpreters hashtable
+    Runs until it hits the break sequence "---". */
+    private static int newInterpreter(BufferedReader reader,
+        Hashtable<String, Interpreter> interpreters) {
         // variables
         String name = "",
                path = "",
                tooltip = "";
         int    returnVal = 0;
-        
+
         try{
             // this must be declared here because java
             String string;
-            
+
             while((string = reader.readLine()) != null){
             String[] data = string.split(" ");
                 // if delimiter, end while loop
-                if(data[0].equals("---")){
+                if(data[0].equals(BREAKSEQ)){
                     break;
                 }
-                
+
                 // check length and assign variable values
                 if(data.length > 1){
                     if(data[0].equals("NAME")){
@@ -155,17 +162,17 @@ public class ScriptStruct{
                     }
                 }
             }
-            
+
             // make a shiny new interpreter
             interpreters.put(name, new Interpreter(name, path, tooltip));
         }catch(IOException ex){
             System.out.println("IO Exception");
             returnVal = -1;
         }
-        
+
         return returnVal;
     }
-    
+
     /* newCommand
     Parses input file and adds command to commands ArrayList in the appropriate
     interpreter in interpreters */
@@ -178,18 +185,18 @@ public class ScriptStruct{
                           command = "",
                           tooltip = "";
         int               returnVal = 0;
-        
+
         try{
             // this must be declared here because java
             String string;
-            
+
             while((string = reader.readLine()) != null){
             String[] data = string.split(" ");
                 // if delimiter, end while loop
                 if(data[0].equals("---")){
                     break;
                 }
-                
+
                 // check length and assign variable values
                 if(data.length > 1){
                     if(data[0].equals("NAME")){
@@ -219,17 +226,17 @@ public class ScriptStruct{
                     }
                 }
             }
-            
+
             // make a shiny new command
             interpreters.get(interpreter).addCommand(name, new Command(name, command, tooltip, flags, arguments));
         }catch(IOException ex){
             System.out.println("IO Exception");
             returnVal = -1;
         }
-        
+
         return returnVal;
     }
-    
+
     //other subroutines
     /* getTemplateCommands
     Returns an ArrayList of all commands in the current interp.*/
