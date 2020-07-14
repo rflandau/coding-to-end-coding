@@ -36,6 +36,10 @@ import prefabs.CommandFlowVSP;
 import structure.Command;
 import structure.ScriptStruct;
 
+/*
+    Workspace
+    TODO: finish these comments
+*/
 public class Workspace extends Application {
     double              defaultWindowWidth = 800,   // default width in pixels
                         defaultWindowHeight = 600;  // default height in pixels
@@ -44,16 +48,22 @@ public class Workspace extends Application {
     AnchorPane          root;                       // holds all GUI elements
 
     /*
-    init is called right before start, before the application comes into being
-    Stuff for its parts shouldn't be made here, but anything that needs to be
-    prepared for the starting of the app that isn't JavaFX can go here
+        init()
+        called right before start, before the application comes into being
+        Stuff for its parts shouldn't be made here, but anything that needs to
+        be prepared for the starting of the app that isn't JavaFX can go here
     */
     @Override
     public void init() {
         structure = new ScriptStruct();
         sidebarCommands = structure.getTemplateCommands();
+        return;
     }
 
+    /*
+        start()
+        starts the JavaFX GUI
+    */
     @Override
     public void start(Stage stage) throws Exception {
         //load the FXML
