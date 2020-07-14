@@ -11,5 +11,7 @@
 jfx_path=lib/javafx-sdk-14.0.1/lib
 javac -d classes \
 	--module-path $jfx_path \
-	--add-modules javafx.controls \
+	--add-modules javafx.controls,javafx.fxml \
 	@sources.txt
+# Copy the fxml into the output dir
+cp resources/fxml/main.fxml classes/core/main.fxml
