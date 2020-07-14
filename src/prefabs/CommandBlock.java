@@ -148,6 +148,11 @@ public class CommandBlock extends StackPane {
     public String getCommandName() {
         return this.attachedCommand.getName();
     }
+
+    //get the associated command
+    public Command getCommand(){
+	return attachedCommand;
+    }
     
     //toggles a command block's ability to move
     public void setDraggable(boolean wantsToMove) {
@@ -181,7 +186,7 @@ public class CommandBlock extends StackPane {
         this.commandList);
     }
     public void delete(){
-        System.out.println("delete Called");
+        //System.out.println("delete Called");
         this.getChildren().remove(0,2);
     }
 }
