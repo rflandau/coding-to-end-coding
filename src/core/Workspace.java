@@ -91,8 +91,8 @@ public class Workspace extends Application {
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 
         //create non-fxml items
-        VerticalSortingPane sidebarVSP = new VerticalSortingPane();  // available commands
-        CommandFlowVSP canvasBoxVSP = new CommandFlowVSP(structure); // contains flowchart
+        sidebarVSP = new VerticalSortingPane();
+        canvasBoxVSP = new CommandFlowVSP(structure);
         //sidebarVbox.getChildren().add(sidebarVSP);
         canvasBox.getChildren().add(canvasBoxVSP);
 
