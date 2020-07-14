@@ -82,7 +82,7 @@ public class Workspace extends Application {
     //create non-fxml items
     VerticalSortingPane sidebarVSP = new VerticalSortingPane();  // contains available commands
     CommandFlowVSP canvasBoxVSP = new CommandFlowVSP(structure); // contains flowchart
-    //sidebarVbox.getChildren().add(sidebarVSP);
+    sidebarVbox.getChildren().add(sidebarVSP);
     canvasBox.getChildren().add(canvasBoxVSP);
     //------------------------------------------------------------
 	//Beginning of Event Handlers
@@ -110,113 +110,22 @@ public class Workspace extends Application {
     // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
-            CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
-            sidebarVbox.getChildren().add(b);
+            CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+            sidebarVSP.addCommandBlock(b);
         }
 
         stage.setScene(new Scene(root));
         stage.show();
 
-        /*
-        // local variables
-        AnchorPane root = new AnchorPane(),             // contains all GUI elements
-                   sidebarPane = new AnchorPane(),      // contains sidebar with available commands
-                   rightPane = new AnchorPane(),        // contains flowchart and export panes
-                   flowchartPane = new AnchorPane(),    // contains flowchart
-                   exportPane = new AnchorPane();       // contains export button
-        Scene      scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
-        SplitPane  vertical = new SplitPane(),          // vertical window divider
-                   horizontal = new SplitPane();        // horizontal window divider
-        ScrollBar  sidebarScroll = new ScrollBar(),     // scrollbar for left sidebar
-                   flowchartScroll = new ScrollBar();   // scrollbar for flowchart
-        //I'm sorry the class names are so long
-        
-        
-        // left and right panes
-        vertical.getItems().addAll(sidebarPane, rightPane);
-        vertical.setOrientation(Orientation.HORIZONTAL);
-        vertical.setDividerPositions(0.5f, 0.5f);
-        AnchorPane.setTopAnchor(vertical, 15.0);
-        AnchorPane.setRightAnchor(vertical, 15.0);
-        AnchorPane.setBottomAnchor(vertical, 15.0);
-        AnchorPane.setLeftAnchor(vertical, 15.0);
-        root.getChildren().addAll(vertical);
-
-        // top and bottom panes on right panel
-        horizontal.getItems().addAll(flowchartPane, exportPane);
-        horizontal.setOrientation(Orientation.VERTICAL);
-        horizontal.setDividerPositions(0.9f, 0.1f);
-        AnchorPane.setTopAnchor(horizontal, 0.0);
-        AnchorPane.setRightAnchor(horizontal, 0.0);
-        AnchorPane.setBottomAnchor(horizontal, 0.0);
-        AnchorPane.setLeftAnchor(horizontal, 0.0);
-        rightPane.getChildren().addAll(horizontal);
-
-        // setting up sidebar
-        //sidebar.setSpacing(10);   //VSPs don't have spacing (but maybe the should...)
-        sidebarPane.setTopAnchor(sidebar, 10.0);
-        sidebarPane.setLeftAnchor(sidebar, 145.0);
-        sidebarScroll.setOrientation(Orientation.VERTICAL);
-        sidebarPane.getChildren().add(sidebar);
-        //sidebar.setAlignment(Pos.CENTER); //VSPs auto-align to center
-        
-        // populating available commands
-        for(int i = 0; i < sidebarCommands.size(); i ++){
-            Command c = sidebarCommands.get(i);
-            CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,commandList);
-            sidebar.addCommandBlock(b);
-        }
-
-        // setting up flowchart
-        flowchartPane.setTopAnchor(flowchart, 10.0);
-        flowchartPane.setRightAnchor(flowchart, 145.0);
-        flowchartScroll.setOrientation(Orientation.VERTICAL);
-        flowchartPane.getChildren().add(flowchart);
-        //flowchart.setAlignment(Pos.CENTER);   VSPs automatically align to their centers
-        
-        //CommandFlowVSP constructor creates its own anchors
-        
-        // setting up button pane
-        ExportButton button = new ExportButton(100, 50, structure);
-        exportPane.setRightAnchor(button, 145.0);
-        exportPane.getChildren().add(button);
-
-        // event handler
-        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e){
-                //adding new command block
-                //VSP handles the reordering the list and command flow automatically
-                flowchart.addCommandBlock(new CommandBlock(
-                        0, //VSP cares not for block position
-                        0, 
-                        Color.WHITE,
-                        interp.getCommand("Hello World"), 
-                        commandList)
-                );
-            }
-        };
-        sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-
-        stage.setTitle("Coding to End Coding");
-        stage.setScene(scene);
-        stage.show(); */
     }
 
 
-	/*
-	*/
+	//Directly adds a command block to the flow
     public void addCommandBlock(CommandFlowVSP blockBox){
 	int index = structure.getFlowSize();
-	Command c = new Command("Hello World");
-	CommandBlock block = new CommandBlock(1,2,Color.WHITE,c,structure);
+	Command c = new Command("echo");
+	CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
 	blockBox.addCommandBlock(block);
-	/*
-	  int len = blockBox.getChildren().size();
-	  Rectangle endBlock = (Rectangle) blockBox.getChildren().get(len-1);
-	  blockBox.getChildren().remove(len-1);
-	  blockBox.getChildren().add(block);
-	  blockBox.getChildren().add(endBlock);
-	*/
+
     }
 }
