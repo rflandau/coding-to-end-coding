@@ -10,18 +10,24 @@ its file. The command can then be duplicated and added to flow. */
 
 public class Interpreter{
     //variables-----------------------------------------------------------------
-    String name,                            // Interpreter name
-           path,                            // path to the interpreter shell
-           tooltip;                         // tool tip for tollover events
     Hashtable<String, Command> commands;    // all available commands
-    
+    String                      name,       // Interpreter name
+                                path,       // path to the interpreter shell
+                                tooltip;    // tool tip for tollover events
+
     //constructors--------------------------------------------------------------
+    /*
+        constructor without tooltip
+    */
     public Interpreter(String n, String p){
         name = n;
         path = p;
         commands = new Hashtable<String, Command>();
     }
 
+    /*
+        constructor with tooltip
+    */
     public Interpreter(String n, String p, String t){
         name = n;
         path = p;
@@ -36,17 +42,21 @@ public class Interpreter{
     String getPath()            {return path;}
     void   setPath(String p)    {path = p;}
 
-    /* getCommand
-    Returns a command from the commands ht, searching by ID. */
+    /*
+        getCommand()
+        Returns a command from the commands ht, searching by ID.
+    */
     public Command getCommand(String cid){
         return commands.get(cid);
     }
 
-    /* addCommand
-    A wrapper for Hashtable.put() that wards duplicates.
-    Protected because commands should only ever be added by an internal,
-    initialize subroutine.
-    Returns false on failure. */
+    /*
+        addCommand()
+        A wrapper for Hashtable.put() that wards duplicates.
+        Protected because commands should only ever be added by an internal,
+        initialize subroutine.
+        Returns false on failure.
+    */
     boolean addCommand(String name, Command c){
         boolean toReturn = false;
         String error = "ERROR@Interpreter.addCommand()\n" +
@@ -60,7 +70,9 @@ public class Interpreter{
         return toReturn;
     }
 
-    /* toString
+    /*
+        toString()
+        concactenates Interpreter name and path
     */
     public String toString(){
         return name + " " + path;
