@@ -107,13 +107,22 @@ public class Workspace extends Application {
             }
             }
         });
+	
 	//Setting sidebar scrollbar
 	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
 				Number old_val, Number new_val){
 		sidebarVbox.setLayoutY(-new_val.doubleValue());
 	    }
-       });
+	});
+
+	//Setting Canvas scrollbar
+	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+				Number old_val, Number new_val){
+		canvasBox.setLayoutY(-new_val.doubleValue());
+	    }
+	});
 	
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
