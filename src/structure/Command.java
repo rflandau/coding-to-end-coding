@@ -2,34 +2,39 @@ package structure;
 
 import java.util.ArrayList;
 
-/* Command
-  Represents a command block and corresponding output code.
-  The syntax will look something like
+/*  Command
+    Represents a command block and corresponding output code.
+    The syntax will look something like
     echo <flags> <args>
-  before the <>'d  are replaced during ScriptStruct.generateScript() */
-
+    before the <>'d  are replaced during ScriptStruct.generateScript()
+*/
 public class Command{
     //variables-----------------------------------------------------------------
-    // basic info
-    private String              name,
-                                syntax,
-                                tooltip;
-    private ArrayList<String>   flags,
-                                arguments;
+    private String              name,       // command name
+                                syntax,     // literal command syntax
+                                tooltip;    // rollover tooltip
+    private ArrayList<String>   flags,      // command options
+                                arguments;  // command arguments
 
     //constructors--------------------------------------------------------------
-    // default constructor (used when members need to be assigned manually)
+    /*
+        default constructor (used when members need to be assigned manually)
+    */
     public Command(){
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
 
-    // a good constructor (used for start and end blocks)
+    /*
+        a good constructor (used for start and end blocks)
+    */
     public Command(String name){
         this.name = name;
     }
 
-    // a better constructor
+    /*
+        a better constructor
+    */
     public Command(String name, String syntax){
         this(name);
         this.syntax = syntax.trim(); //trim whitespace from syntax
@@ -38,7 +43,9 @@ public class Command{
         arguments = new ArrayList<String>();
     }
 
-    // the ultimate constructor
+    /*
+        the ultimate constructor
+    */
     public Command(String name,
                    String syntax,
                    String tooltip,
@@ -60,7 +67,10 @@ public class Command{
             this.arguments.add(i, arguments.get(i));
         }
     }
-    //duplication
+    
+    /*
+        duplication constructor
+    */
     public Command(Command c){
         name = c.getName();
         syntax = c.getSyntax();

@@ -1,10 +1,9 @@
 /*
- * TO-DO
- *  switching from holding a Command object to a Command object's id
- *  functionality for replacing the Command Blocks in the side bar
- *  functionality for correcting command block position
- */
-
+    TODO
+    switching from holding a Command object to a Command object's id
+    functionality for replacing the Command Blocks in the side bar
+    functionality for correcting command block position
+*/
 
 package prefabs;
 
@@ -32,104 +31,127 @@ import structure.Interpreter;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
 
+/*
+    CommandBlock
+    TODO: finish these comments
+*/
 public class CommandBlock extends StackPane {
-//fields-----------------------------------------------------------------------
-
-    public static double    width   = 100,  //width of all command blocks
-                            height  = 100;  //height of all command blocks
-    static enum livesOn{SIDEBAR, WORKSPACE} //determines where a command block is from
-
-    //instance variables
-    Command attachedCommand;
-    Paint commandColor;
-    livesOn home;    //where the CommandBlock originally came from
-    double homeX;
-    double homeY;
-    boolean draggable; //if the CommandBlock can be dragged or not
-    //currently uninitialized
-    int listIndex;
-    //I'm not sure if blocks will need to store their linked list connections, if they do
-    //    I'll put them here
-    ContextMenu contextMenu;
-    MenuItem deleteBlock;
-
-    ScriptStruct commandList;
-	//constructors--------------------------------------------------------------
-    //Command Blocks take their position, a JFX color, and the Command object they represent
+    //variables-----------------------------------------------------------------
     /*
-      Argument Desciptors:
-        xPos, the x coordinate of the command block
-	yPos, the y coordinate of the command block
-	color, the color of the command block
-	cmd, the command that the command block contains and represents
-	cmdL, the ScriptStruct reference
+        I'm assuming that every block is the same size. Rectangle has a native
+        constructor for size and color, so it's trivial to create a constructor
+        that takes size, position, and color
     */
+    public static double    width = 100,    // width in pixels
+                            height = 100;   // height in pixels
+    static enum livesOn     {SIDEBAR, WORKSPACE}
+    Command                 attachedCommand;// TODO: finish these comments
+    Paint                   commandColor;   // TODO: finish these comments
+    livesOn                 home;           // where the block came from
+    double                  homeX,          // TODO: finish these comments
+                            homeY;          // TODO: finish these comments
+    boolean                 draggable;      // if the block can be dragged
+    int                     listIndex;      // TODO: finish these comments
+    ContextMenu             contextMenu;    // TODO: finish these comments
+    MenuItem                deleteBlock;    // TODO: finish these comments
+    ScriptStruct            commandList;    // TODO: finish these comments
+    
+    //constructors--------------------------------------------------------------
+    /*
+        Argument Desciptors:
+        xPos, the x coordinate of the command block
+        yPos, the y coordinate of the command block
+        color, the color of the command block
+        cmd, the command that the command block contains and represents
+        cmdL, the ScriptStruct reference
+    */
+    public CommandBlock(double xPos, double yPos, Paint color,
+        Command cmd, ScriptStruct cmdL) {
+        
+        //creating the jfx container
+        super();
 
-	public CommandBlock(double xPos, double yPos, Paint color, Command cmd, ScriptStruct cmdL) {
-		//creating the jfx container
-		super();
+        //storing the represented Command object
+        this.attachedCommand = cmd;
+        this.commandList = cmdL;
 
-		//storing the represented Command object
-		this.attachedCommand = cmd;
-		this.commandList = cmdL;
+        //setting home (where the Command Block is on the sidebar)
+        this.homeX = xPos;
+        this.homeY = yPos;
+        this.home = livesOn.WORKSPACE;
 
-		//setting home (where the Command Block is on the sidebar)
-		this.homeX = xPos;
-		this.homeY = yPos;
-		this.home = livesOn.WORKSPACE;
+        //creating the visual shape and name label (and saving the block's color)
+        this.commandColor = color;
+        Rectangle rect = new Rectangle(CommandBlock.width,
+            CommandBlock.height, color);
+        Label text = new Label(cmd.getName());
 
-		//creating the visual shape and name label (and saving the block's color)
-		this.commandColor = color;
-		Rectangle rect = new Rectangle(CommandBlock.width, CommandBlock.height, color);
-		Label text = new Label(cmd.getName());
+        //adds visuals to the container
+        StackPane.setAlignment(rect, Pos.CENTER);
+        StackPane.setAlignment(text, Pos.CENTER);
+        this.getChildren().addAll(rect, text);
 
-		//adds visuals to the container
-		StackPane.setAlignment(rect, Pos.CENTER);
-		StackPane.setAlignment(text, Pos.CENTER);
-		this.getChildren().addAll(rect, text);
+        //placing the Command Block in the correct spot
+        this.relocate(xPos, yPos);
 
-		//placing the Command Block in the correct spot
-		this.relocate(xPos, yPos);
+        //adding drag and drop events
+        this.setOnDragDetected(new onCommandBlockDrag(this));
+        this.setOnMouseDragged(new onCommandBlockMove(this));
+        this.setOnMouseReleased(new onCommandBlockDrop(this));
+        this.setOnMouseDragEntered(new onCommandBlockHover(this));
+        
+        //Init ContextMenu
+        /*
+            Be careful, these events calculate position based on the top-left
+            corner of the command block. I hardcoded in an offset based off of
+            the above static values, but if we ever stop using those we'll
+            have to come back to this.
+            It will probably involve CommandBlocks simply knowing their own
+            size.
+        */
+        contextMenu = new ContextMenu();
+        deleteBlock = new MenuItem("Delete Command");
 
-		//adding drag and drop events
-		this.setOnDragDetected(new onCommandBlockDrag(this));
-		this.setOnMouseDragged(new onCommandBlockMove(this));
-		this.setOnMouseReleased(new onCommandBlockDrop(this));
-		this.setOnMouseDragEntered(new onCommandBlockHover(this));
-		/*
-		* Be careful, these events calculate position based on the top-left corner of the
-		* command block. I hardcoded in an offset based off of the above static values, but
-		* if we ever stop using those we'll have to come back to this.
-		* It will probably involve CommandBlocks simply knowing their own size.
-		*/
-		//Init ContextMenu
-		contextMenu = new ContextMenu();
-		deleteBlock = new MenuItem("Delete Command");
+        //ContextMenu Behavior
+        deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){delete();}
+        });
 
-		//ContextMenu Behavior
-		deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event){delete();}
-		});
+        contextMenu.getItems().addAll(deleteBlock);
+        rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+            @Override
+            public void handle(ContextMenuEvent event){
+                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+            }
+        });
+	text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+            @Override
+            public void handle(ContextMenuEvent event){
+                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+            }
+        });
+    }
+    //subroutines--------------------------------------------------------------
 
-		contextMenu.getItems().addAll(deleteBlock);
-		rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
-			@Override
-			public void handle(ContextMenuEvent event){
-				contextMenu.show(rect, event.getScreenX(), event.getScreenY());
-			}
-		});
+    /*
+        setHome()
+        allows the changing of a command block's home location, if need be
+    */
+    public void onSidebar(boolean val) {
+	if(val){
+	    this.home = livesOn.SIDEBAR;
 	}
-	//subroutines---------------------------------------------------------------
-
-    //allows the changing of a command block's home location, if need be
-    public void setHome(livesOn newHome) {
-        this.home = newHome;
     }
     
     //gets the name of the command the block is currently carrying
     public String getCommandName() {
         return this.attachedCommand.getName();
+    }
+
+    //get the associated command
+    public Command getCommand(){
+	return attachedCommand;
     }
     
     //toggles a command block's ability to move
@@ -175,20 +197,30 @@ public class CommandBlock extends StackPane {
     public void setHomeY(double newHomeY) {this.homeY = newHomeY;}
 }
 
-///CUSTOM EVENTS
-
 //event handlers classes--------------------------------------------------------
-/* onCommandBlockDrag
+/*
+    onCommandBlockDrag
+    TODO: finish these comments
 */
 class onCommandBlockDrag implements EventHandler<MouseEvent>{
-	CommandBlock targetBlock;
+    //variables----------------------------------------------------------------
+    CommandBlock targetBlock;  // the block being dragged
 
-	onCommandBlockDrag(CommandBlock block){
-		super();
-		this.targetBlock = block;
-	}
+    //constructors-------------------------------------------------------------
+    /*
+        onCommandBlockDrag
+        constructor
+    */
+    onCommandBlockDrag(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
 
-    //what happens when the user starts dragging the command block
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when the user starts dragging the command block
+    */
     @Override
     public void handle(MouseEvent event) {
         //expose other events to the mouse during the drag
@@ -205,45 +237,71 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
         targetBlock.startFullDrag();
         
         event.consume();
+        return;
     }
 }
 
-/* onCommandBlockMove
+/*
+    onCommandBlockMove
+    TODO: finish these comments
 */
 class onCommandBlockMove implements EventHandler<MouseEvent>{
-	CommandBlock targetBlock;
+    //variables----------------------------------------------------------------
+    CommandBlock targetBlock;
 
-	onCommandBlockMove(CommandBlock block){
-		super();
-		this.targetBlock = block;
-	}
+    //constructors-------------------------------------------------------------
+    /*
+        onCommandBlockMove()
+        constructor
+    */
+    onCommandBlockMove(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
 
-	//what happens when the user continuously drags the command block
-	@Override
-	public void handle(MouseEvent event) {
-	    //relocate needs parent-relative coordinates. The event gives scene-relative coordinates.
-	    //We need to go from scene to local to parent, which is why the methods below are used
-	    Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
-	            event.getSceneX() - CommandBlock.width/2,
-	            event.getSceneY() - CommandBlock.height/2
-	    ));
-		targetBlock.relocate(newPosition.getX(), newPosition.getY());
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when the user continuously drags the command block
+    */
+    @Override
+    public void handle(MouseEvent event) {
+        // relocate needs parent-relative coordinates. The event gives
+        // scene-relative coordinates.We need to go from scene to local to
+        // parent, which is why the methods below are used
+        Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
+                event.getSceneX() - CommandBlock.width/2,
+                event.getSceneY() - CommandBlock.height/2
+        ));
+        targetBlock.relocate(newPosition.getX(), newPosition.getY());
 
-		event.consume();
-	}
+        event.consume();
+    }
 }
 
-/* onCommandBlockDrop
+/*
+    onCommandBlockDrop
+    TODO: finish these comments
 */
 class onCommandBlockDrop implements EventHandler<MouseEvent>{
-	CommandBlock targetBlock;
+    //variables----------------------------------------------------------------
+    CommandBlock targetBlock;  // the block being dropped
 
-	onCommandBlockDrop(CommandBlock block){
-		super();
-		this.targetBlock = block;
-	}
+    //constructors-------------------------------------------------------------
+    /*
+        onCommandBlockDrop()
+        constructor
+    */
+    onCommandBlockDrop(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
 
-    //what happens when the user drops the command block
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when the user drops the command block
+    */
     @Override
     public void handle(MouseEvent event) {
         //if this block was dragged from the sidebar...
@@ -254,7 +312,7 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                 //add it to the scene graph
             }
 
-            //no matter what, blocks from the side bar will return to their original position
+            // blocks from the side bar will return to their original position
             targetBlock.relocate(targetBlock.homeX, targetBlock.homeY);
         }
 
@@ -270,7 +328,8 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                         event.getSceneY() - CommandBlock.height/2
                 );
                 
-                //ask its container to align it, if it can handle CorrectPosRequestEvent
+                //ask its container to align it, if it can handle
+                // CorrectPosRequestEvent
                 targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
             }
         }
@@ -281,28 +340,40 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
     }
 }
 
-/* onCommandBlockHover
+/*
+    onCommandBlockHover
+    TODO: finish these comments
 */
 class onCommandBlockHover implements EventHandler<MouseEvent>{
-	CommandBlock targetBlock;
+    //variables----------------------------------------------------------------
+    CommandBlock targetBlock;  // the block being hovered over
 
-	onCommandBlockHover(CommandBlock block){
-		super();
-		this.targetBlock = block;
-	}
+    //constructors-------------------------------------------------------------
+    /*
+        constructor
+    */
+    onCommandBlockHover(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
     
-    //what happens when something (probably a Command Block) is dragged over this
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when something (probably a Command Block) is dragged over
+    */
     @Override
     public void handle(MouseEvent event) {
-        //when dragged over, the command block passes itself and the point of contact(?) to its container,
-        //  if the container can handle a ReorderRequest
+        // when dragged over, the command block passes itself and the point of
+        // contact(?) to its container, if the container can handle a
+        // ReorderRequest
         Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
                 event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
         ));
         targetBlock.getParent().fireEvent(
-                new ReorderRequestEvent(targetBlock, newPosition.getX(), newPosition.getY())
+                new ReorderRequestEvent(targetBlock, newPosition.getX(),
+                newPosition.getY())
         );
     }
-    
 }
