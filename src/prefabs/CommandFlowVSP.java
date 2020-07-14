@@ -3,6 +3,7 @@ package prefabs;
 //import customEvents.CorrectPosRequestEvent;
 //import customEvents.ReorderRequestEvent;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 //import javafx.event.EventHandler;
 import javafx.scene.Node;
 //import javafx.scene.layout.Pane;
@@ -17,10 +18,7 @@ import structure.ScriptStruct;
  */
 
 public class CommandFlowVSP extends VerticalSortingPane {
-    //CommandBlock topAnchor;
-    //CommandBlock bottomAnchor;
     ScriptStruct commandStruct;
-    //Interpreter commandInterp;
     
     //constructor that generates new CommandBlocks for the anchors
     public CommandFlowVSP(ScriptStruct cmdStruct) {
@@ -29,43 +27,6 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //setting attached structures
         this.commandStruct = cmdStruct;
         
-        /*//creating anchors
-        this.topAnchor = new CommandBlock(0, 0, Color.GREY, new Command("start"), this.commandStruct);
-        this.bottomAnchor = new CommandBlock(0, 0, Color.GREY, new Command("end"), this.commandStruct);
-        //anchoring them
-        this.topAnchor.setDraggable(false);
-        this.bottomAnchor.setDraggable(false);
-        //making them visible
-        this.getChildren().add(0, this.topAnchor);
-        this.getChildren().add(this.bottomAnchor);
-
-        
-        
-        //order the VSP
-        this.refreshPane();*/
-    }
-    
-    //constructor that uses pre-generated CommandBlocks
-    public CommandFlowVSP(CommandBlock topAnch, CommandBlock botAnch, 
-            ScriptStruct cmdStruct, Interpreter cmdInterp) {
-        super();
-        
-        //setting attached ScriptStruct
-        this.commandStruct = cmdStruct;
-        
-        /*//setting anchors
-        this.topAnchor = topAnch;
-        this.bottomAnchor = botAnch;
-        //anchoring them
-        this.topAnchor.setDraggable(false);
-        this.bottomAnchor.setDraggable(false);
-        //making them visible
-        this.getChildren().add(0, this.topAnchor);
-        this.getChildren().add(this.bottomAnchor);
-        //it is assumed that these anchors are already in the command flow
-        
-        //order the VSP
-        this.refreshPane();*/
     }
     
     ///PUBLIC MANIPULATION METHODS
@@ -74,18 +35,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
     //adds an item to the VSP and automatically sorts it in
     @Override
     public void addCommandBlock(CommandBlock newItem) {
-        /*//guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
-        double guessedIndex = (newItem.getLayoutY() + newItem.getTranslateY()) / CommandBlock.height;
-        
-        //if it's above the list, put it below the top anchor (which is index 0)
-        if(guessedIndex <= 0) {guessedIndex = 1;}
-        //if it's below the list, put it above the bottom anchor (which is index ...size() - 1)
-        if(guessedIndex >= this.getChildren().size()) {guessedIndex = this.getChildren().size() - 2;}
-        
-        //I cast gussedIndex to int here instead of making it an int because PEMDAS is a stinker
-        this.getChildren().add((int)guessedIndex, newItem);
-        this.refreshPane();*/
-        
+        //add it to the VSP
         super.addCommandBlock(newItem);
         
         //add it to the actual command flow
@@ -100,19 +50,9 @@ public class CommandFlowVSP extends VerticalSortingPane {
         //remove it from the command flow
         this.commandStruct.removeCommandFromFlow(oldItemIndex);
         
-        //we just want the super method with CommandFlow trimmings
+        //remove it from the VSP
         return super.removeCommandBlock(oldItem);
     }
-    
-    /*//returns the topAnchor command block
-    public CommandBlock getTopAnchor() {
-        return this.topAnchor;
-    }
-    
-    //returns the bottomAnchor command block
-    public CommandBlock getBottomAnchor() {
-        return this.bottomAnchor;
-    }*/
     
     //returns the ScriptStruct object assigned to the VSP
     public ScriptStruct getCommandStruct() {
