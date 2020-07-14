@@ -1,9 +1,9 @@
 /*
- * TO-DO
- *  switching from holding a Command object to a Command object's id
- *  functionality for replacing the Command Blocks in the side bar
- *  functionality for correcting command block position
- */
+    TODO
+    switching from holding a Command object to a Command object's id
+    functionality for replacing the Command Blocks in the side bar
+    functionality for correcting command block position
+*/
 
 package prefabs;
 
@@ -40,7 +40,7 @@ public class CommandBlock extends StackPane {
     */
     public static double    width = 100,
                             height = 100;
-    static enum livesOn{SIDEBAR, WORKSPACE}
+    static enum livesOn     {SIDEBAR, WORKSPACE}
 
     //instance variables
     Command     attachedCommand;
@@ -58,17 +58,17 @@ public class CommandBlock extends StackPane {
 
     ScriptStruct commandList;
     //constructors--------------------------------------------------------------
-    //Command Blocks take their position, a JFX color, and the Command object they represent
     /*
-      Argument Desciptors:
+        Argument Desciptors:
         xPos, the x coordinate of the command block
-    yPos, the y coordinate of the command block
-    color, the color of the command block
-    cmd, the command that the command block contains and represents
-    cmdL, the ScriptStruct reference
+        yPos, the y coordinate of the command block
+        color, the color of the command block
+        cmd, the command that the command block contains and represents
+        cmdL, the ScriptStruct reference
     */
-
-    public CommandBlock(double xPos, double yPos, Paint color, Command cmd, ScriptStruct cmdL) {
+    public CommandBlock(double xPos, double yPos, Paint color,
+        Command cmd, ScriptStruct cmdL) {
+        
         //creating the jfx container
         super();
 
@@ -83,7 +83,8 @@ public class CommandBlock extends StackPane {
 
         //creating the visual shape and name label (and saving the block's color)
         this.commandColor = color;
-        Rectangle rect = new Rectangle(CommandBlock.width, CommandBlock.height, color);
+        Rectangle rect = new Rectangle(CommandBlock.width,
+            CommandBlock.height, color);
         Label text = new Label(cmd.getName());
 
         //adds visuals to the container
@@ -99,13 +100,16 @@ public class CommandBlock extends StackPane {
         this.setOnMouseDragged(new onCommandBlockMove(this));
         this.setOnMouseReleased(new onCommandBlockDrop(this));
         this.setOnMouseDragEntered(new onCommandBlockHover(this));
-        /*
-        * Be careful, these events calculate position based on the top-left corner of the
-        * command block. I hardcoded in an offset based off of the above static values, but
-        * if we ever stop using those we'll have to come back to this.
-        * It will probably involve CommandBlocks simply knowing their own size.
-        */
+        
         //Init ContextMenu
+        /*
+            Be careful, these events calculate position based on the top-left
+            corner of the command block. I hardcoded in an offset based off of
+            the above static values, but if we ever stop using those we'll
+            have to come back to this.
+            It will probably involve CommandBlocks simply knowing their own
+            size.
+        */
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
 
@@ -125,7 +129,10 @@ public class CommandBlock extends StackPane {
     }
     //subroutines---------------------------------------------------------------
 
-    //allows the changing of a command block's home location, if need be
+    /*
+        setHome()
+        allows the changing of a command block's home location, if need be
+    */
     public void setHome(livesOn newHome) {
         this.home = newHome;
     }
@@ -176,17 +183,26 @@ public class CommandBlock extends StackPane {
 ///CUSTOM EVENTS
 
 //event handlers classes--------------------------------------------------------
-/* onCommandBlockDrag
+/*
+    onCommandBlockDrag
+    TODO: finish these comments
 */
 class onCommandBlockDrag implements EventHandler<MouseEvent>{
     CommandBlock targetBlock;  // the block being dragged
 
+    /*
+        onCommandBlockDrag()
+        TODO: finish these comments
+    */
     onCommandBlockDrag(CommandBlock block){
         super();
         this.targetBlock = block;
     }
 
-    //what happens when the user starts dragging the command block
+    /*
+        handle()
+        what happens when the user starts dragging the command block
+    */
     @Override
     public void handle(MouseEvent event) {
         //expose other events to the mouse during the drag
@@ -206,7 +222,9 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     }
 }
 
-/* onCommandBlockMove
+/*
+    onCommandBlockMove
+    TODO: finish these comments
 */
 class onCommandBlockMove implements EventHandler<MouseEvent>{
 	CommandBlock targetBlock;
@@ -231,17 +249,26 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
 	}
 }
 
-/* onCommandBlockDrop
+/*
+    onCommandBlockDrop
+    TODO: finish these comments
 */
 class onCommandBlockDrop implements EventHandler<MouseEvent>{
     CommandBlock targetBlock;  // the block being dropped
 
+    /*
+        onCommandBlockDrop()
+        TODO: finish these comments
+    */
     onCommandBlockDrop(CommandBlock block){
         super();
         this.targetBlock = block;
     }
 
-    //what happens when the user drops the command block
+    /*
+        handle()
+        what happens when the user drops the command block
+    */
     @Override
     public void handle(MouseEvent event) {
         //if this block was dragged from the sidebar...
@@ -252,7 +279,7 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                 //add it to the scene graph
             }
 
-            //no matter what, blocks from the side bar will return to their original position
+            // blocks from the side bar will return to their original position
             targetBlock.relocate(targetBlock.homeX, targetBlock.homeY);
         }
 
@@ -279,7 +306,9 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
     }
 }
 
-/* onCommandBlockHover
+/*
+    onCommandBlockHover
+    TODO: finish these comments
 */
 class onCommandBlockHover implements EventHandler<MouseEvent>{
     CommandBlock targetBlock;  // the block being hovered over

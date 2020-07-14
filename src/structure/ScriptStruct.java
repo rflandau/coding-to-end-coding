@@ -6,11 +6,12 @@ import java.util.Collection;
 import java.io.*;
 import java.lang.StringBuilder;
 
-/* ScriptStruct
-Represents the main generation class for storing the flowchart and outputting
-to the selected out-lang. Intended as the public face of the back-end.
-'.export()' is the public-facing method for printing the script. */
-
+/*
+    ScriptStruct
+    Represents the main generation class for storing the flowchart and
+    outputting to the selected out-lang. Intended as the public face of the
+    back-end. '.export()' is the public-facing method for printing the script.
+*/
 public class ScriptStruct{
     //variables-----------------------------------------------------------------
     @SuppressWarnings("FieldCanBeLocal")
@@ -22,9 +23,10 @@ public class ScriptStruct{
     Interpreter                 interp;                 // current Interpreter
     
     //constructors--------------------------------------------------------------
-    /* The SS constructor creates flow, sets all fields, and initalizes the
-    interpreters */
-    // default constructor
+    /*
+        default constructor
+        creates flow, sets all fields, and initalizes the interpreters
+    */
     public ScriptStruct(){
         flow = new ArrayList<Command>();
         outPath = "out.txt";
@@ -34,7 +36,10 @@ public class ScriptStruct{
         changeInterpreter(DEFAULTINTERP);
     }
 
-    // with specified output path
+    /*
+        constructor with specified output path
+        creates flow, sets all fields, and initalizes the interpreters
+    */
     public ScriptStruct(String o){
         this(); //chain default constructor
         outPath = o;
@@ -48,9 +53,11 @@ public class ScriptStruct{
     public Command getCommand(int i)        { return flow.get(i); }
 
     //build the interpreters
-    /* generateInterpreters
-    Used to populate the Hashtable of interpreter objects (as well as fill their
-    fields).*/
+    /*
+        generateInterpreters()
+        Used to populate the Hashtable of interpreter objects (as well as fill
+        their fields).
+    */
     void generateInterpreters(){
         String path = "../commands/bash.ctecblock";     // default input path
         
@@ -66,9 +73,11 @@ public class ScriptStruct{
     }
 
     //parse subroutines
-    /* parse
-    Parses input file and adds interpreters or commands to interpreterList
-    as needed */
+    /*
+        parse()
+        Parses input file and adds interpreters or commands to interpreterList
+        as needed
+    */
     private void parse(BufferedReader reader){
         String line;    // current line read by BufferedReader
 
@@ -88,13 +97,15 @@ public class ScriptStruct{
         }catch(IOException ex){
             System.out.println("ERROR@ScriptStruct.parse()\n" +
             "IO Exception: " + ex );
-            return;
         }
+        return;
     }
 
-    /* newInterpreter
-    Parses input file and adds interpreter to interpreters hashtable
-    Runs until it hits the break sequence "---". */
+    /*
+        newInterpreter()
+        Parses input file and adds interpreter to interpreters hashtable
+        Runs until it hits the break sequence "---".
+    */
     private int newInterpreter(BufferedReader reader) {
         String  name = "",      // Interpreter name
                 path = "",      // path to Interpreter shell
@@ -118,7 +129,6 @@ public class ScriptStruct{
                     else if(data[0].equals("PATH")) path = data[1];
                     else if(data[0].equals("TIP"))  tooltip = data[1];
                     else break; //should this not just warn and continue?
-
                 }
             }
 
@@ -132,9 +142,11 @@ public class ScriptStruct{
         return returnVal;
     }
 
-    /* newCommand
-    Parses input file and adds command to commands ArrayList in the appropriate
-    interpreter in interpreters */
+    /*
+        newCommand()
+        Parses input file and adds command to commands ArrayList in the
+        appropriate interpreter in interpreters
+    */
     private int newCommand(BufferedReader reader) {
         ArrayList<String>  args = new ArrayList<String>(),  // temp arguments
                            flags = new ArrayList<String>(); // temp flags
@@ -194,17 +206,24 @@ public class ScriptStruct{
     }
 
     //other subroutines
-    /* getTemplateCommands
-    Returns an ArrayList of all commands in the current interp.*/
+    /*
+        getTemplateCommands()
+        Returns an ArrayList of all commands in the current interp
+    */
     public ArrayList<Command> getTemplateCommands(){
+        ArrayList<Command> returnVal = null;
+    
         if(interp != null){
-            return new ArrayList<Command>(interp.commands.values());
+            returnVal = new ArrayList<Command>(interp.commands.values());
         }
-        return null;
+        return returnVal;
     }
-    /* changeInterpreter
-    Tries to set the current interp to the one named 'name'.
-    Returns false if 'name' could not be found w/in interpreterList. */
+    
+    /*
+        changeInterpreter()
+        Tries to set the current interp to the one named 'name'.
+        Returns false if 'name' could not be found w/in interpreterList.
+    */
     public boolean changeInterpreter(String name){
         boolean found = false;  // return value
 
@@ -218,11 +237,13 @@ public class ScriptStruct{
     }
 
     //interact with flow
-    /* addCommandToFlow
-    Takes an id for a command, duplicates it from the current interpreter,
-    and adds the new command to flow.
-    Alternative to addCommandToFlow() so Commands do not have to be passed.
-    Does nothing if id is not found in interpreter hash. */
+    /*
+        addCommandToFlow()
+        Takes an id for a command, duplicates it from the current interpreter,
+        and adds the new command to flow.
+        Alternative to addCommandToFlow() so Commands do not have to be passed.
+        Does nothing if id is not found in interpreter hash.
+    */
     public void addCommandToFlow(int i, String id){
         Command fetched;    // template Command fetched from Interpreter
 
@@ -237,9 +258,11 @@ public class ScriptStruct{
         return;
     }
 
-    /* removeCommandFromFlow
-    Removes the command at given index from flow.
-    If index is out of range, prints error to terminal and does nothing. */
+    /*
+        removeCommandFromFlow()
+        Removes the command at given index from flow.
+        If index is out of range, prints error to terminal and does nothing.
+    */
     public void removeCommandFromFlow(int i){
         if(i < getFlowSize() && i >= 0){
             System.out.println(flow.get(i).getName()+" removed from flow");
@@ -252,42 +275,50 @@ public class ScriptStruct{
     }
 
     //export____________________________________________________________________
-    /* writeScript
-    Helper function for export().
-    Writes a (multi-line) string of the completed script, built from the
-    items in 'flow'.
-    Uses Global.curInterp to figure out langauge, so make sure it is set
-    properly before calling.
-    Throws IOException if file to write to was not checked previously. Call
-    createOutFile() for proper error-handling. */
+    /*
+        writeScript()
+        Helper function for export().
+        Writes a (multi-line) string of the completed script, built from the
+        items in 'flow'.
+        Uses Global.curInterp to figure out langauge, so make sure it is set
+        properly before calling.
+        Throws IOException if file to write to was not checked previously. Call
+        createOutFile() for proper error-handling.
+    */
     private void writeScript(BufferedWriter br, Interpreter interp)
         throws IOException{
+        boolean error = false;
 
         //add interpreter path to top of script, plus newline
         try{
             br.write(interp.getPath() + "\n\n");
         }catch(IOException e){
             System.out.println("Caught exception " + e);
-            return;
+            error = true;
         }
-        System.out.println(interp.getPath());
+        
+        if(!error){
+            System.out.println(interp.getPath());
 
-        //iterate through every element in 'flow'
-        for(int i = 0; i<flow.size(); i++){
-            Command c = flow.get(i);
-            br.write(c.getSyntax() + " " + c.getArguments() + "\n");
+            //iterate through every element in 'flow'
+            for(int i = 0; i<flow.size(); i++){
+                Command c = flow.get(i);
+                br.write(c.getSyntax() + " " + c.getArguments() + "\n");
+            }
+
+            //ensure the script is end-capped by a newline
+            br.write("\n");
+            //close writer
+            br.close();
         }
-
-        //ensure the script is end-capped by a newline
-        br.write("\n");
-        //close writer
-        br.close();
         return;
     }
 
-    /* createOutFile
-    Helper function for export().
-    Tests the output file and returns a File on success.*/
+    /*
+        createOutFile()
+        Helper function for export().
+        Tests the output file and returns a File on success.
+    */
     private File createOutFile(){
         File toReturn;  // File object to be returned
         
@@ -306,9 +337,11 @@ public class ScriptStruct{
         return toReturn;
     }
 
-    /* export
-    Calls writeScript to return the script before printing it to 'out'.
-    Will return -1 if file cannot be created or opened. */
+    /*
+        export()
+        Calls writeScript to return the script before printing it to 'out'.
+        Will return -1 if file cannot be created or opened.
+    */
     public boolean export() throws IOException{
         File            out = createOutFile();      // for script output
         BufferedWriter  reader;                     // creates output file
@@ -321,15 +354,17 @@ public class ScriptStruct{
             //call helper function
             writeScript(reader, interp);
             reader.close();
-        } else toReturn = false; //return false on null
+        } else toReturn = false;
 
         return toReturn;
     }
     
     //other_____________________________________________________________________
-    /* toString
-    Prints the ScriptStruct in full, calling toStrings for commands and
-    interpreters. */
+    /*
+        toString()
+        Prints the ScriptStruct in full, calling toStrings for commands and
+        interpreters.
+    */
     public String toString(){
         StringBuilder returnVal = new StringBuilder(100);   // arbitrary value
         ArrayList<Interpreter> interpArr = new
