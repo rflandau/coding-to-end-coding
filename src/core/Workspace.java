@@ -17,23 +17,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 
-// import javafx.scene.Group;
-// import javafx.scene.shape.Rectangle;    //for sidebar shape
-// import javafx.scene.layout.BorderPane;  //for vertical ordering of sidebar objects
-// import javafx.scene.layout.StackPane;   //for vertical ordering of sidebar objects
-// import javafx.geometry.Insets;          //for sidebar spacing
-
 import java.util.ArrayList;             //for backend ArrayList
 import java.util.Hashtable;
+import java.lang.System;
 import java.io.IOException;
 
 //Import Event Handling
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
-//import javafx.scene.image.Image;
-//import javafx.scene.layout.*;
 
 
 //import our other packages
@@ -62,7 +54,7 @@ public class Workspace extends Application {
     */
     @Override
     public void init() {
-	structure = new ScriptStruct();
+        structure = new ScriptStruct();
         sidebarCommands = structure.getTemplateCommands();
     }
 
@@ -115,13 +107,13 @@ public class Workspace extends Application {
 	//Linking Event Handlers to items
 	sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
 
-	// populating available commands
+    // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
             sidebarVbox.getChildren().add(b);
         }
-	
+
         stage.setScene(new Scene(root));
         stage.show();
 

@@ -23,10 +23,12 @@ public class Command{
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
+
     // a good constructor (used for start and end blocks)
     public Command(String name){
         this.name = name;
     }
+
     // a better constructor
     public Command(String name, String syntax){
         this(name);
@@ -35,18 +37,27 @@ public class Command{
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
+
     // the ultimate constructor
-    public Command(String name, String syntax,
-					String tooltip, ArrayList<String> flags,
-					ArrayList<String> arguments){
-        this(name, syntax);
+    public Command(String name,
+                   String syntax,
+                   String tooltip,
+                   ArrayList<String> flags,
+                   ArrayList<String> arguments){
+        this.name = name;
+        this.syntax = syntax;
         this.tooltip = tooltip;
-        for(int i = 0; i < flags.size(); i ++){
-            flags.add(i, flags.get(i));
+
+        this.flags = new ArrayList<String>();
+        int flagSize = flags.size();
+        for(int i = 0; i < flagSize; i ++){
+            this.flags.add(i, flags.get(i));
         }
-        arguments = new ArrayList<String>();
-        for(int i = 0; i < arguments.size(); i ++){
-            arguments.add(i, arguments.get(i));
+
+        this.arguments = new ArrayList<String>();
+        int argumentSize = arguments.size();
+        for(int i = 0; i < argumentSize; i ++){
+            this.arguments.add(i, arguments.get(i));
         }
     }
     //duplication
@@ -56,7 +67,7 @@ public class Command{
         tooltip = c.getTooltip();
         flags = new ArrayList<String>();
         ArrayList<String> f = c.getFlags();
-        for(int i = 0; i < f.size(); i ++){
+        for(int i = 0; f != null && i < f.size(); i ++){
             flags.add(i, f.get(i));
         }
         arguments = new ArrayList<String>();
@@ -86,8 +97,10 @@ public class Command{
         for(int i = 0; i < a.size(); i ++){
             arguments.add(i, a.get(i));
         }
-        return; 
+        return;
     }
-
+    public String toString(){
+        return name + " -> " + syntax;
+    }
     //static subroutines--------------------------------------------------------
 }
