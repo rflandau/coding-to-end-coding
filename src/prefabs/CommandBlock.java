@@ -170,25 +170,31 @@ public class CommandBlock extends StackPane {
         }
     }
 
-    /*
-        copy()
-        returns a deep copy of the command block this method is called on
-        localToScene(0, 0) as it translates the position of the block
-        relative to itself (0, 0) to the position of the block relative to
-        the sene
-    */
-    public CommandBlock copy() {
-        return new CommandBlock(
-        this.localToScene(0, 0).getX(),
-        this.localToScene(0, 0).getY(),
-        this.commandColor,
-        this.attachedCommand,
-        this.commandList);
-    }
-    public void delete(){
-        //System.out.println("delete Called");
-        this.getChildren().remove(0,2);
-    }
+    //returns a deep copy of the command block this method is called on
+	public CommandBlock copy() {
+		//we use localToScene(0, 0) to translate the block's position relative to itself to the scene
+		return new CommandBlock(
+		this.localToScene(0, 0).getX(),
+		this.localToScene(0, 0).getY(),
+		this.commandColor,
+		this.attachedCommand,
+		this.commandList);
+	}
+	public void delete(){
+		System.out.println("delete Called");
+		this.getChildren().remove(0,2);
+		//There is currently no way to find the index so this is commented out
+		//commandList.removeCommandFromFlow(listIndex);
+	}
+	
+	//these f
+    public double getHomeX() {return this.homeX;}
+    
+    public double getHomeY() {return this.homeY;}
+    
+    public void setHomeX(double newHomeX) {this.homeX = newHomeX;}
+    
+    public void setHomeY(double newHomeY) {this.homeY = newHomeY;}
 }
 
 //event handlers classes--------------------------------------------------------
