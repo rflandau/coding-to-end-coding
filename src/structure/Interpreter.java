@@ -1,13 +1,14 @@
 package structure;
 import java.util.Hashtable;
 
-/* Interpreter
-Represents a specific interpreter and its associated command blocks' codes.
-NYI: Each interp's commands is populated on load from the command library.
-The hashtable of an interp pairs name of a specific command block to a Command
-instance. The command instance is the basic info of a command, as loaded from
-its file. The command can then be duplicated and added to flow. */
-
+/*
+    Interpreter
+    Represents a specific interpreter and its associated command blocks' codes.
+    NYI: Each interp's commands is populated on load from the command library.
+    The hashtable of an interp pairs name of a specific command block to a
+    Command instance. The command instance is the basic info of a command, as
+    loaded from its file. The command can then be duplicated and added to flow.
+*/
 public class Interpreter{
     //variables-----------------------------------------------------------------
     Hashtable<String, Command> commands;    // all available commands

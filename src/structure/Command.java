@@ -2,12 +2,12 @@ package structure;
 
 import java.util.ArrayList;
 
-/* Command
-  Represents a command block and corresponding output code.
-  The syntax will look something like
+/*  Command
+    Represents a command block and corresponding output code.
+    The syntax will look something like
     echo <flags> <args>
-  before the <>'d  are replaced during ScriptStruct.generateScript() */
-
+    before the <>'d  are replaced during ScriptStruct.generateScript()
+*/
 public class Command{
     //variables-----------------------------------------------------------------
     private String              name,       // command name
