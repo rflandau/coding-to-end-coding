@@ -72,7 +72,7 @@ public class VerticalSortingPane extends Pane {
         //first, check if the node is actually in the VSP
         if(node.getParent().equals(this)) {
             //horizontally center the node to the top element
-            node.setLayoutX(this.getChildren().get(0).getLayoutX());
+            //node.setLayoutX(this.getChildren().get(0).getLayoutX());
             /*
              * Adjust the vertical by assessing position. If nodeY % CommandBlock.height <= 50 (misalignment), 
              * we raise it by 50. If not, we lower it by 1 - that value. This is off of the 'low y = up high' 
@@ -84,7 +84,9 @@ public class VerticalSortingPane extends Pane {
             double adjustmentValue = misalignment <= CommandBlock.height/2 ? misalignment : -(CommandBlock.height - misalignment);
             //adjust the actual height
             //I don't know why, but it's always off by 1...
-            node.setLayoutY(node.getLayoutY() - adjustmentValue + 1);
+            //node.setLayoutY(node.getLayoutY() - adjustmentValue + 1);
+            double newY = node.localToParent(0, 0).getY() - adjustmentValue;
+            node.relocate(0, newY);
         }
     }
     
@@ -102,15 +104,36 @@ public class VerticalSortingPane extends Pane {
             //shift the source down to make room for the guest
             System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
             source.relocate(0, sourceY + CommandBlock.height);
-            System.out.println("Relocated from " + sourceY + " to " + source.localToParent(0, 0).getY());
         }
         //else the guest came from above the source
         else {
             //shift the source up to make room for the guest
             System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
             source.relocate(0, sourceY - CommandBlock.height);
-            System.out.println("Relocated from " + sourceY + " to " + source.localToParent(0, 0).getY());
+            
         }
+        double newY = source.localToParent(0, 0).getY();
+        System.out.println("Relocated from " + sourceY + " to " + newY);
+        
+        ///TEMP CODE TO HANDLE MISPOSITIONINGS THAT SHOULDN'T HAPPEN
+        //highestIndex is the biggest index an item can have right now
+        int highestIndex = this.getChildren().size() - 1;
+        //if the new position goes too high...
+        if(newY > highestIndex * 100) {
+            System.err.println("Command block overshot list. Relocating to " + highestIndex * 100);
+            source.relocate(0, highestIndex * 100);
+            newY = highestIndex * 100;
+        }
+        //or too low
+        if(newY < 0) {
+            System.err.println("Command block overshot list. Relocating to " + (double)0);
+            source.relocate(0, highestIndex * 100);
+            newY = 0;
+        }
+        ///END TEMP CODE
+        
+        //change it's index to be the new height divided by 100
+        this.changeIndex((int)(newY / CommandBlock.height), source);
     }
     
     //refreshes the layout of the list. I expect this to be computationally expensive so use sparingly
@@ -139,12 +162,17 @@ public class VerticalSortingPane extends Pane {
         //if removing the item from the list would move the destination position forward 1, move the index
         //      forward 1
         if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;}
-        ///TEMP CODE
+        ///TEMP CODE TO DEAL WITH ITEMS OVERSHOOTING THE LIST
         //check to see if something overshot where it should go
-        if(nodeList.size() - 1 < newIndex) {
+        if(newIndex > nodeList.size() - 1) {
             newIndex = nodeList.size() - 1;
             System.out.println("an item overshot the list");
         }
+        if(newIndex < 0) {
+            newIndex = 0;
+            System.out.println("an item undershot the list");
+        }
+        ///END TEMP CODE
         //remove from old places
         nodeList.remove(movingItem);
         //placing into new places

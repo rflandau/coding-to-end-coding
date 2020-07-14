@@ -126,8 +126,9 @@ public class CommandFlowVSP extends VerticalSortingPane {
     void reorderItem(CommandBlock source, double guestY) {
         //we just want the super method with commandflow trappings
         super.reorderItem(source, guestY);
-        //update index of moved item, if needed
-        this.changeIndex((int)(source.localToParent(0, 0).getY() / CommandBlock.height), source);
+        
+        //update index of moved item in the flow, if needed
+        this.changeFlowIndex(this.getChildren().indexOf(source), source);
     }
     
     /*//refreshes the layout of the list. I expect this to be computationally expensive so use sparingly
@@ -159,13 +160,11 @@ public class CommandFlowVSP extends VerticalSortingPane {
     
     ///PRIVATE HELPER METHODS
     
-    //changes a node's index in the observable list
-    @Override
-    void changeIndex(int newIndex, CommandBlock movingItem) {
+    //changes a node's index in the command flow
+    void changeFlowIndex(int newIndex, CommandBlock movingItem) {
         ObservableList<Node> nodeList = this.getChildren();
         //remove from old places
         this.commandStruct.removeCommandFromFlow(nodeList.indexOf(movingItem));
-        super.changeIndex(newIndex, movingItem);
         this.commandStruct.addCommandToFlow(newIndex, movingItem.getCommandName());
     }
 

@@ -82,7 +82,7 @@ public class Workspace extends Application {
     //create non-fxml items
     VerticalSortingPane sidebarVSP = new VerticalSortingPane();  // contains available commands
     CommandFlowVSP canvasBoxVSP = new CommandFlowVSP(structure); // contains flowchart
-    sidebarVbox.getChildren().add(sidebarVSP);
+    //sidebarVbox.getChildren().add(sidebarVSP);
     canvasBox.getChildren().add(canvasBoxVSP);
     //------------------------------------------------------------
 	//Beginning of Event Handlers
@@ -111,7 +111,7 @@ public class Workspace extends Application {
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
-            sidebarVSP.addCommandBlock(b);
+            sidebarVbox.getChildren().add(b);
         }
 
         stage.setScene(new Scene(root));

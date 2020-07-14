@@ -193,8 +193,6 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     //what happens when the user starts dragging the command block
     @Override
     public void handle(MouseEvent event) {
-        System.out.println("Starting drag at " + event.getScreenY());
-        
         //expose other events to the mouse during the drag
         targetBlock.setMouseTransparent(true);
         
@@ -273,7 +271,6 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                         event.getSceneX() - CommandBlock.width/2, 
                         event.getSceneY() - CommandBlock.height/2
                 );
-                System.out.println(event.getScreenY());
                 
                 //ask its container to align it, if it can handle CorrectPosRequestEvent
                 targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
