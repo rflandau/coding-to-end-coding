@@ -14,29 +14,24 @@ to the selected out-lang. Intended as the public face of the back-end.
 public class ScriptStruct{
     //variables-----------------------------------------------------------------
     @SuppressWarnings("FieldCanBeLocal")
-    private final String defaultInterp      = "bash";
-    private static final String BREAKSEQ    = "---";
-
-    /*'Flow' holds command representations of the GUI flowchart. */
-    public ArrayList<Command> flow;
-    //'out' holds the path to the desired output file
-    String outPath;
-
-    //interpreter fields
-    Hashtable<String, Interpreter> interpreterList;
-    Interpreter interp;
+    private final String        DEFAULTINTERP = "bash"; // default interpreter
+    private static final String BREAKSEQ = "---";       // ctecblock delimiter
+    public ArrayList<Command>   flow;                   // flowchart commands
+    String                      outPath;                // path to output file
+    Hashtable<String, Interpreter> interpreterList;     // all Interpreters
+    Interpreter                 interp;                 // current Interpreter
+    
     //constructors--------------------------------------------------------------
     /* The SS constructor creates flow, sets all fields, and initalizes the
     interpreters */
     // default constructor
     public ScriptStruct(){
-        //initalize
         flow = new ArrayList<Command>();
         outPath = "out.txt";
         interpreterList = new Hashtable<String, Interpreter>();
         //interpreterList = generateInterpreters();
         generateInterpreters();
-        changeInterpreter(defaultInterp);
+        changeInterpreter(DEFAULTINTERP);
     }
 
     // with specified output path
@@ -57,7 +52,8 @@ public class ScriptStruct{
     Used to populate the Hashtable of interpreter objects (as well as fill their
     fields).*/
     void generateInterpreters(){
-        String path = "../commands/bash.ctecblock"; //hard-coded atm
+        String path = "../commands/bash.ctecblock";     // default input path
+        
         try{
             BufferedReader reader =
             new BufferedReader(new FileReader(new File(path)));
@@ -74,8 +70,7 @@ public class ScriptStruct{
     Parses input file and adds interpreters or commands to interpreterList
     as needed */
     private void parse(BufferedReader reader){
-        // variables
-        String line;
+        String line;    // current line read by BufferedReader
 
         // reads input file and determines if current entry is a command,
         // an interpreter, or garbage input
@@ -101,18 +96,16 @@ public class ScriptStruct{
     Parses input file and adds interpreter to interpreters hashtable
     Runs until it hits the break sequence "---". */
     private int newInterpreter(BufferedReader reader) {
-        // variables
-        String name = "",
-        path = "",
-        tooltip = "";
-        int    returnVal = 0;
+        String  name = "",      // Interpreter name
+                path = "",      // path to Interpreter shell
+                tooltip = "";   // rollover tooltip describing Interpreter
+        int     returnVal = 0;  // return value
 
         try{
-            // this must be declared here because java
-            String string;
+            String string;      // current string read by BufferedReader
 
             while((string = reader.readLine()) != null){
-            String[] data = string.trim().split(" ");
+            String[] data = string.trim().split(" "); //*******************************************************************//
                 // if delimiter, end while loop
                 if(data[0].equals(BREAKSEQ)){
                     break;
@@ -142,21 +135,19 @@ public class ScriptStruct{
     Parses input file and adds command to commands ArrayList in the appropriate
     interpreter in interpreters */
     private int newCommand(BufferedReader reader) {
-        // variables
-        ArrayList<String>   arguments = new ArrayList<String>(),
-                            flags = new ArrayList<String>();
-        String              name = "",
-                            interpreter = "",
-                            command = "",
-                            tooltip = "";
-        int                 returnVal = 0;
+        ArrayList<String>  args = new ArrayList<String>(),  // temp arguments
+                           flags = new ArrayList<String>(); // temp flags
+        String             name = "",                       // temp name
+                           interpreter = "",                // temp interpreter
+                           command = "",                    // temp command
+                           tooltip = "";                    // temp tooltip
+        int                returnVal = 0;                   // return value
 
         try{
-            // this must be declared here because java
-            String  string;
+            String string;      // current string read by BufferedReader
 
             while((string = reader.readLine()) != null){
-            String[] data = string.trim().split(" ");
+            String[] data = string.trim().split(" "); //*******************************************************************//
                 // if delimiter, end while loop
                 if(data[0].equals("---")){
                     break;
@@ -182,7 +173,7 @@ public class ScriptStruct{
                         }
                     }else if(data[0].equals("ARG")){
                         for(int i = 1; i < data.length; i ++){
-                            arguments.add(i-1, data[i]);
+                            args.add(i-1, data[i]);
                         }
                     }else if(data[0].equals("FLAG")){
                         for(int i = 1; i < data.length; i ++){
@@ -195,7 +186,7 @@ public class ScriptStruct{
             }
             // make a shiny new command in the designated interpreter
             interpreterList.get(interpreter).addCommand(name,
-                new Command(name, command, tooltip, flags, arguments));
+                new Command(name, command, tooltip, flags, args));
         }catch(IOException ex){
             System.out.println("IO Exception");
             returnVal = -1;
@@ -216,7 +207,7 @@ public class ScriptStruct{
     Tries to set the current interp to the one named 'name'.
     Returns false if 'name' could not be found w/in interpreterList. */
     public boolean changeInterpreter(String name){
-        boolean found = false;
+        boolean found = false;  // return value
 
         if(interpreterList.get(name) != null) {
             found = true;
@@ -234,7 +225,7 @@ public class ScriptStruct{
     Alternative to addCommandToFlow() so Commands do not have to be passed.
     Does nothing if id is not found in interpreter hash. */
     public void addCommandToFlow(int i, String id){
-        Command fetched;
+        Command fetched;    // template Command fetched from Interpreter
 
         if (0 <= i && i <= getFlowSize()){ //validate index
             if((fetched = interp.getCommand(id)) != null) //check the id exists
@@ -299,7 +290,8 @@ public class ScriptStruct{
     Helper function for export().
     Tests the output file and returns a File on success.*/
     private File createOutFile(){
-        File toReturn;
+        File toReturn;  // File object to be returned
+        
         try{
             toReturn = new File(outPath);
             if(toReturn.createNewFile())
@@ -319,42 +311,40 @@ public class ScriptStruct{
     Calls writeScript to return the script before printing it to 'out'.
     Will return -1 if file cannot be created or opened. */
     public boolean export() throws IOException{
-        ///variables
-        File out = createOutFile();
-        BufferedWriter br;
-        boolean toReturn = true;
+        File            out = createOutFile();      // for script output
+        BufferedWriter  reader;                     // creates output file
+        boolean         toReturn = true;            // return value
 
         //check for null
         if(out != null){
             //assign BufferedWriter
-            br = new BufferedWriter(new FileWriter(out));
+            reader = new BufferedWriter(new FileWriter(out));
             //call helper function
-            writeScript(br, interp);
-            br.close();
+            writeScript(reader, interp);
+            reader.close();
         } else toReturn = false; //return false on null
 
         return toReturn;
     }
+    
     //other_____________________________________________________________________
     /* toString
     Prints the ScriptStruct in full, calling toStrings for commands and
     interpreters. */
     public String toString(){
-        StringBuilder toReturn = new StringBuilder(100); //ARBITRARY NUMBER
-        //get a list of all interpreters
+        StringBuilder returnVal = new StringBuilder(100); // arbitrary value
         ArrayList<Interpreter> interpArr = new
-            ArrayList<Interpreter>(interpreterList.values());
-        //loop through interpreters
+            ArrayList<Interpreter>(interpreterList.values()); // all interps
+        
+        //add name, path commands from all interpreters
         for(Interpreter in : interpArr){
-            //add interp name and path
-            toReturn.append(in.toString() + "\n");
-            //add all commands
+            returnVal.append(in.toString() + "\n");
             ArrayList<Command> comArr =
-                new ArrayList<Command>(in.commands.values());
+                new ArrayList<Command>(in.commands.values()); // all commands //*******************************************************************//
             for(Command c : comArr)
-                toReturn.append(c + "\n");
+                returnVal.append(c + "\n");
         }
-        return toReturn.toString();
+        return returnVal.toString();
 
     }
     //static subroutines--------------------------------------------------------
