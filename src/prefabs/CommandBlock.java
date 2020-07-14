@@ -125,6 +125,12 @@ public class CommandBlock extends StackPane {
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
+	text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+            @Override
+            public void handle(ContextMenuEvent event){
+                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+            }
+        });
     }
     //subroutines--------------------------------------------------------------
 
@@ -132,13 +138,20 @@ public class CommandBlock extends StackPane {
         setHome()
         allows the changing of a command block's home location, if need be
     */
-    public void setHome(livesOn newHome) {
-        this.home = newHome;
+    public void onSidebar(boolean val) {
+	if(val){
+	    this.home = livesOn.SIDEBAR;
+	}
     }
     
     //gets the name of the command the block is currently carrying
     public String getCommandName() {
         return this.attachedCommand.getName();
+    }
+
+    //get the associated command
+    public Command getCommand(){
+	return attachedCommand;
     }
     
     //toggles a command block's ability to move
@@ -173,7 +186,7 @@ public class CommandBlock extends StackPane {
         this.commandList);
     }
     public void delete(){
-        System.out.println("delete Called");
+        //System.out.println("delete Called");
         this.getChildren().remove(0,2);
     }
 }

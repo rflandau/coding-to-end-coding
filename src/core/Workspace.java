@@ -106,20 +106,19 @@ public class Workspace extends Application {
             }
             }
         });
-        EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent e){
-            addCommandBlock(canvasBoxVSP);
-            }
-        };
-
-        //Linking Event Handlers to items
-        sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
 
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+	    b.onSidebar(true);
+	    b.addEventFilter(MouseEvent.MOUSE_CLICKED,
+			     new EventHandler<MouseEvent>(){
+				 @Override
+				 public void handle(MouseEvent e){
+				     addCommandBlock(canvasBoxVSP, b);
+				 }
+			     });
             sidebarVbox.getChildren().add(b);
         }
 
@@ -129,10 +128,10 @@ public class Workspace extends Application {
 
 
     //Directly adds a command block to the flow
-    public void addCommandBlock(CommandFlowVSP blockBox){
-    int index = structure.getFlowSize();
-    Command c = new Command("echo");
-    CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
-    blockBox.addCommandBlock(block);
+    public void addCommandBlock(CommandFlowVSP blockBox, CommandBlock template){
+	int index = structure.getFlowSize();
+	Command c = template.getCommand();
+	CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+	blockBox.addCommandBlock(block);
     }
 }
