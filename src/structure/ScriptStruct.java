@@ -155,8 +155,6 @@ public class ScriptStruct{
                            interpreter = "",                // temp interpreter
                            command = "",                    // temp command
                            tooltip = "";                    // temp tooltip
-                           //[] data;                       //original declaration, but caused errors
-       
         String             []data;                          // words from a line
         int                returnVal = 0;                   // return value
 

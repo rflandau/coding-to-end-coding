@@ -36,31 +36,26 @@ import customEvents.ReorderRequestEvent;
     TODO: finish these comments
 */
 public class CommandBlock extends StackPane {
-	//variables-----------------------------------------------------------------
+    //variables-----------------------------------------------------------------
     /*
-      I'm assuming that every block is the same size. Rectangle has a native constructor
-      for size and color, so it's trivial to create a constructor that takes
-      size, position, and color
+        I'm assuming that every block is the same size. Rectangle has a native
+        constructor for size and color, so it's trivial to create a constructor
+        that takes size, position, and color
     */
-    public static double    width = 100,
-                            height = 100;
+    public static double    width = 100,    // width in pixels
+                            height = 100;   // height in pixels
     static enum livesOn     {SIDEBAR, WORKSPACE}
-
-    //instance variables
-    Command     attachedCommand;
-    Paint       commandColor;
-    livesOn     home;    //where the CommandBlock originally came from
-    double      homeX,
-                homeY;
-    boolean     draggable; //if the CommandBlock can be dragged or not
-    //currently uninitialized
-    int         listIndex;
-    //I'm not sure if blocks will need to store their linked list connections, if they do
-    //    I'll put them here
-    ContextMenu contextMenu;
-    MenuItem    deleteBlock;
-
-    ScriptStruct commandList;
+    Command                 attachedCommand;// TODO: finish these comments
+    Paint                   commandColor;   // TODO: finish these comments
+    livesOn                 home;           // where the block came from
+    double                  homeX,          // TODO: finish these comments
+                            homeY;          // TODO: finish these comments
+    boolean                 draggable;      // if the block can be dragged
+    int                     listIndex;      // TODO: finish these comments
+    ContextMenu             contextMenu;    // TODO: finish these comments
+    MenuItem                deleteBlock;    // TODO: finish these comments
+    ScriptStruct            commandList;    // TODO: finish these comments
+    
     //constructors--------------------------------------------------------------
     /*
         Argument Desciptors:
@@ -162,26 +157,26 @@ public class CommandBlock extends StackPane {
         }
     }
 
-    //returns a deep copy of the command block this method is called on
-	public CommandBlock copy() {
-		//we use localToScene(0, 0) as it translates the position of the block relative to itself (0, 0) to
-	    //the position of the block relative to the sene
-		return new CommandBlock(
-		this.localToScene(0, 0).getX(),
-		this.localToScene(0, 0).getY(),
-		this.commandColor,
-		this.attachedCommand,
-		this.commandList);
-	}
-	public void delete(){
-		System.out.println("delete Called");
-		this.getChildren().remove(0,2);
-		//There is currently no way to find the index so this is commented out
-		//commandList.removeCommandFromFlow(listIndex);
-	}
+    /*
+        copy()
+        returns a deep copy of the command block this method is called on
+        localToScene(0, 0) as it translates the position of the block
+        relative to itself (0, 0) to the position of the block relative to
+        the sene
+    */
+    public CommandBlock copy() {
+        return new CommandBlock(
+        this.localToScene(0, 0).getX(),
+        this.localToScene(0, 0).getY(),
+        this.commandColor,
+        this.attachedCommand,
+        this.commandList);
+    }
+    public void delete(){
+        System.out.println("delete Called");
+        this.getChildren().remove(0,2);
+    }
 }
-
-///CUSTOM EVENTS
 
 //event handlers classes--------------------------------------------------------
 /*
@@ -232,26 +227,37 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     TODO: finish these comments
 */
 class onCommandBlockMove implements EventHandler<MouseEvent>{
-	CommandBlock targetBlock;
+    //variables----------------------------------------------------------------
+    CommandBlock targetBlock;
 
-	onCommandBlockMove(CommandBlock block){
-		super();
-		this.targetBlock = block;
-	}
+    //constructors-------------------------------------------------------------
+    /*
+        onCommandBlockMove()
+        constructor
+    */
+    onCommandBlockMove(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
 
-	//what happens when the user continuously drags the command block
-	@Override
-	public void handle(MouseEvent event) {
-	    //relocate needs parent-relative coordinates. The event gives scene-relative coordinates.
-	    //We need to go from scene to local to parent, which is why the methods below are used
-	    Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
-	            event.getSceneX() - CommandBlock.width/2,
-	            event.getSceneY() - CommandBlock.height/2
-	    ));
-		targetBlock.relocate(newPosition.getX(), newPosition.getY());
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when the user continuously drags the command block
+    */
+    @Override
+    public void handle(MouseEvent event) {
+        // relocate needs parent-relative coordinates. The event gives
+        // scene-relative coordinates.We need to go from scene to local to
+        // parent, which is why the methods below are used
+        Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
+                event.getSceneX() - CommandBlock.width/2,
+                event.getSceneY() - CommandBlock.height/2
+        ));
+        targetBlock.relocate(newPosition.getX(), newPosition.getY());
 
-		event.consume();
-	}
+        event.consume();
+    }
 }
 
 /*
@@ -303,7 +309,8 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
                         event.getSceneY() - CommandBlock.height/2
                 );
                 
-                //ask its container to align it, if it can handle CorrectPosRequestEvent
+                //ask its container to align it, if it can handle
+                // CorrectPosRequestEvent
                 targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
             }
         }
@@ -322,23 +329,32 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
     //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being hovered over
 
-	onCommandBlockHover(CommandBlock block){
-		super();
-		this.targetBlock = block;
-	}
+    //constructors-------------------------------------------------------------
+    /*
+        constructor
+    */
+    onCommandBlockHover(CommandBlock block){
+        super();
+        this.targetBlock = block;
+    }
     
-    //what happens when something (probably a Command Block) is dragged over this
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when something (probably a Command Block) is dragged over
+    */
     @Override
     public void handle(MouseEvent event) {
-        //when dragged over, the command block passes itself and the point of contact(?) to its container,
-        //  if the container can handle a ReorderRequest
+        // when dragged over, the command block passes itself and the point of
+        // contact(?) to its container, if the container can handle a
+        // ReorderRequest
         Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
                 event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
         ));
         targetBlock.getParent().fireEvent(
-                new ReorderRequestEvent(targetBlock, newPosition.getX(), newPosition.getY())
+                new ReorderRequestEvent(targetBlock, newPosition.getX(),
+                newPosition.getY())
         );
     }
-    
 }
