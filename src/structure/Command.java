@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public class Command{
     //variables-----------------------------------------------------------------
     // basic info
-    private String              name,
-                                syntax,
-                                tooltip;
-    private ArrayList<String>   flags,
-                                arguments;
+    private String              name,       // command name
+                                syntax,     // literal command syntax
+                                tooltip;    // rollover tooltip
+    private ArrayList<String>   flags,      // command options
+                                arguments;  // command arguments
 
     //constructors--------------------------------------------------------------
     // default constructor (used when members need to be assigned manually)
@@ -60,6 +60,7 @@ public class Command{
             this.arguments.add(i, arguments.get(i));
         }
     }
+    
     //duplication
     public Command(Command c){
         name = c.getName();
