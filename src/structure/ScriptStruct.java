@@ -193,9 +193,6 @@ public class ScriptStruct{
                     }
                 }
             }
-            System.out.println("flags: " + flags);
-
-            System.out.println("args: " + arguments);
             // make a shiny new command in the designated interpreter
             interpreterList.get(interpreter).addCommand(name,
                 new Command(name, command, tooltip, flags, arguments));
