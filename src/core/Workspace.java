@@ -35,15 +35,11 @@ import structure.Command;
 import structure.ScriptStruct;
 
 public class Workspace extends Application {
-    //hard-coded window sizes, can be changed later
-    double              defaultWindowWidth = 800,
-                        defaultWindowHeight = 600;
-    ScriptStruct        structure;
-    ArrayList<Command>  sidebarCommands;
-    AnchorPane root;
-
-    //Applications do not need constructors
-    //However, the program arguments from launch can be accessed with getParameters()
+    double              defaultWindowWidth = 800,   // default width in pixels
+                        defaultWindowHeight = 600;  // default height in pixels
+    ScriptStruct        structure;                  // holds Interpreters
+    ArrayList<Command>  sidebarCommands;            // available commands
+    AnchorPane          root;                       // holds all GUI elements
 
     /*
     init is called right before start, before the application comes into being
@@ -64,6 +60,7 @@ public class Workspace extends Application {
     }catch(IOException ie){
         System.out.println("Exception on FXML load: "+ie);
     }
+    
     //unpack all items
     SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
     AnchorPane  sidebar = (AnchorPane) scenePane.getItems().get(0);
@@ -76,6 +73,7 @@ public class Workspace extends Application {
     Button      exportButton = (Button) bottomPanel.getChildren().get(0);
     VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
     ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
+    
     //------------------------------------------------------------
     //Beginning of Event Handlers
     exportButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -88,15 +86,16 @@ public class Workspace extends Application {
             }
         }
     });
+    
     EventHandler<MouseEvent> clickSideBarEvent = new EventHandler<MouseEvent>(){
         @Override public void handle(MouseEvent e){addCommandBlock(canvasBox);}
     };
+    
     //End of Event Handlers
     //----------------------------------------------------------
     //Linking Event Handlers to items
     sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, clickSideBarEvent);
-
-    // populating available commands
+        // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.WHITE,c,structure);
@@ -105,106 +104,6 @@ public class Workspace extends Application {
 
         stage.setScene(new Scene(root));
         stage.show();
-
-        /*
-        // local variables
-        AnchorPane root = new AnchorPane(),             // contains all GUI elements
-                   sidebarPane = new AnchorPane(),      // contains sidebar with available commands
-                   rightPane = new AnchorPane(),        // contains flowchart and export panes
-                   flowchartPane = new AnchorPane(),    // contains flowchart
-                   exportPane = new AnchorPane();       // contains export button
-        Scene      scene = new Scene(root, defaultWindowWidth, defaultWindowHeight);
-        SplitPane  vertical = new SplitPane(),          // vertical window divider
-                   horizontal = new SplitPane();        // horizontal window divider
-        ScrollBar  sidebarScroll = new ScrollBar(),     // scrollbar for left sidebar
-                   flowchartScroll = new ScrollBar();   // scrollbar for flowchart
-        VBox       sidebar = new VBox(),                // contains available commands
-                   flowchart = new VBox();              // contains flowchart
-
-        // if import error, exit
-        if (sidebarCommands == null){
-            System.exit(1);
-        }
-
-        // left and right panes
-        vertical.getItems().addAll(sidebarPane, rightPane);
-        vertical.setOrientation(Orientation.HORIZONTAL);
-        vertical.setDividerPositions(0.5f, 0.5f);
-        AnchorPane.setTopAnchor(vertical, 15.0);
-        AnchorPane.setRightAnchor(vertical, 15.0);
-        AnchorPane.setBottomAnchor(vertical, 15.0);
-        AnchorPane.setLeftAnchor(vertical, 15.0);
-        root.getChildren().addAll(vertical);
-
-        // top and bottom panes on right panel
-        horizontal.getItems().addAll(flowchartPane, exportPane);
-        horizontal.setOrientation(Orientation.VERTICAL);
-        horizontal.setDividerPositions(0.9f, 0.1f);
-        AnchorPane.setTopAnchor(horizontal, 0.0);
-        AnchorPane.setRightAnchor(horizontal, 0.0);
-        AnchorPane.setBottomAnchor(horizontal, 0.0);
-        AnchorPane.setLeftAnchor(horizontal, 0.0);
-        rightPane.getChildren().addAll(horizontal);
-
-        // setting up sidebar
-        sidebar.setSpacing(10);
-        sidebarPane.setTopAnchor(sidebar, 10.0);
-        sidebarPane.setLeftAnchor(sidebar, 145.0);
-        sidebarScroll.setOrientation(Orientation.VERTICAL);
-        sidebarPane.getChildren().add(sidebar);
-        sidebar.setAlignment(Pos.CENTER);
-
-        // populating available commands
-        for(int i = 0; i < sidebarCommands.size(); i ++){
-            Command c = sidebarCommands.get(i);
-            CommandBlock b = new CommandBlock(1,2,Color.WHITE,c);
-            sidebar.getChildren().add(b);
-        }
-
-        // setting up flowchart
-        flowchartPane.setTopAnchor(flowchart, 10.0);
-        flowchartPane.setRightAnchor(flowchart, 145.0);
-        flowchartScroll.setOrientation(Orientation.VERTICAL);
-        flowchartPane.getChildren().add(flowchart);
-        flowchart.setAlignment(Pos.CENTER);
-
-        // creating start block
-        Command s = new Command("start");
-        CommandBlock start = new CommandBlock(1,2,Color.GREY,s);
-        flowchart.getChildren().add(start);
-
-        // creating end block
-        Command e = new Command("end");
-        CommandBlock end = new CommandBlock(1,2,Color.GREY,e);
-        flowchart.getChildren().add(end);
-
-        // setting up button pane
-        ExportButton button = new ExportButton(100, 50, structure);
-        exportPane.setRightAnchor(button, 145.0);
-        exportPane.getChildren().add(button);
-
-        // event handler
-        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e){
-                // removing end block from GUI
-                flowchart.getChildren().remove(end);
-
-                // appending new command block to GUI and to structure
-                structure.addCommandToFlow(structure.getFlowSize(), "Hello World");
-                Command c = structure.getCommand(structure.getFlowSize()-1);
-                CommandBlock block = new CommandBlock(1,2,Color.WHITE,c);
-                flowchart.getChildren().add(block);
-
-                // appending end block to GUI
-                flowchart.getChildren().add(end);
-            }
-        };
-        sidebar.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
-
-        stage.setTitle("Coding to End Coding");
-        stage.setScene(scene);
-        stage.show(); */
     }
 
     public void addCommandBlock(VBox blockBox){
