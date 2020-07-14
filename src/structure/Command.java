@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class Command{
     //variables-----------------------------------------------------------------
-    // basic info
     private String              name,       // command name
                                 syntax,     // literal command syntax
                                 tooltip;    // rollover tooltip
@@ -18,18 +17,24 @@ public class Command{
                                 arguments;  // command arguments
 
     //constructors--------------------------------------------------------------
-    // default constructor (used when members need to be assigned manually)
+    /*
+        default constructor (used when members need to be assigned manually)
+    */
     public Command(){
         flags = new ArrayList<String>();
         arguments = new ArrayList<String>();
     }
 
-    // a good constructor (used for start and end blocks)
+    /*
+        a good constructor (used for start and end blocks)
+    */
     public Command(String name){
         this.name = name;
     }
 
-    // a better constructor
+    /*
+        a better constructor
+    */
     public Command(String name, String syntax){
         this(name);
         this.syntax = syntax.trim(); //trim whitespace from syntax
@@ -38,7 +43,9 @@ public class Command{
         arguments = new ArrayList<String>();
     }
 
-    // the ultimate constructor
+    /*
+        the ultimate constructor
+    */
     public Command(String name,
                    String syntax,
                    String tooltip,
@@ -61,7 +68,9 @@ public class Command{
         }
     }
     
-    //duplication
+    /*
+        duplication constructor
+    */
     public Command(Command c){
         name = c.getName();
         syntax = c.getSyntax();
