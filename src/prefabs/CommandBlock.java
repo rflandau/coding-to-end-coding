@@ -132,8 +132,10 @@ public class CommandBlock extends StackPane {
         setHome()
         allows the changing of a command block's home location, if need be
     */
-    public void setHome(livesOn newHome) {
-        this.home = newHome;
+    public void onSidebar(boolean val) {
+	if(val){
+	    this.home = livesOn.SIDEBAR;
+	}
     }
     
     //gets the name of the command the block is currently carrying

@@ -120,6 +120,7 @@ public class Workspace extends Application {
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+	    b.onSidebar(true);
             sidebarVbox.getChildren().add(b);
         }
 
