@@ -3,7 +3,6 @@ package prefabs;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-//A CommandBlock import isn't needed here, as it's currently in the same package
 
 /*
  * A vertical sorting pane is like a VBox, but it doesn't lock elements in place. Instead, it reorders
@@ -11,15 +10,15 @@ import javafx.scene.layout.Pane;
  * I just need to figure out how it will know that things are moving...
  */
 public class VerticalSortingPane extends Pane {
-    Node topAnchor;
-    Node bottomAnchor;
+    Node topAnchor;     // anchors top of pane
+    Node bottomAnchor;  // anchors bottom of pane
 
-    //default constructor
+    // default constructor
     public VerticalSortingPane() {
         super();
     }
 
-    //default constructor
+    // constructor
     public VerticalSortingPane(Node... arg0) {
         super(arg0);
     }
