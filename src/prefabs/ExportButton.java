@@ -24,20 +24,21 @@ public class ExportButton extends Button {
 }
 
 class onExportClickEvent implements EventHandler<ActionEvent> {
-    ScriptStruct ss;
+    ScriptStruct ss; // ScriptStruct needed for click events
+    
     public onExportClickEvent(ScriptStruct script){
-		ss = script;
+        ss = script;
     }
-    //put the stuff you want the button to do in this method here
+
     @Override
     public void handle(ActionEvent actionEvent) {
         System.out.println("Starting Export...");
-	//temp implementation of the export button
-	try{
-	    ss.export();
-	}catch(IOException ex){
-	    System.out.println("IOexception");
-	}
+        //temp implementation of the export button
+        try{
+            ss.export();
+        }catch(IOException ex){
+            System.out.println("IOexception");
+        }
         actionEvent.consume();
     }
 }
