@@ -33,24 +33,14 @@ import structure.Interpreter;
 
 public class CommandBlock extends StackPane {
     //variables-----------------------------------------------------------------
-    /*
-      I'm assuming that every block is the same size. Rectangle has a native constructor
-      for size and color, so it's trivial to create a constructor that takes
-      size, position, and color
-    */
-    static double width = 100;
-    static double height = 100;
-    static enum livesOn{
-        SIDEBAR,
-        WORKSPACE
-    }
-
-    //instance variables
-    Command attachedCommand;    // Command associated with this CommandBlock
-    double  homeX,              // X position
-            homeY;              // Y position
-    Paint   commandColor;       // color of the command block
-    livesOn home;               // where the CommandBlock originally came from
+    static double   width = 100,    // width in pixels
+                    height = 100;   // height in pixels
+    static enum     livesOn{SIDEBAR,WORKSPACE}
+    Command         attachedCommand;    // Command associated with block
+    double          homeX,              // X position
+                    homeY;              // Y position
+    Paint           commandColor;       // color of the command block
+    livesOn         home;               // where the CommandBlock came from
     
     //I'm not sure if blocks will need to store their linked list connections, if they do
     //    I'll put them here
@@ -151,10 +141,8 @@ public class CommandBlock extends StackPane {
         //There is currently no way to find the index so this is commented out
         //commandList.removeCommandFromFlow(listIndex);
     }
-
-}
-
     //static subroutines--------------------------------------------------------
+}
 
 //event handlers classes--------------------------------------------------------
 /* onCommandBlockDrag

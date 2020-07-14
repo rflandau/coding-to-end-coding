@@ -98,14 +98,15 @@ public class ScriptStruct{
     private int newInterpreter(BufferedReader reader) {
         String  name = "",      // Interpreter name
                 path = "",      // path to Interpreter shell
-                tooltip = "";   // rollover tooltip describing Interpreter
+                tooltip = "",   // rollover tooltip
+                [] data;        // words from a line
         int     returnVal = 0;  // return value
 
         try{
             String string;      // current string read by BufferedReader
 
             while((string = reader.readLine()) != null){
-            String[] data = string.trim().split(" "); //*******************************************************************//
+            data = string.trim().split(" ");
                 // if delimiter, end while loop
                 if(data[0].equals(BREAKSEQ)){
                     break;
@@ -140,16 +141,16 @@ public class ScriptStruct{
         String             name = "",                       // temp name
                            interpreter = "",                // temp interpreter
                            command = "",                    // temp command
-                           tooltip = "";                    // temp tooltip
+                           tooltip = "",                    // temp tooltip
+                           [] data;                         // words  a line
         int                returnVal = 0;                   // return value
 
         try{
             String string;      // current string read by BufferedReader
 
             while((string = reader.readLine()) != null){
-            String[] data = string.trim().split(" "); //*******************************************************************//
-                // if delimiter, end while loop
-                if(data[0].equals("---")){
+                data = string.trim().split(" ");
+                if(data[0].equals(BREAKSEQ)){
                     break;
                 }
 
@@ -162,11 +163,9 @@ public class ScriptStruct{
                             //add a space if not last entry
                             if (i != data.length-1) name += " ";
                         }
-                    }else if(data[0].equals("INT")){
-                        interpreter = data[1];
-                    }else if(data[0].equals("CMD")){
-                        command = data[1];
-                    }else if(data[0].equals("TIP")){
+                    }else if(data[0].equals("INT")) interpreter = data[1];
+                    else if(data[0].equals("CMD"))  command = data[1];
+                    else if(data[0].equals("TIP")){
                         for(int i = 1; i <= data.length-1; i ++){
                             tooltip += data[i];
                             if (i != data.length-1) tooltip += " ";
@@ -332,15 +331,15 @@ public class ScriptStruct{
     Prints the ScriptStruct in full, calling toStrings for commands and
     interpreters. */
     public String toString(){
-        StringBuilder returnVal = new StringBuilder(100); // arbitrary value
+        StringBuilder returnVal = new StringBuilder(100);   // arbitrary value
         ArrayList<Interpreter> interpArr = new
             ArrayList<Interpreter>(interpreterList.values()); // all interps
+        ArrayList<Command> comArr;                          // all commands
         
         //add name, path commands from all interpreters
         for(Interpreter in : interpArr){
             returnVal.append(in.toString() + "\n");
-            ArrayList<Command> comArr =
-                new ArrayList<Command>(in.commands.values()); // all commands //*******************************************************************//
+            comArr = new ArrayList<Command>(in.commands.values());
             for(Command c : comArr)
                 returnVal.append(c + "\n");
         }

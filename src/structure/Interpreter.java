@@ -34,7 +34,7 @@ public class Interpreter{
     String getName()            {return name;}
     void   setName(String n)    {name = n;}
     String getPath()            {return path;}
-	void   setPath(String p)    {path = p;}
+    void   setPath(String p)    {path = p;}
 
     /* getCommand
     Returns a command from the commands ht, searching by ID. */
