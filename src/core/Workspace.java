@@ -26,7 +26,8 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 //import our other packages
 import prefabs.ExportButton;
@@ -106,7 +107,23 @@ public class Workspace extends Application {
             }
             }
         });
+	
+	//Setting sidebar scrollbar
+	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+				Number old_val, Number new_val){
+		sidebarVbox.setLayoutY(-new_val.doubleValue());
+	    }
+	});
 
+	//Setting Canvas scrollbar
+	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+				Number old_val, Number new_val){
+		canvasBox.setLayoutY(-new_val.doubleValue());
+	    }
+	});
+	
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
