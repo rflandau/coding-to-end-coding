@@ -1,57 +1,56 @@
 package test;
 
+//Old code, but thomas is a hoarder so he's deleting it later
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import prefabs.CommandBlock;
+import prefabs.CommandFlowVSP;
+import prefabs.VerticalSortingPane;
 import structure.Command;
+import structure.Interpreter;
+import structure.ScriptStruct;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+
+import java.util.ArrayList;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 public class TestApp extends Application {
+    ScriptStruct structure;
+    Interpreter commandInterp;
+    CommandBlock start;
+    CommandBlock end;
+    ArrayList<Command> commands;
+    
+  //new CommandBlock(1,2,Color.WHITE, new Command(),commandList);
+    
+    @Override
+    public void init() {
+        structure = new ScriptStruct();
+        commands = structure.getTemplateCommands();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Circle circ = new Circle(10, Color.GREY);
-        circ.setOnDragDetected(new circDrag(circ));
-        circ.setOnMouseReleased(new circDrop(circ));
-        Group root = new Group(new CommandBlock(
-                100, 
-                200, 
-                Color.YELLOW, 
-                new Command(
-                        "echo HelloWorld", "baseBlock"
-                )
-        ),new CommandBlock(
-                700, 
-                500, 
-                Color.GREEN, 
-                new Command(
-                        "echo HelloWorld", "baseBlock"
-                )
-        ), circ);
-        Pane testBox = new Pane(new CommandBlock(
-                100, 
-                200, 
-                Color.YELLOW, 
-                new Command(
-                        "echo HelloWorld", "baseBlock"
-                )
-        ),new CommandBlock(
-                700, 
-                500, 
-                Color.GREEN, 
-                new Command(
-                        "echo HelloWorld", "baseBlock"
-                )
-        ));
-        Scene scene = new Scene(testBox, 800, 600);
+        CommandFlowVSP VSP = new CommandFlowVSP(structure);
+        
+        
+        VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(5433,4234,Color.GREEN, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(0,0,Color.YELLOW, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(9,200,Color.RED, commands.get(0), structure));
+        
+        Scene scene = new Scene(VSP, 800, 600);
         
         //add scene to stage
         stage.setScene(scene);
@@ -59,43 +58,4 @@ public class TestApp extends Application {
         stage.show();
     }
 
-}
-
-
-class circDrag implements EventHandler<MouseEvent>{
-    Circle target;
-    
-    circDrag(Circle circ){
-        super();
-        target = circ;
-    }
-    
-    public void handle(MouseEvent event) {
-        System.out.println("starting circ drag");
-        
-        target.startFullDrag();
-        
-        event.consume();
-    }
-}
-
-
-class circDrop implements EventHandler<MouseEvent>{
-    Circle target;
-    
-    circDrop(Circle circ){
-        super();
-        this.target = circ;
-    }
-    
-    public void handle(MouseEvent event) {
-        System.out.println("circ dropped");
-        
-        //this.target.relocate(event.getX(), event.getY());
-        this.target.setTranslateX(event.getSceneX());
-        this.target.setTranslateY(event.getSceneY());
-        System.out.println("now at " + this.target.getTranslateX() + ", " + this.target.getTranslateY());
-
-        event.consume();
-    }
 }
