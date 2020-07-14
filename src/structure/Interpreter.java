@@ -10,10 +10,11 @@ its file. The command can then be duplicated and added to flow. */
 
 public class Interpreter{
     //variables-----------------------------------------------------------------
-    String name, //name of the interpreter
-           path, //execution path to the interpreter (probably with #!)
-           tooltip; // tool tip for tollover events
-    Hashtable<String, Command> commands; //all available commands; name -> Command
+    String name,                            // Interpreter name
+           path,                            // path to the interpreter shell
+           tooltip;                         // tool tip for tollover events
+    Hashtable<String, Command> commands;    // all available commands
+    
     //constructors--------------------------------------------------------------
     public Interpreter(String n, String p){
         name = n;
