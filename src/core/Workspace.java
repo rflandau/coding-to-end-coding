@@ -39,12 +39,14 @@ import structure.ScriptStruct;
     TODO: finish these comments
 */
 public class Workspace extends Application {
+    //variables-----------------------------------------------------------------
     double              defaultWindowWidth = 800,   // default width in pixels
                         defaultWindowHeight = 600;  // default height in pixels
     ScriptStruct        structure;                  // holds Interpreters
     ArrayList<Command>  sidebarCommands;            // available commands
     AnchorPane          root;                       // holds all GUI elements
 
+    //subroutines--------------------------------------------------------------
     /*
         init()
         called right before start, before the application comes into being

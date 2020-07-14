@@ -13,7 +13,7 @@ import java.lang.StringBuilder;
     back-end. '.export()' is the public-facing method for printing the script.
 */
 public class ScriptStruct{
-    //variables-----------------------------------------------------------------
+    //variables----------------------------------------------------------------
     @SuppressWarnings("FieldCanBeLocal")
     private final String        DEFAULTINTERP = "bash"; // default interpreter
     private static final String BREAKSEQ = "---";       // ctecblock delimiter
@@ -22,7 +22,7 @@ public class ScriptStruct{
     Hashtable<String, Interpreter> interpreterList;     // all Interpreters
     Interpreter                 interp;                 // current Interpreter
     
-    //constructors--------------------------------------------------------------
+    //constructors-------------------------------------------------------------
     /*
         default constructor
         creates flow, sets all fields, and initalizes the interpreters

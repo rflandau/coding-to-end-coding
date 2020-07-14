@@ -31,6 +31,10 @@ import structure.Command;
 import structure.ScriptStruct;
 import structure.Interpreter;
 
+/*
+    CommandBlock
+    TODO: finish these comments
+*/
 public class CommandBlock extends StackPane {
     //variables-----------------------------------------------------------------
     static double   width = 100,                // width in pixels
@@ -115,7 +119,7 @@ public class CommandBlock extends StackPane {
             }
         });
     }
-    //subroutines---------------------------------------------------------------
+    //subroutines--------------------------------------------------------------
 
     /*
         setHome()
@@ -151,17 +155,20 @@ public class CommandBlock extends StackPane {
     TODO: finish these comments
 */
 class onCommandBlockDrag implements EventHandler<MouseEvent>{
+    //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being dragged
 
+    //constructors-------------------------------------------------------------
     /*
-        onCommandBlockDrag()
-        TODO: finish these comments
+        onCommandBlockDrag
+        constructor
     */
     onCommandBlockDrag(CommandBlock block){
         super();
         this.targetBlock = block;
     }
 
+    //subroutines--------------------------------------------------------------
     /*
         handle()
         what happens when the user starts dragging the command block
@@ -175,6 +182,7 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
         targetBlock.startFullDrag();
 
         event.consume();
+        return;
     }
 }
 
@@ -183,17 +191,20 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     TODO: finish these comments
 */
 class onCommandBlockMove implements EventHandler<MouseEvent>{
+    //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being moved
     
+    //constructors-------------------------------------------------------------
     /*
         onCommandBlockMove()
-        TODO: finish these comments
+        constructor
     */
     onCommandBlockMove(CommandBlock block){
         super();
         this.targetBlock = block;
     }
 
+    //subroutines--------------------------------------------------------------
     /*
         handle()
         what happens when the user continuously drags the command block
@@ -214,17 +225,20 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
     TODO: finish these comments
 */
 class onCommandBlockDrop implements EventHandler<MouseEvent>{
+    //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being dropped
 
+    //constructors-------------------------------------------------------------
     /*
         onCommandBlockDrop()
-        TODO: finish these comments
+        constructor
     */
     onCommandBlockDrop(CommandBlock block){
         super();
         this.targetBlock = block;
     }
 
+    //subroutines--------------------------------------------------------------
     /*
         handle()
         what happens when the user drops the command block
@@ -267,17 +281,20 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
     TODO: finish these comments
 */
 class onCommandBlockHover implements EventHandler<MouseEvent>{
+    //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being hovered over
 
+    //constructors-------------------------------------------------------------
     /*
         onCommandBlockHover()
-        TODO: finish these comments
+        constructor
     */
     onCommandBlockHover(CommandBlock block){
         super();
         this.targetBlock = block;
     }
 
+    //subroutines--------------------------------------------------------------
     /*
         handle()
         what happens when something (probably a Command Block) is
