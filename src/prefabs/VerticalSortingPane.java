@@ -75,20 +75,15 @@ public class VerticalSortingPane extends Pane {
     void correctPosition(CommandBlock node) {
         //first, check if the node is actually in the VSP
         if(node.getParent().equals(this)) {
-            //horizontally center the node to the top element
-            //node.setLayoutX(this.getChildren().get(0).getLayoutX());
-            /*
-             * Adjust the vertical by assessing position. If nodeY % CommandBlock.height <= 50 (misalignment), 
-             * we raise it by 50. If not, we lower it by 1 - that value. This is off of the 'low y = up high' 
-             * verticality principal most graphical things use. But why'd I write it as a ternary?
-             * Because every time I write a ternary, I get one step closer to my dream of becoming a
-             * professional wrestler
-             */
-            double misalignment = node.getLayoutY() % CommandBlock.height;
-            double adjustmentValue = misalignment <= CommandBlock.height/2 ? misalignment : -(CommandBlock.height - misalignment);
+            double  misalignment,
+                    newY;
             
+            // Calculate the distance to where it should correct to via modulo
+            misalignment = node.localToParent(0, 0).getY() % CommandBlock.height;
             //adjust the actual height;
-            double newY = node.localToParent(0, 0).getY() - adjustmentValue;
+            newY = node.localToParent(0, 0).getY() - misalignment;
+            
+            System.out.println("Correcting from " + node.localToParent(0, 0).getY() + " to " + newY);
             node.relocate(0, newY);
             //update node's home
             node.setHomeX(0);
@@ -102,19 +97,21 @@ public class VerticalSortingPane extends Pane {
         
         //0, 0 represents the location of source relative to itself
         double sourceY = source.localToParent(0, 0).getY();
-        System.out.println("source: " + sourceY);
-        System.out.println("guest: " + guestY);
+        //Adjusting position value to compensate for size
+        guestY += CommandBlock.height;
+        //System.out.println("source: " + sourceY);
+        //System.out.println("guest: " + guestY);
         
         //if the guest came from above the source...
         if(guestY > sourceY){   //I bet 1 shiny nickel that low y = up high, like in every other visual thing
             //shift the source down to make room for the guest
-            System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
+            //System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
             source.relocate(0, sourceY + CommandBlock.height);
         }
         //else the guest came from above the source
         else {
             //shift the source up to make room for the guest
-            System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
+            //System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
             source.relocate(0, sourceY - CommandBlock.height);
             
         }
