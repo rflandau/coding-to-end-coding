@@ -159,15 +159,12 @@ public class CommandBlock extends StackPane {
     }
 
     //returns a deep copy of the command block this method is called on
-    //can we just steal java.lang.obj.clone for this?
-	/*@max, No! Do not use clone! The obj.clone call is a joke. If you need a
-	deep copy of an obj make it as a subroutine or a constructor (see Command
-	for an example constructor) */
 	public CommandBlock copy() {
-		//we use translateX and translateY as these most accurately represent where the block should be
+		//we use localToScene(0, 0) as it translates the position of the block relative to itself (0, 0) to
+	    //the position of the block relative to the sene
 		return new CommandBlock(
-		this.getTranslateX(),
-		this.getTranslateY(),
+		this.localToScene(0, 0).getX(),
+		this.localToScene(0, 0).getY(),
 		this.commandColor,
 		this.attachedCommand,
 		this.commandList);

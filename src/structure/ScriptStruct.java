@@ -109,8 +109,9 @@ public class ScriptStruct{
     private int newInterpreter(BufferedReader reader) {
         String  name = "",      // Interpreter name
                 path = "",      // path to Interpreter shell
-                tooltip = "",   // rollover tooltip
-                [] data;        // words from a line
+                tooltip = "";   // rollover tooltip
+                //[] data;      //original declaration, but caused errors  
+        String[]data;           // words from a line
         int     returnVal = 0;  // return value
 
         try{
@@ -153,8 +154,10 @@ public class ScriptStruct{
         String             name = "",                       // temp name
                            interpreter = "",                // temp interpreter
                            command = "",                    // temp command
-                           tooltip = "",                    // temp tooltip
-                           [] data;                         // words  a line
+                           tooltip = "";                    // temp tooltip
+                           //[] data;                       //original declaration, but caused errors
+       
+        String             []data;                          // words from a line
         int                returnVal = 0;                   // return value
 
         try{
