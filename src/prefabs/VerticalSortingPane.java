@@ -40,7 +40,7 @@ public class VerticalSortingPane extends Pane {
     //adds an item to the VSP and automatically sorts it in
     public void addCommandBlock(CommandBlock newItem) {
         //guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
-        double guessedIndex = (newItem.getLayoutY() + newItem.getTranslateY()) / CommandBlock.height;
+        int guessedIndex = (int)(newItem.localToParent(0, 0).getY() / CommandBlock.height);
         int maximumIndex = this.getChildren().size();
         
         //if it's above the list, put it at the top (where is index 0)
@@ -50,8 +50,12 @@ public class VerticalSortingPane extends Pane {
         //if the list is empty, re-correct to the top (0) again
         if(maximumIndex == 0) {guessedIndex = 0;}
         
-        //I cast gussedIndex to int here instead of making it an int variable because PEMDAS is a stinker
-        this.getChildren().add((int)guessedIndex, newItem);
+        //add newItem to the VSP
+        this.getChildren().add(guessedIndex, newItem);
+        //update newItem's home
+        newItem.setHomeX(0);
+        newItem.setHomeY(guessedIndex * CommandBlock.height);
+        
         this.refreshPane();
     }
     
@@ -82,11 +86,13 @@ public class VerticalSortingPane extends Pane {
              */
             double misalignment = node.getLayoutY() % CommandBlock.height;
             double adjustmentValue = misalignment <= CommandBlock.height/2 ? misalignment : -(CommandBlock.height - misalignment);
-            //adjust the actual height
-            //I don't know why, but it's always off by 1...
-            //node.setLayoutY(node.getLayoutY() - adjustmentValue + 1);
+            
+            //adjust the actual height;
             double newY = node.localToParent(0, 0).getY() - adjustmentValue;
             node.relocate(0, newY);
+            //update node's home
+            node.setHomeX(0);
+            node.setHomeY(newY);
         }
     }
     
@@ -132,6 +138,10 @@ public class VerticalSortingPane extends Pane {
         }
         ///END TEMP CODE
         
+        //update source's home
+        source.setHomeX(0);
+        source.setHomeY(newY);
+        
         //change it's index to be the new height divided by 100
         this.changeIndex((int)(newY / CommandBlock.height), source);
     }
@@ -144,11 +154,18 @@ public class VerticalSortingPane extends Pane {
         //for each node in nodeList...
         for(Node node : nodeList) {
             //correct its position based on index
-            node.setTranslateX(0);
-            node.setLayoutX(0);
-            //careful, another command block dependency
-            node.setTranslateY(nodeList.indexOf(node) * CommandBlock.height);
-            node.setLayoutY(0);
+            node.relocate(0, nodeList.indexOf(node) * CommandBlock.height);
+            
+            /* I know instanceof is sketchy, but I know everything in a VSP is a CommandBlock. It's only
+             * handling nodes because that's the only type getChildren can return, as far as I understand.
+             * I'm using instanceof to wrap the following typecast (even worse, I know) so this function has
+             * at least slight reasonablity
+             */
+            if(node instanceof CommandBlock) {
+                CommandBlock nodeNeedsHome = (CommandBlock) node;
+                nodeNeedsHome.setHomeX(0);
+                nodeNeedsHome.setHomeY(nodeList.indexOf(node) * CommandBlock.height);
+            }
         }
     }
     

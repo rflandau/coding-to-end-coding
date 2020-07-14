@@ -33,18 +33,11 @@ import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
 
 public class CommandBlock extends StackPane {
-	//variables-----------------------------------------------------------------
-    /*
-      I'm assuming that every block is the same size. Rectangle has a native constructor
-      for size and color, so it's trivial to create a constructor that takes
-      size, position, and color
-    */
-    public static double width = 100;
-    public static double height = 100;
-    static enum livesOn{
-        SIDEBAR,
-        WORKSPACE
-    }
+//fields-----------------------------------------------------------------------
+
+    public static double    width   = 100,  //width of all command blocks
+                            height  = 100;  //height of all command blocks
+    static enum livesOn{SIDEBAR, WORKSPACE} //determines where a command block is from
 
     //instance variables
     Command attachedCommand;
