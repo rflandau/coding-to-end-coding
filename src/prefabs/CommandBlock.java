@@ -125,6 +125,12 @@ public class CommandBlock extends StackPane {
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
+	text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+            @Override
+            public void handle(ContextMenuEvent event){
+                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+            }
+        });
     }
     //subroutines--------------------------------------------------------------
 
