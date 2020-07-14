@@ -6,8 +6,9 @@ import javafx.scene.layout.Pane;
 
 /*
     VerticalSortingPane
-    A vertical sorting pane is like a VBox, but it doesn't lock elements in place. Instead, it reorders
-    elements after their moved. It'll do the whole "boxes moving when things hover over them" deal.
+    A vertical sorting pane is like a VBox, but it doesn't lock elements in
+    place. Instead, it reorders elements after their moved. It'll do the whole
+    "boxes moving when things hover over them" deal.
     I just need to figure out how it will know that things are moving...
 */
 public class VerticalSortingPane extends Pane {
