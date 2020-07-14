@@ -143,13 +143,13 @@ public class ScriptStruct{
     interpreter in interpreters */
     private int newCommand(BufferedReader reader) {
         // variables
-        ArrayList<String> arguments = new ArrayList<String>(),
-        flags = new ArrayList<String>();
-        String            name = "",
-        interpreter = "",
-        command = "",
-        tooltip = "";
-        int               returnVal = 0;
+        ArrayList<String>   arguments = new ArrayList<String>(),
+                            flags = new ArrayList<String>();
+        String              name = "",
+                            interpreter = "",
+                            command = "",
+                            tooltip = "";
+        int                 returnVal = 0;
 
         try{
             // this must be declared here because java
@@ -193,7 +193,9 @@ public class ScriptStruct{
                     }
                 }
             }
+            System.out.println("flags: " + flags);
 
+            System.out.println("args: " + arguments);
             // make a shiny new command in the designated interpreter
             interpreterList.get(interpreter).addCommand(name,
                 new Command(name, command, tooltip, flags, arguments));
@@ -286,8 +288,7 @@ public class ScriptStruct{
         //iterate through every element in 'flow'
         for(int i = 0; i<flow.size(); i++){
             Command c = flow.get(i);
-            System.out.println(c.getName());
-            br.write(c.getSyntax() + "\n");
+            br.write(c.getSyntax() + " " + c.getArguments() + "\n");
         }
 
         //ensure the script is end-capped by a newline

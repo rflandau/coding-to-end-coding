@@ -216,5 +216,7 @@ public class Workspace extends Application {
         blockBox.getChildren().remove(len-1);
         blockBox.getChildren().add(block);
         blockBox.getChildren().add(endBlock);
+        structure.addCommandToFlow(structure.getFlowSize(), "echo");
+
     }
 }

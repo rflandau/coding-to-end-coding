@@ -48,16 +48,16 @@ public class Command{
         this.syntax = syntax;
         this.tooltip = tooltip;
 
-        flags = new ArrayList<String>();
+        this.flags = new ArrayList<String>();
         int flagSize = flags.size();
         for(int i = 0; i < flagSize; i ++){
-            flags.add(i, flags.get(i));
+            this.flags.add(i, flags.get(i));
         }
 
-        arguments = new ArrayList<String>();
+        this.arguments = new ArrayList<String>();
         int argumentSize = arguments.size();
         for(int i = 0; i < argumentSize; i ++){
-            arguments.add(i, arguments.get(i));
+            this.arguments.add(i, arguments.get(i));
         }
     }
     //duplication
@@ -67,7 +67,7 @@ public class Command{
         tooltip = c.getTooltip();
         flags = new ArrayList<String>();
         ArrayList<String> f = c.getFlags();
-        for(int i = 0; i < f.size(); i ++){
+        for(int i = 0; f != null && i < f.size(); i ++){
             flags.add(i, f.get(i));
         }
         arguments = new ArrayList<String>();
