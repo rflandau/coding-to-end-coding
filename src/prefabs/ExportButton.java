@@ -44,6 +44,10 @@ class onExportClickEvent implements EventHandler<ActionEvent> {
         return;
     }
 
+    /*
+        handle()
+        what happens when the user clicks on the export button
+    */
     @Override
     public void handle(ActionEvent actionEvent) {
         System.out.println("Starting Export...");
