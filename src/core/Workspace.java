@@ -109,10 +109,11 @@ public class Workspace extends Application {
         });
 	
 	//Setting sidebar scrollbar
+	sidebarVbox.setLayoutY(0);
 	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
 				Number old_val, Number new_val){
-		sidebarVbox.setLayoutY(-new_val.doubleValue());
+		sidebarVbox.setLayoutY(1-new_val.doubleValue());
 	    }
 	});
 
