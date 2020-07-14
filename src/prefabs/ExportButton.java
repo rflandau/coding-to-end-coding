@@ -41,6 +41,7 @@ class onExportClickEvent implements EventHandler<ActionEvent> {
     */
     public onExportClickEvent(ScriptStruct script){
         ss = script;
+        return;
     }
 
     @Override
