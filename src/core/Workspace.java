@@ -107,6 +107,7 @@ public class Workspace extends Application {
             }
             }
         });
+<<<<<<< HEAD
 	
 	//Setting sidebar scrollbar
 	sidebarVbox.setLayoutY(0);
@@ -127,18 +128,38 @@ public class Workspace extends Application {
 	    }
 	});
 	
+=======
+    
+    //Setting sidebar scrollbar
+    sidebarVbox.setLayoutY(0);
+    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+        public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val){
+        sidebarVbox.setLayoutY(1-new_val.doubleValue());
+        }
+    });
+
+    //Setting Canvas scrollbar
+    canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+        public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val){
+        canvasBox.setLayoutY(-new_val.doubleValue());
+        }
+    });
+    
+>>>>>>> e24405ff3178cc83c32389b43310aff8883b0eac
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
-	    b.onSidebar(true);
-	    b.addEventFilter(MouseEvent.MOUSE_CLICKED,
-			     new EventHandler<MouseEvent>(){
-				 @Override
-				 public void handle(MouseEvent e){
-				     addCommandBlock(canvasBoxVSP, b);
-				 }
-			     });
+        b.onSidebar(true);
+        b.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                 new EventHandler<MouseEvent>(){
+                 @Override
+                 public void handle(MouseEvent e){
+                     addCommandBlock(canvasBoxVSP, b);
+                 }
+                 });
             sidebarVbox.getChildren().add(b);
         }
 
@@ -149,9 +170,9 @@ public class Workspace extends Application {
 
     //Directly adds a command block to the flow
     public void addCommandBlock(CommandFlowVSP blockBox, CommandBlock template){
-	int index = structure.getFlowSize();
-	Command c = template.getCommand();
-	CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
-	blockBox.addCommandBlock(block);
+        int index = structure.getFlowSize();
+        Command c = template.getCommand();
+        CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+        blockBox.addCommandBlock(block);
     }
 }
