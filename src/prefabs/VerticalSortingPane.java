@@ -44,7 +44,7 @@ public class VerticalSortingPane extends Pane {
     
     //adds an item to the VSP and automatically sorts it in
     public void addCommandBlock(CommandBlock newItem) {
-        //guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
+	//guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
         double guessedIndex = (newItem.getLayoutY() + newItem.getTranslateY()) / CommandBlock.height;
         int maximumIndex = this.getChildren().size();
         
