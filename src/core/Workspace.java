@@ -92,10 +92,10 @@ public class Workspace extends Application {
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 
         //create non-fxml items
-        sidebarVSP = new VerticalSortingPane();
+        //sidebarVSP = new VerticalSortingPane();
         canvasBoxVSP = new CommandFlowVSP(structure);
         //sidebarVbox.getChildren().add(sidebarVSP);
-        canvasBox.getChildren().add(canvasBoxVSP);
+        canvasPane.getChildren().add(canvasBoxVSP);
 
         exportButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -113,7 +113,7 @@ public class Workspace extends Application {
 	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
 				Number old_val, Number new_val){
-		sidebarVbox.setLayoutY(1-new_val.doubleValue());
+		sidebarVbox.setLayoutY(-new_val.doubleValue());
 	    }
 	});
 
@@ -121,7 +121,9 @@ public class Workspace extends Application {
 	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
 				Number old_val, Number new_val){
-		canvasBox.setLayoutY(-new_val.doubleValue());
+		double height = canvasBoxVSP.getVSPHeight();
+		//System.out.println(height);
+		canvasBoxVSP.setLayoutY(height*(-new_val.doubleValue()));
 	    }
 	});
 	
