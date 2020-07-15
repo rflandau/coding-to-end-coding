@@ -30,6 +30,7 @@ import structure.ScriptStruct;
 import structure.Interpreter;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
+import prefabs.VerticalSortingPane;
 
 /*
     CommandBlock
@@ -181,9 +182,8 @@ public class CommandBlock extends StackPane {
 		this.commandList);
 	}
 	public void delete(){
-		System.out.println("delete Called");
-		this.getChildren().remove(0,2);
-		//There is currently no way to find the index so this is commented out
+		VerticalSortingPane vsp = (VerticalSortingPane) this.getParent();
+		vsp.removeCommandBlock(this);
 		//commandList.removeCommandFromFlow(listIndex);
 	}
 	

@@ -65,7 +65,10 @@ public class VerticalSortingPane extends Pane {
         //update newItem's home
         newItem.setHomeX(0);
         newItem.setHomeY(guessedIndex * CommandBlock.height);
-        
+
+	//update height
+	height += newItem.height;
+	
         this.refreshPane();
     }
     
@@ -74,12 +77,13 @@ public class VerticalSortingPane extends Pane {
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
         this.getChildren().remove(oldItem);
         this.refreshPane();
-        
+        this.height -= oldItem.height;
+	    
         return oldItem;
     }
     
     //Get height of the VSP
-    public int getVSPHeight(){
+    public double getVSPHeight(){
 	return height;
     }
     
