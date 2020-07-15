@@ -37,7 +37,6 @@ public class VerticalSortingPane extends Pane {
     }
     
     //subroutines--------------------------------------------------------------
-    //NOTE: none of these methods actually 
     
     /*
         addCommmandBlock()
@@ -70,6 +69,7 @@ public class VerticalSortingPane extends Pane {
         removeCommandBlock()
         removes an item to the VSP and automatically resorts the list
         returns the command block, as it isn't actually destroyed
+        doesn't affect the added/removed command block
     */
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
         this.getChildren().remove(oldItem);
@@ -80,11 +80,11 @@ public class VerticalSortingPane extends Pane {
         return oldItem;
     }
     
-    //NOTE: for when the VSP needs to mess with its own stuff
     /*
         correctPosition()
         corrects the argument node's position in the VSP, if it was placed
         out of alignment
+        doesn't affect the added/removed command block
     */
     void correctPosition(CommandBlock node) {
         //first, check if the node is actually in the VSP
@@ -112,6 +112,7 @@ public class VerticalSortingPane extends Pane {
         uses modulo of both values to compare source position to guest's
         point of contact. By comparing the remainders, we can estimate which
         side it came from
+        doesn't affect the added/removed command block
     */
     void reorderItem(CommandBlock source, double guestY) {
         //0, 0 represents the location of source relative to itself
@@ -164,6 +165,7 @@ public class VerticalSortingPane extends Pane {
         refreshPane()
         refreshes the layout of the list. I expect this to be computationally
         expensive so use sparingly
+        doesn't affect the added/removed command block
     */
     void refreshPane() {
         //contains every visible child of this object in an indexed list
@@ -194,6 +196,7 @@ public class VerticalSortingPane extends Pane {
         changes a node's index in the observable list
         this is done manually because list.set() replaces anything at the
         destination index
+        doesn't affect the added/removed command block
     */
     
     void changeIndex(int newIndex, CommandBlock movingItem) {
