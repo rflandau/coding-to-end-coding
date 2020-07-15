@@ -262,10 +262,12 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
         // relocate needs parent-relative coordinates. The event gives
         // scene-relative coordinates.We need to go from scene to local to
         // parent, which is why the methods below are used
-        Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
+        Point2D newPosition = targetBlock.localToParent(
+            targetBlock.sceneToLocal(
                 event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
-        ));
+            )
+        );
         targetBlock.relocate(newPosition.getX(), newPosition.getY());
 
         event.consume();
@@ -370,16 +372,16 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
 }
 
 class onContextDelete implements EventHandler<ActionEvent>{
-//fields-----------------------------------------------------------------------
+    //fields-------------------------------------------------------------------
       CommandBlock targetBlock;    //the VSP that handles this event
 
-//constructors-----------------------------------------------------------------
+    //constructors-------------------------------------------------------------
       onContextDelete(CommandBlock targetBlock){
           super();
           this.targetBlock = targetBlock;
       }
       
-//subroutines------------------------------------------------------------------
+    //subroutines--------------------------------------------------------------
       //what happens when an event wants to remove itself
       @Override
       public void handle(ActionEvent event) {
@@ -390,5 +392,5 @@ class onContextDelete implements EventHandler<ActionEvent>{
           
           return;
       }
-//static subroutines-----------------------------------------------------------
+    //static subroutines-------------------------------------------------------
   }

@@ -1,53 +1,58 @@
 package prefabs;
-//this might be more appropriate to put in some other package, but it'll go here for right now
 
-//visual/layout stuff
+//visual/layout
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-//import javafx.scene.paint.Color;
-//functionality stuff
+//functionality
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 //our stuff
-//import structure.Command;
-//import structure.Interpreter;
-//import structure.ScriptStruct;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
-//A CommandBlock import isn't needed here, as it's currently in the same package
 import customEvents.SelfRemoveRequestEvent;
 
 /*
- * A vertical sorting pane is like a VBox, but it doesn't lock elements in place. Instead, it reorders
- * elements after their moved. It'll do the whole "boxes moving when things hover over them" deal.
- * Be careful, VSPs assume they only contain CommandBlocks, since that's the only consistent object
- * in this project that has a definite size
- * I just need to figure out how it will know that things are moving...
- */
+    A vertical sorting pane is like a VBox, but it doesn't lock elements in
+    place. Instead, it reorders elements after their moved. It'll do the whole
+    "boxes moving when things hover over them" deal. Be careful, VSPs assume
+    they only contain CommandBlocks, since that's the only consistent object
+    in this project that has a definite size
+    I just need to figure out how it will know that things are moving...
+*/
 public class VerticalSortingPane extends Pane {
-    
-    //constructor that generates new CommandBlocks for the anchors
+    //constructors-------------------------------------------------------------
+    /*
+        constructor that generates new CommandBlocks for the anchors
+    */
     public VerticalSortingPane() {
         super();
         
         //defining custom event handlers
-        this.addEventHandler(ReorderRequestEvent.VSPReorderEvent, new onReorderRequest(this));
-        this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent, new onCorrectPosRequest(this));
-        this.addEventHandler(SelfRemoveRequestEvent.VSPSelfRemoveEvent, new onSelfRemoveRequest(this));
+        this.addEventHandler(ReorderRequestEvent.VSPReorderEvent,
+            new onReorderRequest(this));
+        this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent,
+            new onCorrectPosRequest(this));
+        this.addEventHandler(SelfRemoveRequestEvent.VSPSelfRemoveEvent,
+            new onSelfRemoveRequest(this));
     }
     
-    ///PUBLIC MANIPULATION METHODS
-    //none of these methods actually effect the added/removed command block
+    //subroutines--------------------------------------------------------------
+    //NOTE: none of these methods actually 
     
-    //adds an item to the VSP and automatically sorts it in
+    /*
+        addCommmandBlock()
+        adds an item to the VSP and automatically sorts it in
+        doesn't affect the added/removed command block
+    */
     public void addCommandBlock(CommandBlock newItem) {
-        //guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
-        int guessedIndex = (int)(newItem.localToParent(0, 0).getY() / CommandBlock.height);
+        //guessedIndex is where the VSP thinks the new item should go
+        int guessedIndex = (int)(newItem.localToParent(0, 0).getY() /
+            CommandBlock.height);
         int maximumIndex = this.getChildren().size();
         
         //if it's above the list, put it at the top (where is index 0)
         if(guessedIndex < 0) {guessedIndex = 0;}
-        //if it's below the list, put it at the bottom (which is index ...size() - 1)
+        //if it's below the list, put it at the bottom (index...size()-1)
         if(guessedIndex >= maximumIndex) {guessedIndex = maximumIndex - 1;}
         //if the list is empty, re-correct to the top (0) again
         if(maximumIndex == 0) {guessedIndex = 0;}
@@ -61,8 +66,11 @@ public class VerticalSortingPane extends Pane {
         this.refreshPane();
     }
     
-    //removes an item to the VSP and automatically resorts the list
-    //returns the command block, as it isn't actually destroyed
+    /*
+        removeCommandBlock()
+        removes an item to the VSP and automatically resorts the list
+        returns the command block, as it isn't actually destroyed
+    */
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
         this.getChildren().remove(oldItem);
         this.refreshPane();
@@ -72,10 +80,12 @@ public class VerticalSortingPane extends Pane {
         return oldItem;
     }
     
-    ///PRIVATE MANIPULATION METHODS
-    //for when the VSP needs to mess with its own stuff
-    
-    //corrects the argument node's position in the VSP, if it was placed out of alignment
+    //NOTE: for when the VSP needs to mess with its own stuff
+    /*
+        correctPosition()
+        corrects the argument node's position in the VSP, if it was placed
+        out of alignment
+    */
     void correctPosition(CommandBlock node) {
         //first, check if the node is actually in the VSP
         if(node.getParent().equals(this)) {
@@ -87,7 +97,8 @@ public class VerticalSortingPane extends Pane {
             //adjust the actual height;
             newY = node.localToParent(0, 0).getY() - misalignment;
             
-            System.out.println("Correcting from " + node.localToParent(0, 0).getY() + " to " + newY);
+            System.out.println("Correcting from " +
+                node.localToParent(0, 0).getY() + " to " + newY);
             node.relocate(0, newY);
             //update node's home
             node.setHomeX(0);
@@ -95,16 +106,19 @@ public class VerticalSortingPane extends Pane {
         }
     }
     
+    /*
+        reorderItem()
+        uses modulo of both values to compare source position to guest's
+        point of contact. By comparing the remainders, we can estimate which
+        side it came from
+    */
     void reorderItem(CommandBlock source, double guestY) {
-        //I modulo both values because I'm comparing source position to guest's point of contact.
-        //By comparing the remainders, I can estimate which side it came from
-        
         //0, 0 represents the location of source relative to itself
         double sourceY = source.localToParent(0, 0).getY();
         //Adjusting position value to compensate for size
         guestY += CommandBlock.height;
         
-        //if the guest came from above the source...
+        //if the guest came from below the source...
         if(guestY > sourceY){
             //shift the source down to make room for the guest
             source.relocate(0, sourceY + CommandBlock.height);
@@ -123,13 +137,15 @@ public class VerticalSortingPane extends Pane {
         int highestIndex = this.getChildren().size() - 1;
         //if the new position goes too high...
         if(newY > highestIndex * 100) {
-            System.err.println("Command block overshot list. Relocating to " + highestIndex * 100);
+            System.err.println("Command block overshot list. Relocating to " +
+                highestIndex * 100);
             source.relocate(0, highestIndex * 100);
             newY = highestIndex * 100;
         }
         //or too low
         if(newY < 0) {
-            System.err.println("Command block overshot list. Relocating to " + (double)0);
+            System.err.println("Command block overshot list. Relocating to " +
+                (double)0);
             source.relocate(0, highestIndex * 100);
             newY = 0;
         }
@@ -143,21 +159,26 @@ public class VerticalSortingPane extends Pane {
         this.changeIndex((int)(newY / CommandBlock.height), source);
     }
     
-    //refreshes the layout of the list. I expect this to be computationally expensive so use sparingly
+    /*
+        refreshPane()
+        refreshes the layout of the list. I expect this to be computationally
+        expensive so use sparingly
+    */
     void refreshPane() {
-        //The ObservableList contains every visible child of this object in an indexed list
+        //contains every visible child of this object in an indexed list
         ObservableList<Node> nodeList = this.getChildren();
         
-        //for each node in nodeList...
         for(Node node : nodeList) {
-            //correct its position based on index
+            //correct position based on index
             node.relocate(0, nodeList.indexOf(node) * CommandBlock.height);
             
-            /* I know instanceof is sketchy, but I know everything in a VSP is a CommandBlock. It's only
-             * handling nodes because that's the only type getChildren can return, as far as I understand.
-             * I'm using instanceof to wrap the following typecast (even worse, I know) so this function has
-             * at least slight reasonablity
-             */
+            /*
+                I know instanceof is sketchy, but I know everything in a VSP is
+                a CommandBlock. It's only handling nodes because that's the
+                only type getChildren can return, as far as I understand. I'm
+                using instanceof to wrap the following typecast (even worse, I
+                know) so this function has at least slight reasonablity
+            */
             if(node instanceof CommandBlock) {
                 CommandBlock nodeNeedsHome = (CommandBlock) node;
                 nodeNeedsHome.setHomeX(0);
@@ -166,15 +187,21 @@ public class VerticalSortingPane extends Pane {
         }
     }
     
-    ///PRIVATE HELPER METHODS
+    /*
+        changeIndex()
+        changes a node's index in the observable list
+        this is done manually because list.set() replaces anything at the
+        destination index
+    */
     
-    //changes a node's index in the observable list
-    //this is done manually because list.set() replaces anything at the destination index
     void changeIndex(int newIndex, CommandBlock movingItem) {
         ObservableList<Node> nodeList = this.getChildren();
         
-        //if removing the item from the list would move the destination position forward 1, move the index
-        //      forward 1
+        /*
+            if removing the item from the list would move the destination
+            position forward 1, move the index
+            forward 1
+        */
         if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;}
         ///TEMP CODE TO DEAL WITH ITEMS OVERSHOOTING THE LIST
         //check to see if something overshot where it should go
@@ -192,65 +219,97 @@ public class VerticalSortingPane extends Pane {
         //placing into new places
         nodeList.add(newIndex, movingItem);
     }
-
+    //static subroutines-------------------------------------------------------
 }
 
+/*
+    onReorderRequest
+    NOTE: finish these comments
+*/
 class onReorderRequest implements EventHandler<ReorderRequestEvent>{
-    VerticalSortingPane VSP;
+    //variables----------------------------------------------------------------
+    VerticalSortingPane VSP;    // instantiation of VerticalSortingPane
     
+    //constructors-------------------------------------------------------------
+    /*
+        constructor
+    */
     onReorderRequest(VerticalSortingPane VSP){
         super();
         this.VSP = VSP;
     }
 
+    //subroutines--------------------------------------------------------------
     /*
-     * what happens when a CommandBlock wants to be reordered
-     * the event receives the block that wants to move and the position of the mouse.
-     * We can infer the moving 'block' size from CommandBlock's static size, and position from the mouse
-     * Source is the object asking to be reordered, and Guest is the object it is making room for
-     *  (because when you have a guest you make room for them get it?
-     */
+        handle()
+        what happens when a CommandBlock wants to be reordered
+        the event receives the block that wants to move and the position of the
+        mouse. We can infer the moving 'block' size from CommandBlock's static
+        size, and position from the mouse Source is the object asking to be
+        reordered, and Guest is the object it is making room for
+        because when you have a guest you make room for them get it?
+    */
     @Override
     public void handle(ReorderRequestEvent event) {
         VSP.reorderItem(event.getSource(), event.getGuestY());
     }
-    
+    //static subroutines-------------------------------------------------------
 }
 
+/*
+    onCorrectPosRequest
+    NOTE: finish these comments
+*/
 class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
-    VerticalSortingPane VSP;
+    //variables----------------------------------------------------------------
+    VerticalSortingPane VSP;    // instantiation of VerticalSortingPane
     
+    //constructors-------------------------------------------------------------
+    /*
+        constructor
+    */
     onCorrectPosRequest(VerticalSortingPane VSP){
         super();
         this.VSP = VSP;
     }
 
-    //what happens when a CommandBlock asks the VSP to align it with the other blocks
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when a CommandBlock asks the VSP to align it with the other blocks
+    */
     @Override
     public void handle(CorrectPosRequestEvent event) {
         //correct position
         this.VSP.correctPosition(event.getSource());
     }
-    
+    //static subroutines-------------------------------------------------------
 }
 
 class onSelfRemoveRequest implements EventHandler<SelfRemoveRequestEvent>{
-//fields-----------------------------------------------------------------------
+    //variables----------------------------------------------------------------
     VerticalSortingPane     VSP;    //the VSP that handles this event
 
-//constructors-----------------------------------------------------------------
+    //constructors-------------------------------------------------------------
+    /*
+        constructor
+    */
     onSelfRemoveRequest(VerticalSortingPane VSP){
         super();
         this.VSP = VSP;
     }
     
-//subroutines------------------------------------------------------------------
-    //what happens when an event wants to remove itself
+    //subroutines--------------------------------------------------------------
+    /*
+        handle()
+        what happens when an event wants to remove itself
+    */
     @Override
     public void handle(SelfRemoveRequestEvent event) {
         this.VSP.removeCommandBlock(event.getCommandBlock());
         
         return;
     }
-//static subroutines-----------------------------------------------------------
+
+    //static subroutines-------------------------------------------------------
 }
