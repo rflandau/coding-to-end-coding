@@ -44,6 +44,10 @@ public class VerticalSortingPane extends Pane {
     
     //adds an item to the VSP and automatically sorts it in
     public void addCommandBlock(CommandBlock newItem) {
+	// This is no longer necessary
+        //guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
+	/*
+        int guessedIndex = (int)(newItem.localToParent(0, 0).getY() / CommandBlock.height);
 	//guessedIndex is where the VSP thinks the new item should go. I'm not promising accuracy.
         double guessedIndex = (newItem.getLayoutY() + newItem.getTranslateY()) / CommandBlock.height;
         int maximumIndex = this.getChildren().size();
@@ -54,9 +58,14 @@ public class VerticalSortingPane extends Pane {
         if(guessedIndex >= maximumIndex) {guessedIndex = maximumIndex - 1;}
         //if the list is empty, re-correct to the top (0) again
         if(maximumIndex == 0) {guessedIndex = 0;}
+        */
+	int guessedIndex = this.getChildren().size();
+        //add newItem to the VSP
+        this.getChildren().add(guessedIndex, newItem);
+        //update newItem's home
+        newItem.setHomeX(0);
+        newItem.setHomeY(guessedIndex * CommandBlock.height);
         
-        //I cast gussedIndex to int here instead of making it an int variable because PEMDAS is a stinker
-        this.getChildren().add((int)guessedIndex, newItem);
         this.refreshPane();
     }
     
@@ -81,22 +90,19 @@ public class VerticalSortingPane extends Pane {
     void correctPosition(CommandBlock node) {
         //first, check if the node is actually in the VSP
         if(node.getParent().equals(this)) {
-            //horizontally center the node to the top element
-            //node.setLayoutX(this.getChildren().get(0).getLayoutX());
-            /*
-             * Adjust the vertical by assessing position. If nodeY % CommandBlock.height <= 50 (misalignment), 
-             * we raise it by 50. If not, we lower it by 1 - that value. This is off of the 'low y = up high' 
-             * verticality principal most graphical things use. But why'd I write it as a ternary?
-             * Because every time I write a ternary, I get one step closer to my dream of becoming a
-             * professional wrestler
-             */
-            double misalignment = node.getLayoutY() % CommandBlock.height;
-            double adjustmentValue = misalignment <= CommandBlock.height/2 ? misalignment : -(CommandBlock.height - misalignment);
-            //adjust the actual height
-            //I don't know why, but it's always off by 1...
-            //node.setLayoutY(node.getLayoutY() - adjustmentValue + 1);
-            double newY = node.localToParent(0, 0).getY() - adjustmentValue;
+            double  misalignment,
+                    newY;
+            
+            // Calculate the distance to where it should correct to via modulo
+            misalignment = node.localToParent(0, 0).getY() % CommandBlock.height;
+            //adjust the actual height;
+            newY = node.localToParent(0, 0).getY() - misalignment;
+            
+            System.out.println("Correcting from " + node.localToParent(0, 0).getY() + " to " + newY);
             node.relocate(0, newY);
+            //update node's home
+            node.setHomeX(0);
+            node.setHomeY(newY);
         }
     }
     
@@ -106,19 +112,21 @@ public class VerticalSortingPane extends Pane {
         
         //0, 0 represents the location of source relative to itself
         double sourceY = source.localToParent(0, 0).getY();
-        System.out.println("source: " + sourceY);
-        System.out.println("guest: " + guestY);
+        //Adjusting position value to compensate for size
+        guestY += CommandBlock.height;
+        //System.out.println("source: " + sourceY);
+        //System.out.println("guest: " + guestY);
         
         //if the guest came from above the source...
         if(guestY > sourceY){   //I bet 1 shiny nickel that low y = up high, like in every other visual thing
             //shift the source down to make room for the guest
-            System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
+            //System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
             source.relocate(0, sourceY + CommandBlock.height);
         }
         //else the guest came from above the source
         else {
             //shift the source up to make room for the guest
-            System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
+            //System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
             source.relocate(0, sourceY - CommandBlock.height);
             
         }
@@ -142,6 +150,10 @@ public class VerticalSortingPane extends Pane {
         }
         ///END TEMP CODE
         
+        //update source's home
+        source.setHomeX(0);
+        source.setHomeY(newY);
+        
         //change it's index to be the new height divided by 100
         this.changeIndex((int)(newY / CommandBlock.height), source);
     }
@@ -154,11 +166,18 @@ public class VerticalSortingPane extends Pane {
         //for each node in nodeList...
         for(Node node : nodeList) {
             //correct its position based on index
-            node.setTranslateX(0);
-            node.setLayoutX(0);
-            //careful, another command block dependency
-            node.setTranslateY(nodeList.indexOf(node) * CommandBlock.height);
-            node.setLayoutY(0);
+            node.relocate(0, nodeList.indexOf(node) * CommandBlock.height);
+            
+            /* I know instanceof is sketchy, but I know everything in a VSP is a CommandBlock. It's only
+             * handling nodes because that's the only type getChildren can return, as far as I understand.
+             * I'm using instanceof to wrap the following typecast (even worse, I know) so this function has
+             * at least slight reasonablity
+             */
+            if(node instanceof CommandBlock) {
+                CommandBlock nodeNeedsHome = (CommandBlock) node;
+                nodeNeedsHome.setHomeX(0);
+                nodeNeedsHome.setHomeY(nodeList.indexOf(node) * CommandBlock.height);
+            }
         }
     }
     
