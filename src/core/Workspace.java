@@ -71,7 +71,7 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
         VerticalSortingPane sidebarVSP;     // available commands
         CommandFlowVSP canvasBoxVSP;        // contains flowchart
-        
+
         //load the FXML
         try{
             root = (AnchorPane) FXMLLoader.load(getClass().getResource("main.fxml"));
@@ -107,8 +107,7 @@ public class Workspace extends Application {
             }
             }
         });
-<<<<<<< HEAD
-	
+
 	//Setting sidebar scrollbar
 	sidebarVbox.setLayoutY(0);
 	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
@@ -129,9 +128,8 @@ public class Workspace extends Application {
 		canvasBox.setLayoutY(-heightDiff);
 	    }
 	});
-	
-=======
-    
+
+    /*
     //Setting sidebar scrollbar
     sidebarVbox.setLayoutY(0);
     sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
@@ -147,9 +145,8 @@ public class Workspace extends Application {
                 Number old_val, Number new_val){
         canvasBox.setLayoutY(-new_val.doubleValue());
         }
-    });
-    
->>>>>>> e24405ff3178cc83c32389b43310aff8883b0eac
+    });*/
+
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
