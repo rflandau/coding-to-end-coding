@@ -95,7 +95,7 @@ public class Workspace extends Application {
         //sidebarVSP = new VerticalSortingPane();
         canvasBoxVSP = new CommandFlowVSP(structure);
         //sidebarVbox.getChildren().add(sidebarVSP);
-        canvasPane.getChildren().add(canvasBoxVSP);
+        canvasBox.getChildren().add(canvasBoxVSP);
 
         exportButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -113,7 +113,8 @@ public class Workspace extends Application {
 	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
 				Number old_val, Number new_val){
-		sidebarVbox.setLayoutY(-new_val.doubleValue());
+		int size = sidebarVbox.getChildren().size();
+		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
 	    }
 	});
 
@@ -122,8 +123,9 @@ public class Workspace extends Application {
 	    public void changed(ObservableValue<? extends Number> ov,
 				Number old_val, Number new_val){
 		double height = canvasBoxVSP.getVSPHeight();
-		//System.out.println(height);
-		canvasBoxVSP.setLayoutY(height*(-new_val.doubleValue()));
+		// 100 is the base value of height
+		double heightDiff = (height * new_val.doubleValue()) / 100;
+		canvasBox.setLayoutY(-heightDiff);
 	    }
 	});
 	
