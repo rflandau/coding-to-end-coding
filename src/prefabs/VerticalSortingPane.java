@@ -77,7 +77,8 @@ public class VerticalSortingPane extends Pane {
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
         this.getChildren().remove(oldItem);
         this.refreshPane();
-        
+        this.height -= oldItem.height;
+	    
         return oldItem;
     }
     
