@@ -93,7 +93,8 @@ public class VerticalSortingPane extends Pane {
                     newY;
             
             // Calculate the distance to where it should correct to via modulo
-            misalignment = node.localToParent(0, 0).getY() % CommandBlock.height;
+            misalignment = node.localToParent(0, 0).getY() %
+                CommandBlock.height;
             //adjust the actual height;
             newY = node.localToParent(0, 0).getY() - misalignment;
             
@@ -182,7 +183,8 @@ public class VerticalSortingPane extends Pane {
             if(node instanceof CommandBlock) {
                 CommandBlock nodeNeedsHome = (CommandBlock) node;
                 nodeNeedsHome.setHomeX(0);
-                nodeNeedsHome.setHomeY(nodeList.indexOf(node) * CommandBlock.height);
+                nodeNeedsHome.setHomeY(nodeList.indexOf(node) *
+                    CommandBlock.height);
             }
         }
     }
@@ -276,7 +278,8 @@ class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
     //subroutines--------------------------------------------------------------
     /*
         handle()
-        what happens when a CommandBlock asks the VSP to align it with the other blocks
+        what happens when a CommandBlock asks the VSP to align it with the
+        other blocks
     */
     @Override
     public void handle(CorrectPosRequestEvent event) {
