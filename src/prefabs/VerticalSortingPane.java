@@ -24,6 +24,8 @@ import customEvents.ReorderRequestEvent;
  * I just need to figure out how it will know that things are moving...
  */
 public class VerticalSortingPane extends Pane {
+
+    int height;
     
     //constructor that generates new CommandBlocks for the anchors
     public VerticalSortingPane() {
@@ -32,6 +34,9 @@ public class VerticalSortingPane extends Pane {
         //defining custom event handlers
         this.addEventHandler(ReorderRequestEvent.VSPReorderEvent, new onReorderRequest(this));
         this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent, new onCorrectPosRequest(this));
+
+	//init values
+	height = 0;
     }
     
     ///PUBLIC MANIPULATION METHODS
@@ -62,6 +67,11 @@ public class VerticalSortingPane extends Pane {
         this.refreshPane();
         
         return oldItem;
+    }
+    
+    //Get height of the VSP
+    public int getVSPHeight(){
+	return height;
     }
     
     ///PRIVATE MANIPULATION METHODS
