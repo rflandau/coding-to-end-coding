@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
 //A CommandBlock import isn't needed here, as it's currently in the same package
+import customEvents.SelfRemoveRequestEvent;
 
 /*
  * A vertical sorting pane is like a VBox, but it doesn't lock elements in place. Instead, it reorders
@@ -32,6 +33,7 @@ public class VerticalSortingPane extends Pane {
         //defining custom event handlers
         this.addEventHandler(ReorderRequestEvent.VSPReorderEvent, new onReorderRequest(this));
         this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent, new onCorrectPosRequest(this));
+        this.addEventHandler(SelfRemoveRequestEvent.VSPSelfRemoveEvent, new onSelfRemoveRequest(this));
     }
     
     ///PUBLIC MANIPULATION METHODS
@@ -64,6 +66,8 @@ public class VerticalSortingPane extends Pane {
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
         this.getChildren().remove(oldItem);
         this.refreshPane();
+        
+        System.out.println("old item " + oldItem.getCommandName() + " removed");
         
         return oldItem;
     }
@@ -99,19 +103,15 @@ public class VerticalSortingPane extends Pane {
         double sourceY = source.localToParent(0, 0).getY();
         //Adjusting position value to compensate for size
         guestY += CommandBlock.height;
-        //System.out.println("source: " + sourceY);
-        //System.out.println("guest: " + guestY);
         
         //if the guest came from above the source...
-        if(guestY > sourceY){   //I bet 1 shiny nickel that low y = up high, like in every other visual thing
+        if(guestY > sourceY){
             //shift the source down to make room for the guest
-            //System.out.println("Attempting to relocate to " + (sourceY + CommandBlock.height));
             source.relocate(0, sourceY + CommandBlock.height);
         }
         //else the guest came from above the source
         else {
             //shift the source up to make room for the guest
-            //System.out.println("Attempting to relocate to " + (sourceY - CommandBlock.height));
             source.relocate(0, sourceY - CommandBlock.height);
             
         }
@@ -232,4 +232,25 @@ class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
         this.VSP.correctPosition(event.getSource());
     }
     
+}
+
+class onSelfRemoveRequest implements EventHandler<SelfRemoveRequestEvent>{
+//fields-----------------------------------------------------------------------
+    VerticalSortingPane     VSP;    //the VSP that handles this event
+
+//constructors-----------------------------------------------------------------
+    onSelfRemoveRequest(VerticalSortingPane VSP){
+        super();
+        this.VSP = VSP;
+    }
+    
+//subroutines------------------------------------------------------------------
+    //what happens when an event wants to remove itself
+    @Override
+    public void handle(SelfRemoveRequestEvent event) {
+        this.VSP.removeCommandBlock(event.getCommandBlock());
+        
+        return;
+    }
+//static subroutines-----------------------------------------------------------
 }

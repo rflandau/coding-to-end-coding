@@ -30,6 +30,7 @@ import structure.ScriptStruct;
 import structure.Interpreter;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
+import customEvents.SelfRemoveRequestEvent;
 
 /*
     CommandBlock
@@ -113,10 +114,7 @@ public class CommandBlock extends StackPane {
         deleteBlock = new MenuItem("Delete Command");
 
         //ContextMenu Behavior
-        deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event){delete();}
-        });
+        deleteBlock.setOnAction(new onContextDelete(this));
 
         contextMenu.getItems().addAll(deleteBlock);
         rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
@@ -226,14 +224,6 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
         //expose other events to the mouse during the drag
         targetBlock.setMouseTransparent(true);
         
-        //reset translates to match mouse position
-        targetBlock.setTranslateX(0);
-        targetBlock.setTranslateY(0);
-        targetBlock.relocate(
-                event.getSceneX() - CommandBlock.width/2, 
-                event.getSceneY() - CommandBlock.height/2
-        );
-        
         targetBlock.startFullDrag();
         
         event.consume();
@@ -323,11 +313,6 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
             }
             //else, move it to this new position
             else {
-                targetBlock.relocate(
-                        event.getSceneX() - CommandBlock.width/2, 
-                        event.getSceneY() - CommandBlock.height/2
-                );
-                
                 //ask its container to align it, if it can handle
                 // CorrectPosRequestEvent
                 targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
@@ -377,3 +362,27 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
         );
     }
 }
+
+class onContextDelete implements EventHandler<ActionEvent>{
+//fields-----------------------------------------------------------------------
+      CommandBlock targetBlock;    //the VSP that handles this event
+
+//constructors-----------------------------------------------------------------
+      onContextDelete(CommandBlock targetBlock){
+          super();
+          this.targetBlock = targetBlock;
+      }
+      
+//subroutines------------------------------------------------------------------
+      //what happens when an event wants to remove itself
+      @Override
+      public void handle(ActionEvent event) {
+          this.targetBlock.getParent().fireEvent(
+                  new SelfRemoveRequestEvent(this.targetBlock)
+          );
+          this.targetBlock.delete();
+          
+          return;
+      }
+//static subroutines-----------------------------------------------------------
+  }
