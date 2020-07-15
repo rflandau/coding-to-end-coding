@@ -160,39 +160,42 @@ public class ScriptStruct{
 
         try{
             String string;      // current string read by BufferedReader
-
             while((string = reader.readLine()) != null){
                 data = string.trim().split(" ");
-                if(data[0].equals(BREAKSEQ)){
-                    break;
-                }
-
-                // check length and assign variable values
-                //TODO change to switch/case
-                if(data.length > 1){
-                    if(data[0].equals("NAME")){
-                        for(int i = 1; i <= data.length-1; i ++){
-                            name += data[i];
-                            //add a space if not last entry
-                            if (i != data.length-1) name += " ";
+                //check for BREAKSEQ
+                //Tried to integrate it into switch/case, but it never fired?
+                if (data[0].equals(BREAKSEQ)) break;
+                else{
+                    //check for empty line
+                    if(data.length > 1){
+                        //identify line type by precursor
+                        switch(data[0]){
+                            case "NAME":
+                                for(int i = 1; i <= data.length-1; i++){
+                                    name += data[i];
+                                    //add a space if not last entry
+                                    if (i != data.length-1) name += " ";
+                                }
+                                break;
+                            case "INT": interpreter = data[1]; break;
+                            case "CMD": command = data[1]; break;
+                            case "TIP":
+                                for(int i = 1; i <= data.length-1; i++){
+                                    tooltip += data[i];
+                                    if (i != data.length-1) tooltip += " ";
+                                }
+                                break;
+                            case "ARG":
+                                for(int i = 1; i < data.length; i++)
+                                    args.add(i-1, data[i]);
+                                break;
+                            case "FLAG":
+                                for(int i = 1; i < data.length; i ++)
+                                    flags.add(i-1, data[i]);
+                                break;
+                            default:
+                                System.out.println("Unknown line. Ignored.");
                         }
-                    }else if(data[0].equals("INT")) interpreter = data[1];
-                    else if(data[0].equals("CMD"))  command = data[1];
-                    else if(data[0].equals("TIP")){
-                        for(int i = 1; i <= data.length-1; i ++){
-                            tooltip += data[i];
-                            if (i != data.length-1) tooltip += " ";
-                        }
-                    }else if(data[0].equals("ARG")){
-                        for(int i = 1; i < data.length; i ++){
-                            args.add(i-1, data[i]);
-                        }
-                    }else if(data[0].equals("FLAG")){
-                        for(int i = 1; i < data.length; i ++){
-                            flags.add(i-1, data[i]);
-                        }
-                    }else{
-                        break;
                     }
                 }
             }
