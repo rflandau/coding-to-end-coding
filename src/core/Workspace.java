@@ -73,7 +73,8 @@ public class Workspace extends Application {
         
         //load the FXML
         try{
-            root = (AnchorPane) FXMLLoader.load(getClass().getResource("main.fxml"));
+            root = (AnchorPane) FXMLLoader.load(
+                getClass().getResource("main.fxml"));
         }catch(IOException ie){
             System.out.println("Exception on FXML load: "+ie);
         }
@@ -128,7 +129,8 @@ public class Workspace extends Application {
 
 
     //Directly adds a command block to the flow
-    public void addCommandBlock(CommandFlowVSP blockBox, CommandBlock template){
+    public void addCommandBlock(CommandFlowVSP blockBox,
+        CommandBlock template){
 	int index = structure.getFlowSize();
 	Command c = template.getCommand();
 	CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
