@@ -4,22 +4,31 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 
+/*
+    CorrectPosRequestEvent
+    NOTE: finish these commands
+*/
 public class CorrectPosRequestEvent extends Event {
-    //publicly declaring this event's type
-    public static EventType<CorrectPosRequestEvent> VSPPosEvent= new EventType<CorrectPosRequestEvent>("VSPPosEvent");
-    //idk what this is, but because events are serializable, Eclipse whined at me until I put it here
-    private static final long serialVersionUID = 251645018293029384L;
-    
-    //this event only carries its source
-    CommandBlock source;
+    //variables----------------------------------------------------------------
+    public static EventType<CorrectPosRequestEvent> VSPPosEvent =
+        new EventType<CorrectPosRequestEvent>("VSPPosEvent");           // type
+    private static final long serialVersionUID = 251645018293029384L;   // ???
+    CommandBlock source;    // this event only carries its source
 
+    //constructors-------------------------------------------------------------
+    /*
+        constructor that generates new CommandBlocks for the anchors
+    */
     public CorrectPosRequestEvent(CommandBlock source) {
         super(VSPPosEvent);
         
         this.source = source;
     }
     
+    //subroutines--------------------------------------------------------------
     public CommandBlock getSource() {
         return this.source;
     }
+    
+    //static subroutines-------------------------------------------------------
 }

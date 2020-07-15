@@ -54,4 +54,6 @@ public class ReorderRequestEvent extends Event{
     public double getGuestY() {
         return guestY;
     }
+    
+    //static subroutines-------------------------------------------------------
 }
