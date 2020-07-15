@@ -21,7 +21,7 @@ public class ScriptStruct{
     String                      outPath;                // path to output file
     Hashtable<String, Interpreter> interpreterList;     // all Interpreters
     Interpreter                 interp;                 // current Interpreter
-    
+
     //constructors-------------------------------------------------------------
     /*
         default constructor
@@ -60,7 +60,7 @@ public class ScriptStruct{
     */
     void generateInterpreters(){
         String path = "../commands/bash.ctecblock";     // default input path
-        
+
         try{
             BufferedReader reader =
             new BufferedReader(new FileReader(new File(path)));
@@ -110,7 +110,7 @@ public class ScriptStruct{
         String  name = "",      // Interpreter name
                 path = "",      // path to Interpreter shell
                 tooltip = "";   // rollover tooltip
-                //[] data;      //original declaration, but caused errors  
+                //[] data;      //original declaration, but caused errors
         String[]data;           // words from a line
         int     returnVal = 0;  // return value
 
@@ -213,13 +213,13 @@ public class ScriptStruct{
     */
     public ArrayList<Command> getTemplateCommands(){
         ArrayList<Command> returnVal = null;
-    
+
         if(interp != null){
             returnVal = new ArrayList<Command>(interp.commands.values());
         }
         return returnVal;
     }
-    
+
     /*
         changeInterpreter()
         Tries to set the current interp to the one named 'name'.
@@ -297,7 +297,7 @@ public class ScriptStruct{
             System.out.println("Caught exception " + e);
             error = true;
         }
-        
+
         if(!error){
             System.out.println(interp.getPath());
 
@@ -322,7 +322,7 @@ public class ScriptStruct{
     */
     private File createOutFile(){
         File toReturn;  // File object to be returned
-        
+
         try{
             toReturn = new File(outPath);
             if(toReturn.createNewFile())
@@ -359,25 +359,31 @@ public class ScriptStruct{
 
         return toReturn;
     }
-    
+
     //other_____________________________________________________________________
     /*
         toString()
         Prints the ScriptStruct in full, calling toStrings for commands and
         interpreters.
+        Uses StringBuilder for efficency.
     */
     public String toString(){
         StringBuilder returnVal = new StringBuilder(100);   // arbitrary value
         ArrayList<Interpreter> interpArr = new
             ArrayList<Interpreter>(interpreterList.values()); // all interps
         ArrayList<Command> comArr;                          // all commands
-        
+
         //add name, path commands from all interpreters
         for(Interpreter in : interpArr){
             returnVal.append(in.toString() + "\n");
             comArr = new ArrayList<Command>(in.commands.values());
             for(Command c : comArr)
                 returnVal.append(c + "\n");
+        }
+        //print flow status
+        returnVal.append("Flow status:\n");
+        for(Command c : flow){
+            returnVal.append("---" + c.getName() + "\n");
         }
         return returnVal.toString();
 

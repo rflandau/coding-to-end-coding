@@ -172,6 +172,7 @@ public class Workspace extends Application {
         int index = structure.getFlowSize();
         Command c = template.getCommand();
         CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+        //NOTE: This adds command to structure for us.
         blockBox.addCommandBlock(block);
     }
 }
