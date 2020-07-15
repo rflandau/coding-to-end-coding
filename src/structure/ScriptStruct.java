@@ -326,7 +326,7 @@ public class ScriptStruct{
         try{
             toReturn = new File(outPath);
             if(toReturn.createNewFile())
-            System.out.println(outPath + " created.");
+                System.out.println(outPath + " created. Writting...");
             else System.out.println(outPath+" already exists. Overwritting...");
         } catch (NullPointerException | SecurityException | IOException ex){
             System.err.println("ERROR@createOutFile()\n" + "---"+ex.toString());
@@ -355,6 +355,7 @@ public class ScriptStruct{
             //call helper function
             writeScript(reader, interp);
             reader.close();
+            System.out.println("Finished!");
         } else toReturn = false;
 
         return toReturn;
