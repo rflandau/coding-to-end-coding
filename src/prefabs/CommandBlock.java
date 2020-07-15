@@ -123,7 +123,7 @@ public class CommandBlock extends StackPane {
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
-	text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+    text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
@@ -137,9 +137,9 @@ public class CommandBlock extends StackPane {
         allows the changing of a command block's home location, if need be
     */
     public void onSidebar(boolean val) {
-	if(val){
-	    this.home = livesOn.SIDEBAR;
-	}
+    if(val){
+        this.home = livesOn.SIDEBAR;
+    }
     }
     
     //gets the name of the command the block is currently carrying
@@ -149,7 +149,7 @@ public class CommandBlock extends StackPane {
 
     //get the associated command
     public Command getCommand(){
-	return attachedCommand;
+    return attachedCommand;
     }
     
     //toggles a command block's ability to move
@@ -168,24 +168,27 @@ public class CommandBlock extends StackPane {
         }
     }
 
-    //returns a deep copy of the command block this method is called on
-	public CommandBlock copy() {
-		//we use localToScene(0, 0) to translate the block's position relative to itself to the scene
-		return new CommandBlock(
-		this.localToScene(0, 0).getX(),
-		this.localToScene(0, 0).getY(),
-		this.commandColor,
-		this.attachedCommand,
-		this.commandList);
-	}
-	public void delete(){
-		System.out.println("delete Called");
-		this.getChildren().remove(0,2);
-		//There is currently no way to find the index so this is commented out
-		//commandList.removeCommandFromFlow(listIndex);
-	}
-	
-	//these f
+    /*
+        copy()
+        returns a deep copy of the command block this method is called on
+        we use localToScene(0, 0) to translate the block's position relative
+        to itself to the scene
+    */
+    public CommandBlock copy() {
+        
+        return new CommandBlock(
+        this.localToScene(0, 0).getX(),
+        this.localToScene(0, 0).getY(),
+        this.commandColor,
+        this.attachedCommand,
+        this.commandList);
+    }
+    public void delete(){
+        System.out.println("delete Called");
+        this.getChildren().remove(0,2);
+    }
+    
+    //these f
     public double getHomeX() {return this.homeX;}
     
     public double getHomeY() {return this.homeY;}
@@ -315,7 +318,8 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
             else {
                 //ask its container to align it, if it can handle
                 // CorrectPosRequestEvent
-                targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
+                targetBlock.getParent().fireEvent(
+                    new CorrectPosRequestEvent(targetBlock));
             }
         }
         
@@ -352,10 +356,12 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
         // when dragged over, the command block passes itself and the point of
         // contact(?) to its container, if the container can handle a
         // ReorderRequest
-        Point2D newPosition = targetBlock.localToParent(targetBlock.sceneToLocal(
+        Point2D newPosition = targetBlock.localToParent(
+            targetBlock.sceneToLocal(
                 event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
-        ));
+            )
+        );
         targetBlock.getParent().fireEvent(
                 new ReorderRequestEvent(targetBlock, newPosition.getX(),
                 newPosition.getY())
