@@ -92,7 +92,7 @@ public class Workspace extends Application {
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 
         //create non-fxml items
-        sidebarVSP = new VerticalSortingPane();
+        //sidebarVSP = new VerticalSortingPane();
         canvasBoxVSP = new CommandFlowVSP(structure);
         //sidebarVbox.getChildren().add(sidebarVSP);
         canvasBox.getChildren().add(canvasBoxVSP);
@@ -107,6 +107,30 @@ public class Workspace extends Application {
             }
             }
         });
+<<<<<<< HEAD
+	
+	//Setting sidebar scrollbar
+	sidebarVbox.setLayoutY(0);
+	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+				Number old_val, Number new_val){
+		int size = sidebarVbox.getChildren().size();
+		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+	    }
+	});
+
+	//Setting Canvas scrollbar
+	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+				Number old_val, Number new_val){
+		double height = canvasBoxVSP.getVSPHeight();
+		// 100 is the base value of height
+		double heightDiff = (height * new_val.doubleValue()) / 100;
+		canvasBox.setLayoutY(-heightDiff);
+	    }
+	});
+	
+=======
     
     //Setting sidebar scrollbar
     sidebarVbox.setLayoutY(0);
@@ -125,6 +149,7 @@ public class Workspace extends Application {
         }
     });
     
+>>>>>>> e24405ff3178cc83c32389b43310aff8883b0eac
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
