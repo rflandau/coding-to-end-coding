@@ -39,7 +39,8 @@ import structure.ScriptStruct;
 
 /*
     Workspace
-    TODO: finish these comments
+    More or less the main class. All front-end and driver code, anything that
+    would be executed in main, should be executed here.
 */
 public class Workspace extends Application {
     //variables----------------------------------------------------------------
@@ -65,7 +66,8 @@ public class Workspace extends Application {
 
     /*
         start()
-        starts the JavaFX GUI TODO: finish these comments
+        Starts the JavaFX GUI and initalizes event handlers.
+        Loads and unpacks the FXML file and creates the VSP on top.
     */
     @Override
     public void start(Stage stage) throws Exception {
@@ -76,7 +78,7 @@ public class Workspace extends Application {
         try{
             root = (AnchorPane) FXMLLoader.load(getClass().getResource("main.fxml"));
         }catch(IOException ie){
-            System.out.println("Exception on FXML load: "+ie);
+            System.out.println("Exception on FXML load: " + ie);
         }
         //unpack all items
         SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
@@ -92,73 +94,51 @@ public class Workspace extends Application {
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 
         //create non-fxml items
-        //sidebarVSP = new VerticalSortingPane();
         canvasBoxVSP = new CommandFlowVSP(structure);
-        //sidebarVbox.getChildren().add(sidebarVSP);
         canvasBox.getChildren().add(canvasBoxVSP);
 
         exportButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-            try{
-                structure.export();
-            }catch(IOException ex){
-                System.out.println("Export button IOexception:"+ex);
-            }
+                try{ structure.export();}
+                catch(IOException ex){
+                    System.out.println("Export button IOexception: " + ex);
+                }
             }
         });
 
-	//Setting sidebar scrollbar
-	sidebarVbox.setLayoutY(0);
-	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    //Setting sidebar scrollbar
+	    sidebarVbox.setLayoutY(0);
+	    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	           public void changed(ObservableValue<? extends Number> ov,
+				                    Number old_val,
+                                    Number new_val){
+		       int size = sidebarVbox.getChildren().size();
+		       sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+        }});
+
+	    //Setting Canvas scrollbar
+	    canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
-				Number old_val, Number new_val){
-		int size = sidebarVbox.getChildren().size();
-		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
-	    }
-	});
-
-	//Setting Canvas scrollbar
-	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
-	    public void changed(ObservableValue<? extends Number> ov,
-				Number old_val, Number new_val){
-		double height = canvasBoxVSP.getVSPHeight();
-		// 100 is the base value of height
-		double heightDiff = (height * new_val.doubleValue()) / 100;
-		canvasBox.setLayoutY(-heightDiff);
-	    }
-	});
-
-    /*
-    //Setting sidebar scrollbar
-    sidebarVbox.setLayoutY(0);
-    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
-        public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val){
-        sidebarVbox.setLayoutY(1-new_val.doubleValue());
-        }
-    });
-
-    //Setting Canvas scrollbar
-    canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
-        public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val){
-        canvasBox.setLayoutY(-new_val.doubleValue());
-        }
-    });*/
+                            Number old_val,
+                            Number new_val){
+		    double height = canvasBoxVSP.getVSPHeight();
+		    // 100 is the base value of height
+		    double heightDiff = (height * new_val.doubleValue()) / 100;
+		    canvasBox.setLayoutY(-heightDiff);
+	    }});
 
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
             CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
-        b.onSidebar(true);
-        b.addEventFilter(MouseEvent.MOUSE_CLICKED,
-                 new EventHandler<MouseEvent>(){
-                 @Override
-                 public void handle(MouseEvent e){
-                     addCommandBlock(canvasBoxVSP, b);
-                 }
-                 });
+            b.onSidebar(true);
+            b.addEventFilter(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent e){
+                        addCommandBlock(canvasBoxVSP, b);
+                    }});
             sidebarVbox.getChildren().add(b);
         }
 
@@ -166,8 +146,11 @@ public class Workspace extends Application {
         stage.show();
     }
 
-
-    //Directly adds a command block to the flow
+    /*
+        addCommandBlock()
+        Creates a CommandBlock and associated command within flow.
+        Appends the CommandBlock to the canvas list and the command to flow.
+    */
     public void addCommandBlock(CommandFlowVSP blockBox, CommandBlock template){
         int index = structure.getFlowSize();
         Command c = template.getCommand();
