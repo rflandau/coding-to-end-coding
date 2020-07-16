@@ -54,7 +54,8 @@ public class CommandBlock extends StackPane {
     boolean                 draggable;      // if the block can be dragged
     int                     listIndex;      // TODO: finish these comments
     ContextMenu             contextMenu;    // TODO: finish these comments
-    MenuItem                deleteBlock;    // TODO: finish these comments
+    MenuItem                deleteBlock,    // TODO: finish these comments
+                            editBlock;
     ScriptStruct            commandList;    // TODO: finish these comments
     
     //constructors--------------------------------------------------------------
@@ -112,6 +113,7 @@ public class CommandBlock extends StackPane {
         */
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
+	editBlock = new MenuItem("Edit Command");
 
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
@@ -119,8 +121,10 @@ public class CommandBlock extends StackPane {
             public void handle(ActionEvent event){delete();}
         });
 
-        contextMenu.getItems().addAll(deleteBlock);
-        rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+	//Add blocks to context menu
+        contextMenu.getItems().addAll(deleteBlock, editBlock);
+
+	rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
