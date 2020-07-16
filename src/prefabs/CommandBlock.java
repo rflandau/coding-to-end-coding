@@ -62,7 +62,8 @@ public class CommandBlock extends StackPane {
     TextPanel               txtBox;
     Rectangle               rect;
     Label                   text;
-    String                  argument;
+    String                  argument,
+	                    edited;
     
     //constructors--------------------------------------------------------------
     /*
@@ -93,7 +94,7 @@ public class CommandBlock extends StackPane {
         this.rect = new Rectangle(CommandBlock.width,
 				  CommandBlock.height,
 				  commandColor);
-        this.text = new Label(cmd.getName());
+        this.text = new Label(cmd.getName()+edited);
 
         //adds visuals to the container
         StackPane.setAlignment(rect, Pos.CENTER);
