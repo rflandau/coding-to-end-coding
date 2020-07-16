@@ -124,6 +124,11 @@ public class CommandBlock extends StackPane {
         setHome()
         allows the changing of a command block's home location, if need be
     */
+    //Passing in new input for block
+    public void newArgument(String inStr){
+	System.out.println(attachedCommand.getName()+inStr);
+    }
+    
     public void onSidebar(boolean val) {
 	if(val){
 	    this.home = livesOn.SIDEBAR;
@@ -195,12 +200,16 @@ public class CommandBlock extends StackPane {
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
             @Override
-            public void handle(ActionEvent event){delete();}
+            public void handle(ActionEvent event){
+		delete();
+	    }
         });
 
 	editBlock.setOnAction(new EventHandler<ActionEvent>(){
 	    @Override
-	    public void handle(ActionEvent event){}
+	    public void handle(ActionEvent event){
+		setAsEdit();
+	    }
 	});
 	    
 	//Add blocks to context menu
