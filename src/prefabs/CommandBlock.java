@@ -129,6 +129,10 @@ public class CommandBlock extends StackPane {
     public void newArgument(String inStr){
 	this.argument = inStr;
     }
+
+    public String getArgument(){
+	return this.argument;
+    }
     
     public void onSidebar(boolean val) {
 	if(val){
