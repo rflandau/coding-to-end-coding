@@ -114,7 +114,7 @@ public class CommandBlock extends StackPane {
         deleteBlock = new MenuItem("Delete Command");
 
         //ContextMenu Behavior
-        deleteBlock.setOnAction(new onContextDelete(this));
+        deleteBlock.setOnAction(new OnContextDelete(this));
 
         contextMenu.getItems().addAll(deleteBlock);
         rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
@@ -155,16 +155,16 @@ public class CommandBlock extends StackPane {
     //toggles a command block's ability to move
     public void setDraggable(boolean wantsToMove) {
         if(wantsToMove) {
-            this.setOnDragDetected(new onCommandBlockDrag(this));
-            this.setOnMouseDragged(new onCommandBlockMove(this));
-            this.setOnMouseReleased(new onCommandBlockDrop(this));
-            this.setOnMouseDragEntered(new onCommandBlockHover(this));
+            this.setOnDragDetected(new OnCommandBlockDrag(this));
+            this.setOnMouseDragged(new OnCommandBlockMove(this));
+            this.setOnMouseReleased(new OnCommandBlockDrop(this));
+            this.setOnMouseDragEntered(new OnCommandBlockHover(this));
         }
         else {
-            this.setOnDragDetected(new onCommandBlockDrag(null));
-            this.setOnMouseDragged(new onCommandBlockMove(null));
-            this.setOnMouseReleased(new onCommandBlockDrop(null));
-            this.setOnMouseDragEntered(new onCommandBlockHover(null));
+            this.setOnDragDetected(new OnCommandBlockDrag(null));
+            this.setOnMouseDragged(new OnCommandBlockMove(null));
+            this.setOnMouseReleased(new OnCommandBlockDrop(null));
+            this.setOnMouseDragEntered(new OnCommandBlockHover(null));
         }
     }
 
@@ -200,19 +200,18 @@ public class CommandBlock extends StackPane {
 
 //event handlers classes--------------------------------------------------------
 /*
-    onCommandBlockDrag
+    OnCommandBlockDrag
     TODO: finish these comments
 */
-class onCommandBlockDrag implements EventHandler<MouseEvent>{
+class OnCommandBlockDrag implements EventHandler<MouseEvent>{
     //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being dragged
 
     //constructors-------------------------------------------------------------
     /*
-        onCommandBlockDrag
         constructor
     */
-    onCommandBlockDrag(CommandBlock block){
+    OnCommandBlockDrag(CommandBlock block){
         super();
         this.targetBlock = block;
     }
@@ -235,19 +234,18 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
 }
 
 /*
-    onCommandBlockMove
+    OnCommandBlockMove
     TODO: finish these comments
 */
-class onCommandBlockMove implements EventHandler<MouseEvent>{
+class OnCommandBlockMove implements EventHandler<MouseEvent>{
     //variables----------------------------------------------------------------
     CommandBlock targetBlock;
 
     //constructors-------------------------------------------------------------
     /*
-        onCommandBlockMove()
         constructor
     */
-    onCommandBlockMove(CommandBlock block){
+    OnCommandBlockMove(CommandBlock block){
         super();
         this.targetBlock = block;
     }
@@ -275,19 +273,18 @@ class onCommandBlockMove implements EventHandler<MouseEvent>{
 }
 
 /*
-    onCommandBlockDrop
+    OnCommandBlockDrop
     TODO: finish these comments
 */
-class onCommandBlockDrop implements EventHandler<MouseEvent>{
+class OnCommandBlockDrop implements EventHandler<MouseEvent>{
     //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being dropped
 
     //constructors-------------------------------------------------------------
     /*
-        onCommandBlockDrop()
         constructor
     */
-    onCommandBlockDrop(CommandBlock block){
+    OnCommandBlockDrop(CommandBlock block){
         super();
         this.targetBlock = block;
     }
@@ -332,10 +329,10 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
 }
 
 /*
-    onCommandBlockHover
+    OnCommandBlockHover
     TODO: finish these comments
 */
-class onCommandBlockHover implements EventHandler<MouseEvent>{
+class OnCommandBlockHover implements EventHandler<MouseEvent>{
     //variables----------------------------------------------------------------
     CommandBlock targetBlock;  // the block being hovered over
 
@@ -343,7 +340,7 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
     /*
         constructor
     */
-    onCommandBlockHover(CommandBlock block){
+    OnCommandBlockHover(CommandBlock block){
         super();
         this.targetBlock = block;
     }
@@ -371,12 +368,16 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
     }
 }
 
-class onContextDelete implements EventHandler<ActionEvent>{
+/*
+    OnContextDelete
+    TODO: finish these comments
+*/
+class OnContextDelete implements EventHandler<ActionEvent>{
     //fields-------------------------------------------------------------------
       CommandBlock targetBlock;    //the VSP that handles this event
 
     //constructors-------------------------------------------------------------
-      onContextDelete(CommandBlock targetBlock){
+      OnContextDelete(CommandBlock targetBlock){
           super();
           this.targetBlock = targetBlock;
       }
