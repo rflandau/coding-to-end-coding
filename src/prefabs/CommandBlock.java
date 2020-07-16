@@ -8,6 +8,7 @@
 package prefabs;
 
 //visuals
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
@@ -31,6 +32,7 @@ import structure.Interpreter;
 import customEvents.CorrectPosRequestEvent;
 import customEvents.ReorderRequestEvent;
 import prefabs.VerticalSortingPane;
+import prefabs.TextPanel;
 
 /*
     CommandBlock
@@ -57,6 +59,9 @@ public class CommandBlock extends StackPane {
     MenuItem                deleteBlock,    // TODO: finish these comments
                             editBlock;
     ScriptStruct            commandList;    // TODO: finish these comments
+    TextPanel               txtBox;
+    Rectangle               rect;
+    Label                   text;
     
     //constructors--------------------------------------------------------------
     /*
@@ -67,8 +72,8 @@ public class CommandBlock extends StackPane {
         cmd, the command that the command block contains and represents
         cmdL, the ScriptStruct reference
     */
-    public CommandBlock(double xPos, double yPos, Paint color,
-        Command cmd, ScriptStruct cmdL) {
+    public CommandBlock(double xPos, double yPos,
+			Command cmd, ScriptStruct cmdL) {
         
         //creating the jfx container
         super();
@@ -83,10 +88,10 @@ public class CommandBlock extends StackPane {
         this.home = livesOn.WORKSPACE;
 
         //creating the visual shape and name label (and saving the block's color)
-        this.commandColor = color;
-        Rectangle rect = new Rectangle(CommandBlock.width,
-            CommandBlock.height, color);
-        Label text = new Label(cmd.getName());
+        this.commandColor = Color.LIGHTBLUE;
+        this.rect = new Rectangle(CommandBlock.width,
+            CommandBlock.height, commandColor);
+        this.text = new Label(cmd.getName());
 
         //adds visuals to the container
         StackPane.setAlignment(rect, Pos.CENTER);
@@ -111,31 +116,6 @@ public class CommandBlock extends StackPane {
             It will probably involve CommandBlocks simply knowing their own
             size.
         */
-        contextMenu = new ContextMenu();
-        deleteBlock = new MenuItem("Delete Command");
-	editBlock = new MenuItem("Edit Command");
-
-        //ContextMenu Behavior
-        deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event){delete();}
-        });
-
-	//Add blocks to context menu
-        contextMenu.getItems().addAll(deleteBlock, editBlock);
-
-	rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
-            @Override
-            public void handle(ContextMenuEvent event){
-                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
-            }
-        });
-	text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
-            @Override
-            public void handle(ContextMenuEvent event){
-                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
-            }
-        });
     }
     //subroutines--------------------------------------------------------------
 
@@ -181,7 +161,6 @@ public class CommandBlock extends StackPane {
 		return new CommandBlock(
 		this.localToScene(0, 0).getX(),
 		this.localToScene(0, 0).getY(),
-		this.commandColor,
 		this.attachedCommand,
 		this.commandList);
 	}
@@ -199,6 +178,41 @@ public class CommandBlock extends StackPane {
     public void setHomeX(double newHomeX) {this.homeX = newHomeX;}
     
     public void setHomeY(double newHomeY) {this.homeY = newHomeY;}
+
+    public void setEditBox(TextPanel txtPanel){this.txtBox = txtPanel;}
+
+    public void setContextMenu(){
+        contextMenu = new ContextMenu();
+        deleteBlock = new MenuItem("Delete Command");
+	editBlock = new MenuItem("Edit Command");
+
+        //ContextMenu Behavior
+        deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){delete();}
+        });
+
+	editBlock.setOnAction(new EventHandler<ActionEvent>(){
+	    @Override
+	    public void handle(ActionEvent event){}
+	});
+	    
+	//Add blocks to context menu
+        contextMenu.getItems().addAll(deleteBlock, editBlock);
+
+	this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+            @Override
+            public void handle(ContextMenuEvent event){
+                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+            }
+        });
+	this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+            @Override
+            public void handle(ContextMenuEvent event){
+                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
+            }
+        });
+    }	
 }
 
 //event handlers classes--------------------------------------------------------
@@ -219,7 +233,7 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
         super();
         this.targetBlock = block;
     }
-
+    
     //subroutines--------------------------------------------------------------
     /*
         handle()

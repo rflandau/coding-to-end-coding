@@ -114,37 +114,37 @@ public class Workspace extends Application {
             }
         });
 
-	    //Setting sidebar scrollbar
-	    sidebarVbox.setLayoutY(0);
-	    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
-	           public void changed(ObservableValue<? extends Number> ov,
-				                    Number old_val,
-                                    Number new_val){
-		       int size = sidebarVbox.getChildren().size();
-		       sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
-        }});
-
-	    //Setting Canvas scrollbar
-	    canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	//Setting sidebar scrollbar
+	sidebarVbox.setLayoutY(0);
+	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
-                            Number old_val,
-                            Number new_val){
-		    double height = canvasBoxVSP.getVSPHeight();
-		    // 100 is the base value of height
-		    double heightDiff = (height * new_val.doubleValue()) / 100;
-		    canvasBox.setLayoutY(-heightDiff);
-	    }});
+				Number old_val, Number new_val){
+		int size = sidebarVbox.getChildren().size();
+		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+	    }
+	});
+
+	//Setting Canvas scrollbar
+	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+                            Number old_val, Number new_val){
+		double height = canvasBoxVSP.getVSPHeight();
+		// 100 is the base value of height
+		double heightDiff = (height * new_val.doubleValue()) / 100;
+		canvasBox.setLayoutY(-heightDiff);
+	    }
+	});
 
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
-            CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+            CommandBlock b = new CommandBlock(1,2,c,structure);
             b.onSidebar(true);
             b.addEventFilter(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent e){
-                        addCommandBlock(canvasBoxVSP, b);
+                        addCommandBlock(canvasBoxVSP, b, textInputBox);
                     }});
             sidebarVbox.getChildren().add(b);
         }
@@ -158,11 +158,14 @@ public class Workspace extends Application {
         Creates a CommandBlock and associated command within flow.
         Appends the CommandBlock to the canvas list and the command to flow.
     */
-    public void addCommandBlock(CommandFlowVSP blockBox, CommandBlock template){
+    public void addCommandBlock(CommandFlowVSP bBox, CommandBlock template,
+				TextPanel textBox){
         int index = structure.getFlowSize();
         Command c = template.getCommand();
-        CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+        CommandBlock block = new CommandBlock(1,2,c,structure);
+	block.setEditBox(textBox);
+	block.setContextMenu();
         //NOTE: This adds command to structure for us.
-        blockBox.addCommandBlock(block);
+        bBox.addCommandBlock(block);
     }
 }
