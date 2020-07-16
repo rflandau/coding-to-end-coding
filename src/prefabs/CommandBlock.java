@@ -63,8 +63,8 @@ public class CommandBlock extends StackPane {
     Rectangle               rect;
     Label                   text;
     String                  argument,
-	                    edited;
-    
+	                        edited;
+
     //constructors--------------------------------------------------------------
     /*
         Argument Desciptors:
@@ -76,7 +76,7 @@ public class CommandBlock extends StackPane {
     */
     public CommandBlock(double xPos, double yPos,
 			Command cmd, ScriptStruct cmdL) {
-        
+
         //creating the jfx container
         super();
 
@@ -109,7 +109,7 @@ public class CommandBlock extends StackPane {
         this.setOnMouseDragged(new onCommandBlockMove(this));
         this.setOnMouseReleased(new onCommandBlockDrop(this));
         this.setOnMouseDragEntered(new onCommandBlockHover(this));
-        
+
         //Init ContextMenu
         /*
             Be careful, these events calculate position based on the top-left
@@ -124,27 +124,27 @@ public class CommandBlock extends StackPane {
 
     /*
         setHome()
-        allows the changing of a command block's home location, if need be
+        Allows the changing of a command block's home location, if need be.
+        Modifies the name of the block to show it is editted.
     */
     //Passing in new input for block
     public void newArgument(String inStr){
-	this.argument = inStr;
-	if (inStr.length() > 0){
-	    edited = " ...";
-	    this.text.setText(attachedCommand.getName()+edited);
-	}
+	    this.argument = inStr;
+	    if (inStr.length() > 0){
+	        edited = " ...";
+	        this.text.setText(attachedCommand.getName()+edited);
+            //attachedCommand.setArguments(inStr.trim().split(" "));
+	    }
     }
 
     public String getArgument(){
-	return this.argument;
+	    return this.argument;
     }
-    
+
     public void onSidebar(boolean val) {
-	if(val){
-	    this.home = livesOn.SIDEBAR;
-	}
+	    if(val) this.home = livesOn.SIDEBAR;
     }
-    
+
     //gets the name of the command the block is currently carrying
     public String getCommandName() {
         return this.attachedCommand.getName();
@@ -152,9 +152,9 @@ public class CommandBlock extends StackPane {
 
     //get the associated command
     public Command getCommand(){
-	return attachedCommand;
+ 	    return attachedCommand;
     }
-    
+
     //toggles a command block's ability to move
     public void setDraggable(boolean wantsToMove) {
         if(wantsToMove) {
@@ -180,30 +180,30 @@ public class CommandBlock extends StackPane {
 				this.attachedCommand,
 				this.commandList);
     }
-    
+
     private void delete(){
-	VerticalSortingPane vsp = (VerticalSortingPane) this.getParent();
-	vsp.removeCommandBlock(this);
-	//commandList.removeCommandFromFlow(listIndex);
+	    VerticalSortingPane vsp = (VerticalSortingPane) this.getParent();
+ 	    vsp.removeCommandBlock(this);
+	    //commandList.removeCommandFromFlow(listIndex);
     }
 
     private void setAsEdit(){
-	txtBox.setEdit(this);
-	this.rect.setStroke(Color.GREEN);
+	    txtBox.setEdit(this);
+	    this.rect.setStroke(Color.GREEN);
     }
 
     public void closeEdit(){
-	this.rect.setStroke(Color.LIGHTBLUE);
+	    this.rect.setStroke(Color.LIGHTBLUE);
     }
-	
-    
+
+
     //these f
     public double getHomeX() {return this.homeX;}
-    
+
     public double getHomeY() {return this.homeY;}
-    
+
     public void setHomeX(double newHomeX) {this.homeX = newHomeX;}
-    
+
     public void setHomeY(double newHomeY) {this.homeY = newHomeY;}
 
     public void setEditBox(TextPanel txtPanel){this.txtBox = txtPanel;}
@@ -211,23 +211,23 @@ public class CommandBlock extends StackPane {
     public void setContextMenu(){
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
-	editBlock = new MenuItem("Edit Command");
+	    editBlock = new MenuItem("Edit Command");
 
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-		delete();
-	    }
+		        delete();
+	        }
         });
 
 	editBlock.setOnAction(new EventHandler<ActionEvent>(){
 	    @Override
 	    public void handle(ActionEvent event){
-		setAsEdit();
+		    setAsEdit();
 	    }
 	});
-	    
+
 	//Add blocks to context menu
         contextMenu.getItems().addAll(deleteBlock, editBlock);
 
@@ -243,7 +243,7 @@ public class CommandBlock extends StackPane {
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
-    }	
+    }
 }
 
 //event handlers classes--------------------------------------------------------
@@ -264,7 +264,7 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
         super();
         this.targetBlock = block;
     }
-    
+
     //subroutines--------------------------------------------------------------
     /*
         handle()
@@ -274,17 +274,17 @@ class onCommandBlockDrag implements EventHandler<MouseEvent>{
     public void handle(MouseEvent event) {
         //expose other events to the mouse during the drag
         targetBlock.setMouseTransparent(true);
-        
+
         //reset translates to match mouse position
         targetBlock.setTranslateX(0);
         targetBlock.setTranslateY(0);
         targetBlock.relocate(
-                event.getSceneX() - CommandBlock.width/2, 
+                event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
         );
-        
+
         targetBlock.startFullDrag();
-        
+
         event.consume();
         return;
     }
@@ -373,16 +373,16 @@ class onCommandBlockDrop implements EventHandler<MouseEvent>{
             //else, move it to this new position
             else {
                 targetBlock.relocate(
-                        event.getSceneX() - CommandBlock.width/2, 
+                        event.getSceneX() - CommandBlock.width/2,
                         event.getSceneY() - CommandBlock.height/2
                 );
-                
+
                 //ask its container to align it, if it can handle
                 // CorrectPosRequestEvent
                 targetBlock.getParent().fireEvent(new CorrectPosRequestEvent(targetBlock));
             }
         }
-        
+
         targetBlock.setMouseTransparent(false);
 
         event.consume();
@@ -405,7 +405,7 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
         super();
         this.targetBlock = block;
     }
-    
+
     //subroutines--------------------------------------------------------------
     /*
         handle()
