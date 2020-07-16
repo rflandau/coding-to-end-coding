@@ -90,7 +90,8 @@ public class CommandBlock extends StackPane {
         //creating the visual shape and name label (and saving the block's color)
         this.commandColor = Color.LIGHTBLUE;
         this.rect = new Rectangle(CommandBlock.width,
-            CommandBlock.height, commandColor);
+				  CommandBlock.height,
+				  commandColor);
         this.text = new Label(cmd.getName());
 
         //adds visuals to the container
@@ -156,21 +157,26 @@ public class CommandBlock extends StackPane {
     }
 
     //returns a deep copy of the command block this method is called on
-	public CommandBlock copy() {
-		//we use localToScene(0, 0) to translate the block's position relative to itself to the scene
-		return new CommandBlock(
-		this.localToScene(0, 0).getX(),
-		this.localToScene(0, 0).getY(),
-		this.attachedCommand,
-		this.commandList);
-	}
-	public void delete(){
-		VerticalSortingPane vsp = (VerticalSortingPane) this.getParent();
-		vsp.removeCommandBlock(this);
-		//commandList.removeCommandFromFlow(listIndex);
-	}
-	
-	//these f
+    public CommandBlock copy() {
+	//we use localToScene(0, 0) to translate the block's position relative to itself to the scene
+	return new CommandBlock(
+				this.localToScene(0, 0).getX(),
+				this.localToScene(0, 0).getY(),
+				this.attachedCommand,
+				this.commandList);
+    }
+    
+    private void delete(){
+	VerticalSortingPane vsp = (VerticalSortingPane) this.getParent();
+	vsp.removeCommandBlock(this);
+	//commandList.removeCommandFromFlow(listIndex);
+    }
+
+    private void setAsEdit(){
+	txtBox.setEdit(this);
+    }
+    
+    //these f
     public double getHomeX() {return this.homeX;}
     
     public double getHomeY() {return this.homeY;}
