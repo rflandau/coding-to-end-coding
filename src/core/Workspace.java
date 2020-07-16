@@ -13,6 +13,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
@@ -34,8 +35,10 @@ import prefabs.ExportButton;
 import prefabs.VerticalSortingPane;
 import prefabs.CommandBlock;
 import prefabs.CommandFlowVSP;
+import prefabs.TextPanel;
 import structure.Command;
 import structure.ScriptStruct;
+
 
 /*
     Workspace
@@ -73,7 +76,8 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
         VerticalSortingPane sidebarVSP;     // available commands
         CommandFlowVSP canvasBoxVSP;        // contains flowchart
-
+	TextPanel textInputBox;
+	
         //load the FXML
         try{
             root = (AnchorPane) FXMLLoader.load(getClass().getResource("main.fxml"));
@@ -89,14 +93,17 @@ public class Workspace extends Application {
         SplitPane   canvasSplit = (SplitPane) mainCanvas.getChildren().get(0);
         AnchorPane  canvasPane = (AnchorPane) canvasSplit.getItems().get(0);
         AnchorPane  bottomPanel = (AnchorPane) canvasSplit.getItems().get(1);
-        Button      exportButton = (Button) bottomPanel.getChildren().get(0);
+	HBox        bottomHbox = (HBox) bottomPanel.getChildren().get(0);
+        Button      exportButton = (Button) bottomHbox.getChildren().get(0);
         VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 
         //create non-fxml items
         canvasBoxVSP = new CommandFlowVSP(structure);
         canvasBox.getChildren().add(canvasBoxVSP);
-
+	textInputBox = new TextPanel();
+	bottomHbox.getChildren().add(textInputBox);
+	
         exportButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
@@ -107,37 +114,37 @@ public class Workspace extends Application {
             }
         });
 
-	    //Setting sidebar scrollbar
-	    sidebarVbox.setLayoutY(0);
-	    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
-	           public void changed(ObservableValue<? extends Number> ov,
-				                    Number old_val,
-                                    Number new_val){
-		       int size = sidebarVbox.getChildren().size();
-		       sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
-        }});
-
-	    //Setting Canvas scrollbar
-	    canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	//Setting sidebar scrollbar
+	sidebarVbox.setLayoutY(0);
+	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
 	    public void changed(ObservableValue<? extends Number> ov,
-                            Number old_val,
-                            Number new_val){
-		    double height = canvasBoxVSP.getVSPHeight();
-		    // 100 is the base value of height
-		    double heightDiff = (height * new_val.doubleValue()) / 100;
-		    canvasBox.setLayoutY(-heightDiff);
-	    }});
+				Number old_val, Number new_val){
+		int size = sidebarVbox.getChildren().size();
+		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+	    }
+	});
+
+	//Setting Canvas scrollbar
+	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+                            Number old_val, Number new_val){
+		double height = canvasBoxVSP.getVSPHeight();
+		// 100 is the base value of height
+		double heightDiff = (height * new_val.doubleValue()) / 100;
+		canvasBox.setLayoutY(-heightDiff);
+	    }
+	});
 
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
             Command c = sidebarCommands.get(i);
-            CommandBlock b = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+            CommandBlock b = new CommandBlock(1,2,c,structure);
             b.onSidebar(true);
             b.addEventFilter(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>(){
                     @Override
                     public void handle(MouseEvent e){
-                        addCommandBlock(canvasBoxVSP, b);
+                        addCommandBlock(canvasBoxVSP, b, textInputBox);
                     }});
             sidebarVbox.getChildren().add(b);
         }
@@ -151,11 +158,14 @@ public class Workspace extends Application {
         Creates a CommandBlock and associated command within flow.
         Appends the CommandBlock to the canvas list and the command to flow.
     */
-    public void addCommandBlock(CommandFlowVSP blockBox, CommandBlock template){
+    public void addCommandBlock(CommandFlowVSP bBox, CommandBlock template,
+				TextPanel textBox){
         int index = structure.getFlowSize();
         Command c = template.getCommand();
-        CommandBlock block = new CommandBlock(1,2,Color.LIGHTBLUE,c,structure);
+        CommandBlock block = new CommandBlock(1,2,c,structure);
+	block.setEditBox(textBox);
+	block.setContextMenu();
         //NOTE: This adds command to structure for us.
-        blockBox.addCommandBlock(block);
+        bBox.addCommandBlock(block);
     }
 }
