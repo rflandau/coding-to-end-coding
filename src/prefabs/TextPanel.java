@@ -49,6 +49,7 @@ public class TextPanel extends StackPane{
 	String newLabel = block.getCommandName();
 	String arg = block.getArgument();
 	textBox.setText(arg);
+	commandName.setText(newLabel+":");
     }
 
     //Event Handling-----------------------
