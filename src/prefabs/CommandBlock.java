@@ -62,6 +62,7 @@ public class CommandBlock extends StackPane {
     TextPanel               txtBox;
     Rectangle               rect;
     Label                   text;
+    String                  argument;
     
     //constructors--------------------------------------------------------------
     /*
@@ -126,7 +127,7 @@ public class CommandBlock extends StackPane {
     */
     //Passing in new input for block
     public void newArgument(String inStr){
-	System.out.println(attachedCommand.getName()+inStr);
+	this.argument = inStr;
     }
     
     public void onSidebar(boolean val) {
