@@ -13,6 +13,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
@@ -34,8 +35,10 @@ import prefabs.ExportButton;
 import prefabs.VerticalSortingPane;
 import prefabs.CommandBlock;
 import prefabs.CommandFlowVSP;
+import prefabs.TextPanel;
 import structure.Command;
 import structure.ScriptStruct;
+
 
 /*
     Workspace
@@ -89,7 +92,8 @@ public class Workspace extends Application {
         SplitPane   canvasSplit = (SplitPane) mainCanvas.getChildren().get(0);
         AnchorPane  canvasPane = (AnchorPane) canvasSplit.getItems().get(0);
         AnchorPane  bottomPanel = (AnchorPane) canvasSplit.getItems().get(1);
-        Button      exportButton = (Button) bottomPanel.getChildren().get(0);
+	HBox        bottomHbox = (HBox) bottomPanel.getChildren().get(0);
+        Button      exportButton = (Button) bottomHbox.getChildren().get(0);
         VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
 

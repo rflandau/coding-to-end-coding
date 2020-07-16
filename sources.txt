@@ -2,6 +2,7 @@
 ./src/prefabs/CommandBlock.java
 ./src/prefabs/VerticalSortingPane.java
 ./src/prefabs/CommandFlowVSP.java
+./src/prefabs/TextPanel.java
 ./src/core/Main.java
 ./src/core/Workspace.java
 ./src/structure/ScriptStruct.java
