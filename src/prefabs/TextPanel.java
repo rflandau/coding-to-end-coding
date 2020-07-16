@@ -37,6 +37,7 @@ public class TextPanel extends StackPane{
 
 	//Set Children---------------------
 	hboxContainer.setAlignment(Pos.CENTER);
+	hboxContainer.setSpacing(12);
 	hboxContainer.getChildren().addAll(commandName, textBox, saveButton);
 	this.getChildren().add(hboxContainer);
 	eventHandlingInit();
