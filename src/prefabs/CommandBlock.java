@@ -129,8 +129,10 @@ public class CommandBlock extends StackPane {
     //Passing in new input for block
     public void newArgument(String inStr){
 	this.argument = inStr;
-	edited = " ...";
-	this.text.setText(attachedCommand.getName()+edited);
+	if (inStr.length() > 0){
+	    edited = " ...";
+	    this.text.setText(attachedCommand.getName()+edited);
+	}
     }
 
     public String getArgument(){
@@ -187,7 +189,13 @@ public class CommandBlock extends StackPane {
 
     private void setAsEdit(){
 	txtBox.setEdit(this);
+	this.rect.setStroke(Color.GREEN);
     }
+
+    public void closeEdit(){
+	this.rect.setStroke(Color.LIGHTBLUE);
+    }
+	
     
     //these f
     public double getHomeX() {return this.homeX;}

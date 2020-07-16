@@ -45,6 +45,9 @@ public class TextPanel extends StackPane{
 
     //Sets the command block for editing
     public void setEdit(CommandBlock block){
+	if (currentBlock != null){
+	    currentBlock.closeEdit();
+	}
 	currentBlock = block;
 	String newLabel = block.getCommandName();
 	String arg = block.getArgument();
