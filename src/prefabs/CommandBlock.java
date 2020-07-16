@@ -94,7 +94,7 @@ public class CommandBlock extends StackPane {
         this.rect = new Rectangle(CommandBlock.width,
 				  CommandBlock.height,
 				  commandColor);
-        this.text = new Label(cmd.getName()+edited);
+        this.text = new Label(cmd.getName());
 
         //adds visuals to the container
         StackPane.setAlignment(rect, Pos.CENTER);
@@ -129,6 +129,8 @@ public class CommandBlock extends StackPane {
     //Passing in new input for block
     public void newArgument(String inStr){
 	this.argument = inStr;
+	edited = " ...";
+	this.text.setText(attachedCommand.getName()+edited);
     }
 
     public String getArgument(){
