@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 //Event handling
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+//Other
+import java.lang.CharSequence;
 //Our packages/classes
 import prefabs.CommandBlock;
 
@@ -39,6 +41,8 @@ public class TextPanel extends StackPane{
 	this.getChildren().add(hboxContainer);
 	eventHandlingInit();
     }
+
+    //Sets the command block for editing
     public void setEdit(CommandBlock block){
 	currentBlock = block;
     }
@@ -48,7 +52,9 @@ public class TextPanel extends StackPane{
 	saveButton.setOnAction(new EventHandler<ActionEvent>(){
 	    @Override
 	    public void handle(ActionEvent e){
-		System.out.println("Button");
+		CharSequence txtInput = textBox.getCharacters();
+		String txtStr = txtInput.toString();
+		System.out.println(txtInput);
 	    }
         });
     }
