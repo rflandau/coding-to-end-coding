@@ -96,10 +96,10 @@ public class CommandBlock extends StackPane {
         this.relocate(xPos, yPos);
 
         //adding drag and drop events
-        this.setOnDragDetected(new onCommandBlockDrag(this));
-        this.setOnMouseDragged(new onCommandBlockMove(this));
-        this.setOnMouseReleased(new onCommandBlockDrop(this));
-        this.setOnMouseDragEntered(new onCommandBlockHover(this));
+        this.setOnDragDetected(new OnCommandBlockDrag(this));
+        this.setOnMouseDragged(new OnCommandBlockMove(this));
+        this.setOnMouseReleased(new OnCommandBlockDrop(this));
+        this.setOnMouseDragEntered(new OnCommandBlockHover(this));
         
         //Init ContextMenu
         /*
