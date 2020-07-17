@@ -231,3 +231,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,linux,windows,eclipse,intellij
 classes/
+stale_outputs_checked

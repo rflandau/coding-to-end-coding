@@ -1,7 +1,7 @@
 INTERPRETER
 NAME bash
 TIP  bash interpreter
-PATH #!//bin/bash
+PATH #!/bin/bash
 ---
 COMMAND
 NAME echo

@@ -20,13 +20,14 @@ import customEvents.SelfRemoveRequestEvent;
     I just need to figure out how it will know that things are moving...
 */
 public class VerticalSortingPane extends Pane {
+    int height;
     //constructors-------------------------------------------------------------
     /*
         constructor that generates new CommandBlocks for the anchors
     */
     public VerticalSortingPane() {
         super();
-        
+
         //defining custom event handlers
         this.addEventHandler(ReorderRequestEvent.VSPReorderEvent,
             new onReorderRequest(this));
@@ -34,6 +35,9 @@ public class VerticalSortingPane extends Pane {
             new onCorrectPosRequest(this));
         this.addEventHandler(SelfRemoveRequestEvent.VSPSelfRemoveEvent,
             new onSelfRemoveRequest(this));
+
+        //init values
+	    height = 0;
     }
     
     //subroutines--------------------------------------------------------------
@@ -48,20 +52,24 @@ public class VerticalSortingPane extends Pane {
         int guessedIndex = (int)(newItem.localToParent(0, 0).getY() /
             CommandBlock.height);
         int maximumIndex = this.getChildren().size();
-        
+
         //if it's above the list, put it at the top (where is index 0)
         if(guessedIndex < 0) {guessedIndex = 0;}
         //if it's below the list, put it at the bottom (index...size()-1)
         if(guessedIndex >= maximumIndex) {guessedIndex = maximumIndex - 1;}
         //if the list is empty, re-correct to the top (0) again
         if(maximumIndex == 0) {guessedIndex = 0;}
-        
+        */
+	    int guessedIndex = this.getChildren().size();
         //add newItem to the VSP
         this.getChildren().add(guessedIndex, newItem);
         //update newItem's home
         newItem.setHomeX(0);
         newItem.setHomeY(guessedIndex * CommandBlock.height);
-        
+
+	    //update height
+	    height += newItem.height;
+
         this.refreshPane();
     }
     
@@ -72,14 +80,22 @@ public class VerticalSortingPane extends Pane {
         doesn't affect the added/removed command block
     */
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
+        System.out.println("This One called!");
         this.getChildren().remove(oldItem);
         this.refreshPane();
         
         System.out.println("old item " + oldItem.getCommandName() + " removed");
-        
+          
+        this.height -= oldItem.height;
+
         return oldItem;
     }
-    
+
+    //Get height of the VSP
+    public double getVSPHeight(){
+	    return height;
+    }
+
     /*
         correctPosition()
         corrects the argument node's position in the VSP, if it was placed
@@ -91,7 +107,7 @@ public class VerticalSortingPane extends Pane {
         if(node.getParent().equals(this)) {
             double  misalignment,
                     newY;
-            
+
             // Calculate the distance to where it should correct to via modulo
             misalignment = node.localToParent(0, 0).getY() %
                 CommandBlock.height;
@@ -123,7 +139,7 @@ public class VerticalSortingPane extends Pane {
         if(reorderingUp){
             //shift the source up to make room for the guest
             source.relocate(0, sourceY - CommandBlock.height);
-            
+
         }
         //else the guest came from above the source
         else {
@@ -132,7 +148,7 @@ public class VerticalSortingPane extends Pane {
         }
         double newY = source.localToParent(0, 0).getY();
         System.out.println("Relocated from " + sourceY + " to " + newY);
-        
+
         ///TEMP CODE TO HANDLE MISPOSITIONINGS THAT SHOULDN'T HAPPEN
         //highestIndex is the biggest index an item can have right now
         int highestIndex = this.getChildren().size() - 1;
@@ -151,11 +167,11 @@ public class VerticalSortingPane extends Pane {
             newY = 0;
         }
         ///END TEMP CODE
-        
+
         //update source's home
         source.setHomeX(0);
         source.setHomeY(newY);
-        
+
         //change it's index to be the new height divided by 100
         this.changeIndex((int)(newY / CommandBlock.height), source);
     }
@@ -169,7 +185,8 @@ public class VerticalSortingPane extends Pane {
     void refreshPane() {
         //contains every visible child of this object in an indexed list
         ObservableList<Node> nodeList = this.getChildren();
-        
+
+        //for each node in nodeList...
         for(Node node : nodeList) {
             //correct position based on index
             node.relocate(0, nodeList.indexOf(node) * CommandBlock.height);

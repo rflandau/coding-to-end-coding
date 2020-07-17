@@ -26,10 +26,10 @@ public class CommandFlowVSP extends VerticalSortingPane {
     */
     public CommandFlowVSP(ScriptStruct cmdStruct) {
         super();
-        
+
         //setting attached structures
         this.commandStruct = cmdStruct;
-        
+
     }
     
     //subroutines--------------------------------------------------------------
@@ -44,7 +44,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
     public void addCommandBlock(CommandBlock newItem) {
         //add it to the VSP
         super.addCommandBlock(newItem);
-        
+
         //add it to the actual command flow
         this.commandStruct.addCommandToFlow(
             this.getChildren().indexOf(newItem), newItem.getCommandName());
@@ -59,19 +59,29 @@ public class CommandFlowVSP extends VerticalSortingPane {
         int oldItemIndex = this.getChildren().indexOf(oldItem);
         //remove it from the command flow
         this.commandStruct.removeCommandFromFlow(oldItemIndex);
-        
+
         //remove it from the VSP
         return super.removeCommandBlock(oldItem);
     }
-    
+
     /*
-        getCommandStruct()
-        returns the ScriptStruct object assigned to the VSP
+        setCommandSyntax()
+        CB's newArgument gives the calling CB to this subroutine which
+        propagates the changes into ScriptStruct.
     */
+    public void setCommandSyntax(CommandBlock cb) {
+        int cbi = this.getChildren().indexOf(cb);
+        //propagate changes across to SS
+        this.commandStruct.setCommandSyntax(cbi, cb.argument);
+
+        return;
+    }
+
+    //returns the ScriptStruct object assigned to the VSP
     public ScriptStruct getCommandStruct() {
         return this.commandStruct;
     }
-    
+
     /*
         reorderItem()
         NOTE: finish these comments

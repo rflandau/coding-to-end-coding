@@ -67,7 +67,7 @@ public class Command{
             this.arguments.add(i, arguments.get(i));
         }
     }
-    
+
     /*
         duplication constructor
     */
@@ -103,12 +103,17 @@ public class Command{
         return;
     }
     public ArrayList<String> getArguments()     { return arguments; }
-    public void   setArguments(ArrayList<String> a) {
-        for(int i = 0; i < a.size(); i ++){
-            arguments.add(i, a.get(i));
-        }
+    public void   setArguments(String[] a) {
+        arguments.clear();
+        for(int i = 0; i < a.length; i++) arguments.add(a[i]);
         return;
     }
+    public void   setArguments(ArrayList<String> a) {
+        arguments.clear();
+        for(int i = 0; i < a.size(); i++) arguments.add(a.get(i));
+        return;
+    }
+
     public String toString(){
         return name + " -> " + syntax;
     }

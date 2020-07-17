@@ -21,7 +21,7 @@ public class ScriptStruct{
     String                      outPath;                // path to output file
     Hashtable<String, Interpreter> interpreterList;     // all Interpreters
     Interpreter                 interp;                 // current Interpreter
-    
+
     //constructors-------------------------------------------------------------
     /*
         default constructor
@@ -60,7 +60,7 @@ public class ScriptStruct{
     */
     void generateInterpreters(){
         String path = "../commands/bash.ctecblock";     // default input path
-        
+
         try{
             BufferedReader reader =
             new BufferedReader(new FileReader(new File(path)));
@@ -110,7 +110,7 @@ public class ScriptStruct{
         String  name = "",      // Interpreter name
                 path = "",      // path to Interpreter shell
                 tooltip = "";   // rollover tooltip
-                //[] data;      //original declaration, but caused errors  
+                //[] data;      //original declaration, but caused errors
         String[]data;           // words from a line
         int     returnVal = 0;  // return value
 
@@ -160,39 +160,42 @@ public class ScriptStruct{
 
         try{
             String string;      // current string read by BufferedReader
-
             while((string = reader.readLine()) != null){
                 data = string.trim().split(" ");
-                if(data[0].equals(BREAKSEQ)){
-                    break;
-                }
-
-                // check length and assign variable values
-                //TODO change to switch/case
-                if(data.length > 1){
-                    if(data[0].equals("NAME")){
-                        for(int i = 1; i <= data.length-1; i ++){
-                            name += data[i];
-                            //add a space if not last entry
-                            if (i != data.length-1) name += " ";
+                //check for BREAKSEQ
+                //Tried to integrate it into switch/case, but it never fired?
+                if (data[0].equals(BREAKSEQ)) break;
+                else{
+                    //check for empty line
+                    if(data.length > 1){
+                        //identify line type by precursor
+                        switch(data[0]){
+                            case "NAME":
+                                for(int i = 1; i <= data.length-1; i++){
+                                    name += data[i];
+                                    //add a space if not last entry
+                                    if (i != data.length-1) name += " ";
+                                }
+                                break;
+                            case "INT": interpreter = data[1]; break;
+                            case "CMD": command = data[1]; break;
+                            case "TIP":
+                                for(int i = 1; i <= data.length-1; i++){
+                                    tooltip += data[i];
+                                    if (i != data.length-1) tooltip += " ";
+                                }
+                                break;
+                            case "ARG":
+                                for(int i = 1; i < data.length; i++)
+                                    args.add(i-1, data[i]);
+                                break;
+                            case "FLAG":
+                                for(int i = 1; i < data.length; i ++)
+                                    flags.add(i-1, data[i]);
+                                break;
+                            default:
+                                System.out.println("Unknown line. Ignored.");
                         }
-                    }else if(data[0].equals("INT")) interpreter = data[1];
-                    else if(data[0].equals("CMD"))  command = data[1];
-                    else if(data[0].equals("TIP")){
-                        for(int i = 1; i <= data.length-1; i ++){
-                            tooltip += data[i];
-                            if (i != data.length-1) tooltip += " ";
-                        }
-                    }else if(data[0].equals("ARG")){
-                        for(int i = 1; i < data.length; i ++){
-                            args.add(i-1, data[i]);
-                        }
-                    }else if(data[0].equals("FLAG")){
-                        for(int i = 1; i < data.length; i ++){
-                            flags.add(i-1, data[i]);
-                        }
-                    }else{
-                        break;
                     }
                 }
             }
@@ -213,13 +216,13 @@ public class ScriptStruct{
     */
     public ArrayList<Command> getTemplateCommands(){
         ArrayList<Command> returnVal = null;
-    
+
         if(interp != null){
             returnVal = new ArrayList<Command>(interp.commands.values());
         }
         return returnVal;
     }
-    
+
     /*
         changeInterpreter()
         Tries to set the current interp to the one named 'name'.
@@ -275,6 +278,13 @@ public class ScriptStruct{
         return;
     }
 
+    public void setCommandSyntax(int i, String arg){
+        String[] nArgs; //new args
+        nArgs = arg.trim().split(" ");
+
+        flow.get(i).setArguments(nArgs);
+    }
+
     //export____________________________________________________________________
     /*
         writeScript()
@@ -297,14 +307,18 @@ public class ScriptStruct{
             System.out.println("Caught exception " + e);
             error = true;
         }
-        
+
         if(!error){
             System.out.println(interp.getPath());
 
             //iterate through every element in 'flow'
             for(int i = 0; i<flow.size(); i++){
                 Command c = flow.get(i);
-                br.write(c.getSyntax() + " " + c.getArguments() + "\n");
+
+                br.write(c.getSyntax());
+                for(String arg : c.getArguments()) br.write(" " + arg);
+                //don't forget the newline!
+                br.write("\n");
             }
 
             //ensure the script is end-capped by a newline
@@ -322,11 +336,11 @@ public class ScriptStruct{
     */
     private File createOutFile(){
         File toReturn;  // File object to be returned
-        
+
         try{
             toReturn = new File(outPath);
             if(toReturn.createNewFile())
-            System.out.println(outPath + " created.");
+                System.out.println(outPath + " created. Writting...");
             else System.out.println(outPath+" already exists. Overwritting...");
         } catch (NullPointerException | SecurityException | IOException ex){
             System.err.println("ERROR@createOutFile()\n" + "---"+ex.toString());
@@ -355,29 +369,36 @@ public class ScriptStruct{
             //call helper function
             writeScript(reader, interp);
             reader.close();
+            System.out.println("Finished!");
         } else toReturn = false;
 
         return toReturn;
     }
-    
+
     //other_____________________________________________________________________
     /*
         toString()
         Prints the ScriptStruct in full, calling toStrings for commands and
         interpreters.
+        Uses StringBuilder for efficency.
     */
     public String toString(){
         StringBuilder returnVal = new StringBuilder(100);   // arbitrary value
         ArrayList<Interpreter> interpArr = new
             ArrayList<Interpreter>(interpreterList.values()); // all interps
         ArrayList<Command> comArr;                          // all commands
-        
+
         //add name, path commands from all interpreters
         for(Interpreter in : interpArr){
             returnVal.append(in.toString() + "\n");
             comArr = new ArrayList<Command>(in.commands.values());
             for(Command c : comArr)
                 returnVal.append(c + "\n");
+        }
+        //print flow status
+        returnVal.append("Flow status:\n");
+        for(Command c : flow){
+            returnVal.append("---" + c.getName() + "\n");
         }
         return returnVal.toString();
 
