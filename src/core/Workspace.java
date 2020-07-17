@@ -77,6 +77,7 @@ public class Workspace extends Application {
         VerticalSortingPane sidebarVSP;     // available commands
         CommandFlowVSP canvasBoxVSP;        // contains flowchart
 	    TextPanel textInputBox;
+        Scene scene;
 
         //load the FXML
         try{
@@ -85,6 +86,9 @@ public class Workspace extends Application {
         }catch(IOException ie){
             System.out.println("Exception on FXML load: " + ie);
         }
+        scene = new Scene(root);
+        //load the stylesheet
+        scene.getStylesheets().add(getClass().getResource("/resources/skins/nordDark.css").toExternalForm());
         //unpack all items
         SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
         AnchorPane  sidebar = (AnchorPane) scenePane.getItems().get(0);
@@ -150,7 +154,7 @@ public class Workspace extends Application {
             sidebarVbox.getChildren().add(b);
         }
 
-        stage.setScene(new Scene(root));
+        stage.setScene(scene);
         stage.show();
     }
 

@@ -40,6 +40,11 @@ import prefabs.TextPanel;
     TODO: finish these comments
 */
 public class CommandBlock extends StackPane {
+    //nord theme, frost colors
+    final String            nord7   = "#8FBCBB",
+                            nord8   = "#88C0D0",
+                            nord9   = "#81A1C1",
+                            nord10  = "#5E81AC";
     //variables-----------------------------------------------------------------
     /*
         I'm assuming that every block is the same size. Rectangle has a native
@@ -91,7 +96,7 @@ public class CommandBlock extends StackPane {
         this.home = livesOn.WORKSPACE;
 
         //creating the visual shape and name label (and saving the block's color)
-        this.commandColor = Color.LIGHTBLUE;
+        this.commandColor = Color.web(nord10);
         this.rect = new Rectangle(CommandBlock.width,
 				  CommandBlock.height,
 				  commandColor);
