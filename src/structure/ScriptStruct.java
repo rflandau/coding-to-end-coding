@@ -278,6 +278,13 @@ public class ScriptStruct{
         return;
     }
 
+    public void setCommandSyntax(int i, String arg){
+        String[] nArgs; //new args
+        nArgs = arg.trim().split(" ");
+
+        flow.get(i).setArguments(nArgs);
+    }
+
     //export____________________________________________________________________
     /*
         writeScript()
@@ -307,7 +314,11 @@ public class ScriptStruct{
             //iterate through every element in 'flow'
             for(int i = 0; i<flow.size(); i++){
                 Command c = flow.get(i);
-                br.write(c.getSyntax() + " " + c.getArguments() + "\n");
+
+                br.write(c.getSyntax());
+                for(String arg : c.getArguments()) br.write(" " + arg);
+                //don't forget the newline!
+                br.write("\n");
             }
 
             //ensure the script is end-capped by a newline

@@ -122,18 +122,20 @@ public class CommandBlock extends StackPane {
     }
     //subroutines--------------------------------------------------------------
 
+
     /*
-        setHome()
-        Allows the changing of a command block's home location, if need be.
-        Modifies the name of the block to show it is editted.
+        newArgument()
+        Sets the argument line of the command block and duplicates the changes
+        backwards to ScriptStruct using the adapter CFVSP.
     */
-    //Passing in new input for block
     public void newArgument(String inStr){
 	    this.argument = inStr;
 	    if (inStr.length() > 0){
 	        edited = " ...";
 	        this.text.setText(attachedCommand.getName()+edited);
-            //attachedCommand.setArguments(inStr.trim().split(" "));
+
+            CommandFlowVSP cfvsp = (CommandFlowVSP) this.getParent();
+            cfvsp.setCommandSyntax(this);
 	    }
     }
 
@@ -197,6 +199,11 @@ public class CommandBlock extends StackPane {
     }
 
 
+    /*
+        setHome()
+        Allows the changing of a command block's home location, if need be.
+        Modifies the name of the block to show it is editted.
+    */
     //these f
     public double getHomeX() {return this.homeX;}
 
