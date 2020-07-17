@@ -1,4 +1,4 @@
-package customEvents;
+package customevents;
 
 import javafx.event.Event;
 import javafx.event.EventType;
@@ -21,14 +21,14 @@ public class CorrectPosRequestEvent extends Event {
     */
     public CorrectPosRequestEvent(CommandBlock source) {
         super(VSPPosEvent);
-        
+
         this.source = source;
     }
-    
+
     //subroutines--------------------------------------------------------------
     public CommandBlock getSource() {
         return this.source;
     }
-    
+
     //static subroutines-------------------------------------------------------
 }

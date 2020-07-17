@@ -1,4 +1,4 @@
-package customEvents;
+package customevents;
 
 import javafx.event.Event;
 import javafx.event.EventType;
@@ -25,12 +25,12 @@ public class ReorderRequestEvent extends Event{
         double draggedY) {
         //VSPEvent is for events related to the VerticalSortingPane class
         super(VSPReorderEvent);
-        
+
         this.source = requestee;
         this.guestX = draggedX - CommandBlock.width;
         this.guestY = draggedY - CommandBlock.height;
     }
-    
+
     /*
         getSource()
         NOTE: finish these comments
@@ -38,7 +38,7 @@ public class ReorderRequestEvent extends Event{
     public CommandBlock getSource(){
         return source;
     }
-    
+
     /*
         getGuestX()
         NOTE: finish these comments
@@ -46,7 +46,7 @@ public class ReorderRequestEvent extends Event{
     public double getGuestX() {
         return guestX;
     }
-    
+
     /*
         getGuestY()
         NOTE: finish these comments
@@ -54,6 +54,6 @@ public class ReorderRequestEvent extends Event{
     public double getGuestY() {
         return guestY;
     }
-    
+
     //static subroutines-------------------------------------------------------
 }
