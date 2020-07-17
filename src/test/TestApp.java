@@ -44,11 +44,14 @@ public class TestApp extends Application {
     public void start(Stage stage) throws Exception {
         CommandFlowVSP VSP = new CommandFlowVSP(structure);
         
-        
-        VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, commands.get(0), structure));
+        /*
+            TestApp is almost never functional, only being brought up when small parts need
+            to be guess and checked. The test package should be removed once we're done.
+        */
+        /*VSP.addCommandBlock(new CommandBlock(1,2,Color.BLUE, commands.get(0), structure));
         VSP.addCommandBlock(new CommandBlock(5433,4234,Color.GREEN, commands.get(0), structure));
         VSP.addCommandBlock(new CommandBlock(0,0,Color.YELLOW, commands.get(0), structure));
-        VSP.addCommandBlock(new CommandBlock(9,200,Color.RED, commands.get(0), structure));
+        VSP.addCommandBlock(new CommandBlock(9,200,Color.RED, commands.get(0), structure));*/
         
         Scene scene = new Scene(VSP, 800, 600);
         

@@ -37,7 +37,7 @@ public class VerticalSortingPane extends Pane {
             new onSelfRemoveRequest(this));
 
         //init values
-	    height = 0;
+	    this.height = 0;
     }
     
     //subroutines--------------------------------------------------------------
@@ -59,8 +59,7 @@ public class VerticalSortingPane extends Pane {
         if(guessedIndex >= maximumIndex) {guessedIndex = maximumIndex - 1;}
         //if the list is empty, re-correct to the top (0) again
         if(maximumIndex == 0) {guessedIndex = 0;}
-        */
-	    int guessedIndex = this.getChildren().size();
+        
         //add newItem to the VSP
         this.getChildren().add(guessedIndex, newItem);
         //update newItem's home
@@ -68,7 +67,7 @@ public class VerticalSortingPane extends Pane {
         newItem.setHomeY(guessedIndex * CommandBlock.height);
 
 	    //update height
-	    height += newItem.height;
+	    this.height += newItem.height;
 
         this.refreshPane();
     }
@@ -92,8 +91,8 @@ public class VerticalSortingPane extends Pane {
     }
 
     //Get height of the VSP
-    public double getVSPHeight(){
-	    return height;
+    public int getVSPHeight(){
+	    return this.height;
     }
 
     /*
@@ -440,5 +439,3 @@ class onSelfRemoveRequest implements EventHandler<SelfRemoveRequestEvent>{
 
     //static subroutines-------------------------------------------------------
 }
-
-//Yo quick question about the drag and drop: on a scale from 0 - 10 inclusive, 0 being 'doesn't matter' and 10 being 'must', how important is it to animate each individual block reordering when command blocks are moved around

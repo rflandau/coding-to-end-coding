@@ -202,11 +202,23 @@ public class CommandBlock extends StackPane {
 				this.attachedCommand,
 				this.commandList);
     }
+    
+    /*
+        delete()
+        removes a CommandBlock from its parent.
+        Protected to give access to CommandBlock's private event
+        class without making it public
+    */
 
-    private void delete(){
-	    VerticalSortingPane vsp = (VerticalSortingPane) this.getParent();
- 	    vsp.removeCommandBlock(this);
-	    //commandList.removeCommandFromFlow(listIndex);
+    protected void delete(){
+        /*  
+        firing this event calls removeCommandBlock on the parent 
+        without needing to know the type of the parent
+        This of course means that if this's parent isn't a VSP,
+        this method does nothing, but it would've crashed the program
+        in that situation in its previous incarnation
+        */
+        this.getParent().fireEvent(new SelfRemoveRequestEvent(this));
     }
 
     private void setAsEdit(){
