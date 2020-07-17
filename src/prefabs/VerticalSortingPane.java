@@ -104,32 +104,31 @@ public class VerticalSortingPane extends Pane {
             //update node's home
             node.setHomeX(0);
             node.setHomeY(newY);
+            
+            //change its index, if needed
+            this.changeIndex((int)(node.getHomeY() / CommandBlock.height), node);
         }
     }
     
     /*
         reorderItem()
-        uses modulo of both values to compare source position to guest's
-        point of contact. By comparing the remainders, we can estimate which
-        side it came from
-        doesn't affect the added/removed command block
+        moves command blocks up or down the list
     */
-    void reorderItem(CommandBlock source, double guestY) {
+
+    void reorderItem(CommandBlock source, boolean reorderingUp) {
         //0, 0 represents the location of source relative to itself
         double sourceY = source.localToParent(0, 0).getY();
-        //Adjusting position value to compensate for size
-        guestY += CommandBlock.height;
         
         //if the guest came from below the source...
-        if(guestY > sourceY){
-            //shift the source down to make room for the guest
-            source.relocate(0, sourceY + CommandBlock.height);
-        }
-        //else the guest came from above the source
-        else {
+        if(reorderingUp){
             //shift the source up to make room for the guest
             source.relocate(0, sourceY - CommandBlock.height);
             
+        }
+        //else the guest came from above the source
+        else {
+            //shift the source down to make room for the guest
+            source.relocate(0, sourceY + CommandBlock.height);  
         }
         double newY = source.localToParent(0, 0).getY();
         System.out.println("Relocated from " + sourceY + " to " + newY);
@@ -138,17 +137,17 @@ public class VerticalSortingPane extends Pane {
         //highestIndex is the biggest index an item can have right now
         int highestIndex = this.getChildren().size() - 1;
         //if the new position goes too high...
-        if(newY > highestIndex * 100) {
+        if(newY > highestIndex * CommandBlock.height) {
             System.err.println("Command block overshot list. Relocating to " +
-                highestIndex * 100);
-            source.relocate(0, highestIndex * 100);
-            newY = highestIndex * 100;
+                highestIndex * CommandBlock.height);
+            source.relocate(0, highestIndex * CommandBlock.height);
+            newY = highestIndex * CommandBlock.height;
         }
         //or too low
         if(newY < 0) {
             System.err.println("Command block overshot list. Relocating to " +
                 (double)0);
-            source.relocate(0, highestIndex * 100);
+            source.relocate(0, highestIndex * CommandBlock.height);
             newY = 0;
         }
         ///END TEMP CODE
@@ -256,9 +255,113 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
     */
     @Override
     public void handle(ReorderRequestEvent event) {
-        VSP.reorderItem(event.getSource(), event.getGuestY());
+        //list of all blocks
+        ObservableList<Node>    blocks = VSP.getChildren(); 
+        
+        //block that started event
+        CommandBlock    currentBlock = event.getSource(); 
+        
+        //currentBlock's y position
+        double  sourceY = currentBlock.localToParent(0, 0).getY(); 
+        
+        //currentBlock's index
+        int     currentIndex = blocks.indexOf(currentBlock);    
+        
+        /*
+            whether or not to move the blocks up or down to compensate for the
+            guest (currently being dragged) block, based on the guest's y position
+            relative to the block that fired the event 
+            CommandBlock height is added to compensate for the block's size
+            
+            TODO: current step is to compensate for the change in index after
+            reorderItem is called.
+            reorderingDown (bottom to top) should be fine, but reorderingUp
+            (top to bottom) has a lot of trouble, since we're reordering
+            against the way lists reassign indices in java
+        */
+        boolean reorderingUp = event.getGuestY() + CommandBlock.height < sourceY;
+
+        //if the guest came from above the source...
+        if(reorderingUp){
+            System.out.println("reordering Up");
+            //reorder the block Up
+            VSP.reorderItem(currentBlock, true);
+            
+            while(onReorderRequest.inSamePlaceByIndex(
+                    blocks, 
+                    currentIndex, 
+                    currentIndex-1
+            )) {
+                System.out.println("index was " + currentIndex + " and now it's " + (currentIndex-1));
+                --currentIndex;
+                currentBlock = (CommandBlock)blocks.get(currentIndex);
+                VSP.reorderItem(currentBlock, true);
+            }
+            
+        }
+        //else the guest came from below the source
+        else {
+            System.out.println("reordering Down");
+            //reorder blocks Down
+            VSP.reorderItem(currentBlock, false);
+            
+            while(onReorderRequest.inSamePlaceByIndex(
+                    blocks, 
+                    currentIndex, 
+                    currentIndex+1
+            )) {
+                System.out.println("index was " + currentIndex + " and now it's " + (currentIndex+1));
+                ++currentIndex;
+                currentBlock = (CommandBlock)blocks.get(currentIndex);
+                VSP.reorderItem(currentBlock, false);
+            }
+            
+        }
+        
+        return;
     }
     //static subroutines-------------------------------------------------------
+    /*
+        inSamePlacebyIndex()
+        Returns true if the following conditions are met:
+        A: both indices are valid in list
+        B: the nodes belonging to those indices in list
+        aren't in the same place.
+        "Can't you just short-circuit, Thomas?" No, because the methods that
+        pull the positions are always called, the answer just isn't looked
+        at until needed. Because pulling the positions with a bad index always
+        breaks the program, I just check both conditions here.
+    */
+    static boolean inSamePlaceByIndex(ObservableList<Node> list, 
+            int indexA, int indexB) {
+        boolean toReturn = false;
+        int maxIndex = list.size() - 1;
+        int minIndex = 0;
+        
+        //check if both indices are valid
+        if(minIndex <= indexA && indexA <= maxIndex 
+                && minIndex <= indexB && indexB <= maxIndex) {
+            toReturn = true;
+        }
+        
+        //if they are, check if they're in the same spot
+        if(toReturn) {
+            CommandBlock a = (CommandBlock)list.get(indexA);
+            CommandBlock b = (CommandBlock)list.get(indexB);
+            
+            System.out.println("Comparing incides: " + indexA +" & " + indexB + "\n"
+                            + a.getHomeX() + ", " + a.getHomeY()
+                            + "\nto\n"
+                            + b.getHomeX() + ", " + b.getHomeY());
+            
+            toReturn =  a.getHomeX() == b.getHomeX()
+                        &&
+                        a.getHomeY() == b.getHomeY();
+        }
+        
+        
+        return toReturn;
+    }
 }
 
 /*
@@ -288,6 +391,7 @@ class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
     public void handle(CorrectPosRequestEvent event) {
         //correct position
         this.VSP.correctPosition(event.getSource());
+        this.VSP.refreshPane();
     }
     //static subroutines-------------------------------------------------------
 }
@@ -319,3 +423,5 @@ class onSelfRemoveRequest implements EventHandler<SelfRemoveRequestEvent>{
 
     //static subroutines-------------------------------------------------------
 }
+
+//Yo quick question about the drag and drop: on a scale from 0 - 10 inclusive, 0 being 'doesn't matter' and 10 being 'must', how important is it to animate each individual block reordering when command blocks are moved around

@@ -77,9 +77,9 @@ public class CommandFlowVSP extends VerticalSortingPane {
         NOTE: finish these comments
     */
     @Override
-    void reorderItem(CommandBlock source, double guestY) {
+    void reorderItem(CommandBlock source, boolean reorderingUp) {
         //we just want the super method with commandflow trappings
-        super.reorderItem(source, guestY);
+        super.reorderItem(source, reorderingUp);
         
         //update index of moved item in the flow, if needed
         this.changeFlowIndex(this.getChildren().indexOf(source), source);

@@ -358,7 +358,7 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
         // when dragged over, the command block passes itself and the point of
         // contact(?) to its container, if the container can handle a
         // ReorderRequest
-        Point2D newPosition = targetBlock.localToParent(
+        /*Point2D newPosition = targetBlock.localToParent(
             targetBlock.sceneToLocal(
                 event.getSceneX() - CommandBlock.width/2,
                 event.getSceneY() - CommandBlock.height/2
@@ -367,7 +367,7 @@ class onCommandBlockHover implements EventHandler<MouseEvent>{
         targetBlock.getParent().fireEvent(
                 new ReorderRequestEvent(targetBlock, newPosition.getX(),
                 newPosition.getY())
-        );
+        );*/
     }
 }
 
