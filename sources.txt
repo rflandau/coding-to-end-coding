@@ -9,5 +9,4 @@
 ./src/structure/Command.java
 ./src/structure/Interpreter.java
 ./src/customevents/CorrectPosRequestEvent.java
-./src/customevents/ReorderRequestEvent.java
 ./src/customevents/SelfRemoveRequestEvent.java
