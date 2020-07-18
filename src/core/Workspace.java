@@ -76,7 +76,7 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
         VerticalSortingPane sidebarVSP;     // available commands
         CommandFlowVSP canvasBoxVSP;        // contains flowchart
-	    TextPanel textInputBox;
+	TextPanel textInputBox;
         Scene scene;
 
         //load the FXML
@@ -108,8 +108,8 @@ public class Workspace extends Application {
         //create non-fxml items
         canvasBoxVSP = new CommandFlowVSP(structure);
         canvasBox.getChildren().add(canvasBoxVSP);
-	    textInputBox = new TextPanel();
-	    bottomHbox.getChildren().add(textInputBox);
+	textInputBox = new TextPanel();
+	bottomHbox.getChildren().add(textInputBox);
 
         exportButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override

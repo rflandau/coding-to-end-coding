@@ -57,7 +57,7 @@ public class CommandBlock extends StackPane {
     Rectangle               rect;           // block's physical body
     Label                   text;           // name of command on block body
     String                  argument,       // TODO: finish these comments
-	                        edited;         // TODO: finish these comments
+	                    edited;         // TODO: finish these comments
 
     //constructors--------------------------------------------------------------
     /*
@@ -110,28 +110,6 @@ public class CommandBlock extends StackPane {
         this.setOnDragDetected(new OnCommandBlockDrag(this));
         this.setOnMouseDragged(new OnCommandBlockMove(this));
         this.setOnMouseReleased(new OnCommandBlockDrop(this));
-        
-        //Init ContextMenu
-        
-        contextMenu = new ContextMenu();
-        deleteBlock = new MenuItem("Delete Command");
-
-        //ContextMenu Behavior
-        deleteBlock.setOnAction(new OnContextDelete(this));
-
-        contextMenu.getItems().addAll(deleteBlock);
-        rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
-            @Override
-            public void handle(ContextMenuEvent event){
-                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
-            }
-        });
-        text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
-            @Override
-            public void handle(ContextMenuEvent event){
-                contextMenu.show(rect, event.getScreenX(), event.getScreenY());
-            }
-        });
     }
     //subroutines--------------------------------------------------------------
 
@@ -185,14 +163,14 @@ public class CommandBlock extends StackPane {
         backwards to ScriptStruct using the adapter CFVSP.
     */
     public void newArgument(String inStr){
-	    this.argument = inStr;
-	    if (inStr.length() > 0){
-	        edited = " ...";
-	        this.text.setText(attachedCommand.getName()+edited);
+	this.argument = inStr;
+	if (inStr.length() > 0){
+	    edited = " ...";
+	    this.text.setText(attachedCommand.getName()+edited);
 
             CommandFlowVSP cfvsp = (CommandFlowVSP) this.getParent();
             cfvsp.setCommandSyntax(this);
-	    }
+	}
     }
 
 
@@ -228,12 +206,12 @@ public class CommandBlock extends StackPane {
     }
 
     private void setAsEdit(){
-	    txtBox.setEdit(this);
-	    this.rect.setStroke(Color.GREEN);
+	txtBox.setEdit(this);
+	this.rect.setStroke(Color.GREEN);
     }
 
     public void closeEdit(){
-	    this.rect.setStroke(Color.LIGHTBLUE);
+	this.rect.setStroke(Color.LIGHTBLUE);
     }
 
 
@@ -242,20 +220,20 @@ public class CommandBlock extends StackPane {
     public void setContextMenu(){
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
-	    editBlock = new MenuItem("Edit Command");
+	editBlock = new MenuItem("Edit Command");
 
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-		        delete();
-	        }
+		delete();
+	    }
         });
 
 	editBlock.setOnAction(new EventHandler<ActionEvent>(){
 	    @Override
 	    public void handle(ActionEvent event){
-		    setAsEdit();
+		setAsEdit();
 	    }
 	});
 
