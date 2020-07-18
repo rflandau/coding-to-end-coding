@@ -4,22 +4,21 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import structure.ScriptStruct;
 import java.io.IOException;
-//import javafx.scene.Node;    //only needed to give the button an image
 import javafx.scene.control.Button;
 
 /*
     ExportButton
-    Defines the physical look of the button, and the events when clicked
+    Defines the physical look of the button, and the action events when clicked.
 */
 public class ExportButton extends Button {
     /*
         default constructor
+        Sets the below event handler to be called when clicked.
+        Also defines sizes.
     */
     public ExportButton(double width, double height, ScriptStruct ss) {
-        // sets onExportClickEvent.handle to be called every time the button
-        // is clicked or this.fire() is called
         this.setOnAction(new onExportClickEvent(ss));
-        
+
         //style
         this.setText("Export");
         this.setMinSize(100, 50);
@@ -29,15 +28,16 @@ public class ExportButton extends Button {
 }
 
 /*
-    onExportClick()
-    events that take place whenthe export button is clicked
-    calls ScriptStruct.export()
+    onExportClick
+    Class that defines the events that take place when the button is clicked.
+    Calls ScriptStruct.export().
 */
 class onExportClickEvent implements EventHandler<ActionEvent> {
     ScriptStruct ss; // ScriptStruct needed for click events
-    
+
     /*
-        TODO: expand these comments
+        constructor()
+        Binds the script struct in use.
     */
     public onExportClickEvent(ScriptStruct script){
         ss = script;
@@ -46,7 +46,7 @@ class onExportClickEvent implements EventHandler<ActionEvent> {
 
     /*
         handle()
-        what happens when the user clicks on the export button
+        When clicked, the button starts scriptstruct's export process.
     */
     @Override
     public void handle(ActionEvent actionEvent) {
