@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
@@ -312,15 +313,17 @@ class OnCommandBlockMove implements EventHandler<MouseEvent>{
             scene-relative coordinates.We need to go from scene to local to
             parent, which is why the methods below are used
         */
-        Point2D newPosition = targetBlock.localToParent(
-            targetBlock.sceneToLocal(
-                event.getSceneX() - CommandBlock.width/2,
-                event.getSceneY() - CommandBlock.height/2
-            )
-        );
-        targetBlock.relocate(newPosition.getX(), newPosition.getY());
+        if(event.getButton().equals(MouseButton.PRIMARY)) {
+            Point2D newPosition = targetBlock.localToParent(
+                    targetBlock.sceneToLocal(
+                        event.getSceneX() - CommandBlock.width/2,
+                        event.getSceneY() - CommandBlock.height/2
+                    )
+                );
+            targetBlock.relocate(newPosition.getX(), newPosition.getY());
 
-        event.consume();
+            event.consume();
+        }
     }
     //static subroutines-------------------------------------------------------
 }
