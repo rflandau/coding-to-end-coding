@@ -89,8 +89,8 @@ public class Workspace extends Application {
         scene = new Scene(root);
         //load the stylesheet
         //could, and probably should, be done from the FXML.
-        scene.getStylesheets().add(getClass().getResource(
-            "/resources/skins/nordDark.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource(
+        //    "/resources/skins/nordDark.css").toExternalForm());
         //unpack all items
         SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
         AnchorPane  sidebar = (AnchorPane) scenePane.getItems().get(0);
@@ -100,7 +100,7 @@ public class Workspace extends Application {
         SplitPane   canvasSplit = (SplitPane) mainCanvas.getChildren().get(0);
         AnchorPane  canvasPane = (AnchorPane) canvasSplit.getItems().get(0);
         AnchorPane  bottomPanel = (AnchorPane) canvasSplit.getItems().get(1);
-	    HBox        bottomHbox = (HBox) bottomPanel.getChildren().get(0);
+	HBox        bottomHbox = (HBox) bottomPanel.getChildren().get(0);
         Button      exportButton = (Button) bottomHbox.getChildren().get(0);
         VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
@@ -122,14 +122,14 @@ public class Workspace extends Application {
         });
 
 	    //Setting sidebar scrollbar
-	    sidebarVbox.setLayoutY(0);
-	    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
-	        public void changed(ObservableValue<? extends Number> ov,
-	            Number old_val, Number new_val){
-		    int size = sidebarVbox.getChildren().size();
-		    sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
-	        }
-	    });
+	sidebarVbox.setLayoutY(0);
+	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+	    public void changed(ObservableValue<? extends Number> ov,
+				Number old_val, Number new_val){
+		int size = sidebarVbox.getChildren().size();
+		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+	    }
+	});
 
 	//Setting Canvas scrollbar
 	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
@@ -170,8 +170,8 @@ public class Workspace extends Application {
         int index = structure.getFlowSize();
         Command c = template.getCommand();
         CommandBlock block = new CommandBlock(1,2,c,structure);
-	    block.setEditBox(textBox);
-	    block.setContextMenu();
+	block.setEditBox(textBox);
+	block.setContextMenu();
         //NOTE: This adds command to structure for us.
         bBox.addCommandBlock(block);
     }
