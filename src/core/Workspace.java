@@ -82,7 +82,7 @@ public class Workspace extends Application {
         //load the FXML
         try{
             root = (AnchorPane) FXMLLoader.load(
-                getClass().getResource("main.fxml"));
+                getClass().getResource("/resources/fxml/main.fxml"));
         }catch(IOException ie){
             System.out.println("Exception on FXML load: " + ie);
         }
