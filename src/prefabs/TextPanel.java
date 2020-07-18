@@ -49,9 +49,7 @@ public class TextPanel extends StackPane{
 
     //Sets the command block for editing
     public void setEdit(CommandBlock block){
-        if (currentBlock != null){
-            currentBlock.closeEdit();
-        }
+        if (currentBlock != null){currentBlock.closeEdit();}
         currentBlock = block;
         String newLabel = block.getCommandName();
         String arg = block.getArgument();
@@ -66,15 +64,12 @@ public class TextPanel extends StackPane{
         public void handle(ActionEvent e){
             CharSequence txtInput = textBox.getCharacters();
             String txtStr = txtInput.toString();
-        if (currentBlock == null){
             //If no block has been set to edit
-            System.out.println(txtInput);
-        }else{
+            if (currentBlock == null){System.out.println(txtInput);}
             //If block has been set to edit
-            currentBlock.newArgument(txtStr);
-        }
+            else{currentBlock.newArgument(txtStr);}
 
-        }
+            }
         });
     }
 }

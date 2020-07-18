@@ -86,13 +86,9 @@ public class ScriptStruct{
         try{
             while((line = reader.readLine()) != null){
                 line = line.trim();
-                if(line.equals("INTERPRETER"))
-                    newInterpreter(reader);
-                else if(line.equals("COMMAND")){
-                    newCommand(reader);
-                }
-                else //junk data
-                System.err.println("File formatting error" + line);
+                if(line.equals("INTERPRETER")){newInterpreter(reader);}
+                else if(line.equals("COMMAND")){newCommand(reader);}
+                else{System.err.println("File formatting error" + line);}
             }
         }catch(IOException ex){
             System.out.println("ERROR@ScriptStruct.parse()\n" +
@@ -120,15 +116,13 @@ public class ScriptStruct{
             while((string = reader.readLine()) != null){
             data = string.trim().split(" ");
                 // if delimiter, end while loop
-                if(data[0].equals(BREAKSEQ)){
-                    break;
-                }
+                if(data[0].equals(BREAKSEQ)){break;}
 
                 // check length and assign variable values
                 if(data.length > 1){
-                    if(data[0].equals("NAME"))      name = data[1];
-                    else if(data[0].equals("PATH")) path = data[1];
-                    else if(data[0].equals("TIP"))  tooltip = data[1];
+                    if(data[0].equals("NAME"))      {name = data[1];}
+                    else if(data[0].equals("PATH")) {path = data[1];}
+                    else if(data[0].equals("TIP"))  {tooltip = data[1];}
                     else break; //should this not just warn and continue?
                 }
             }
@@ -252,8 +246,10 @@ public class ScriptStruct{
         Command fetched;    // template Command fetched from Interpreter
 
         if (0 <= i && i <= getFlowSize()){ //validate index
-            if((fetched = interp.getCommand(id)) != null) //check the id exists
+            //check the id exists
+            if((fetched = interp.getCommand(id)) != null){
                 flow.add(i, new Command(fetched));
+            }
             else
                 System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
                 "---Command with ID " + id + "could not be found.");

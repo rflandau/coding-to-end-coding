@@ -123,12 +123,12 @@ public class Workspace extends Application {
 
         //Setting sidebar scrollbar
         sidebarVbox.setLayoutY(0);
-         sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+        sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
         public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val){
-        int size = sidebarVbox.getChildren().size();
-        sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
-        }
+            Number old_val, Number new_val){
+                int size = sidebarVbox.getChildren().size();
+                sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+            }
         });
 
         //Setting Canvas scrollbar

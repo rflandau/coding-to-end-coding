@@ -120,12 +120,9 @@ public class VerticalSortingPane extends Pane {
         //0, 0 represents the location of source relative to itself
         double sourceY = source.localToParent(0, 0).getY();
 
-        //if the guest came from below the source...
-        if(reorderingUp){
-            //shift the source up to make room for the guest
-            source.relocate(0, sourceY - CommandBlock.height);
+        //if the guest came from below the source shift the source up
+        if(reorderingUp){source.relocate(0, sourceY - CommandBlock.height);}
 
-        }
         //else the guest came from above the source
         else {
             //shift the source down to make room for the guest
@@ -151,7 +148,6 @@ public class VerticalSortingPane extends Pane {
             source.relocate(0, highestIndex * CommandBlock.height);
             newY = 0;
         }
-        ///END TEMP CODE
 
         //update source's home
         source.setHomeX(0);
