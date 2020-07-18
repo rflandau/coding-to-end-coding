@@ -249,10 +249,10 @@ public class ScriptStruct{
             //check the id exists
             if((fetched = interp.getCommand(id)) != null){
                 flow.add(i, new Command(fetched));
-            }
-            else
+            }else{
                 System.err.println("ERROR@ScriptStruct.addCommandFromID()\n" +
                 "---Command with ID " + id + "could not be found.");
+            }
         }else System.err.println("ERROR@ScriptStruct.addCommandToFlow()\n" +
         "---Given index (" + i + ") is out of range.");
         return;
@@ -335,9 +335,9 @@ public class ScriptStruct{
 
         try{
             toReturn = new File(outPath);
-            if(toReturn.createNewFile())
+            if(toReturn.createNewFile()){
                 System.out.println(outPath + " created. Writting...");
-            else System.out.println(outPath+" already exists. Overwritting...");
+            }else System.out.println(outPath+" already exists. Overwritting...");}
         } catch (NullPointerException | SecurityException | IOException ex){
             System.err.println("ERROR@createOutFile()\n" + "---"+ex.toString());
             toReturn = null;
