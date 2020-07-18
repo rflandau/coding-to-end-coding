@@ -3,6 +3,14 @@ Coding to End Coding (CTEC) is a visual script builder, built to be easy to use 
 
 By default, it supports bash output and a short list of bash commands (see below). However, it has support for any interpreter and single-line command.
 
+## Compiling From Source
+Both `./compile.sh` and `make` access the included libraries and resources and output to *classes/*.
+
+`./run` will execute the program, but only after one of the above commands.
+
+For example: `./compile && ./run`.
+
+All paths are relative and all necessary libraries are included. The only thing you need is Java >=11.
 
 ## Defaults and Extending CTEC
 "commands/bash.ctecblock" is the default file used by the program to populate available commands and select interpreter.
