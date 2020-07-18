@@ -337,7 +337,7 @@ public class ScriptStruct{
             toReturn = new File(outPath);
             if(toReturn.createNewFile()){
                 System.out.println(outPath + " created. Writting...");
-            }else System.out.println(outPath+" already exists. Overwritting...");}
+            }else System.out.println(outPath+" already exists. Overwritting...");
         } catch (NullPointerException | SecurityException | IOException ex){
             System.err.println("ERROR@createOutFile()\n" + "---"+ex.toString());
             toReturn = null;
