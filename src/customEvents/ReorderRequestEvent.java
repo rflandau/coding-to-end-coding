@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 
+///TODO: Delete this class, currently depreciated
 public class ReorderRequestEvent extends Event{
     //variables----------------------------------------------------------------
     public static EventType<ReorderRequestEvent> VSPReorderEvent =

@@ -3,7 +3,6 @@
 package customEvents;
 
 import javafx.event.Event;
-import javafx.event.EventTarget;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 

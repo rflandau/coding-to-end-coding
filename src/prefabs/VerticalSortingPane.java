@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 //our stuff
 import customEvents.CorrectPosRequestEvent;
-import customEvents.ReorderRequestEvent;
 import customEvents.SelfRemoveRequestEvent;
 
 /*
@@ -29,8 +28,6 @@ public class VerticalSortingPane extends Pane {
         super();
 
         //defining custom event handlers
-        this.addEventHandler(ReorderRequestEvent.VSPReorderEvent,
-            new onReorderRequest(this));
         this.addEventHandler(CorrectPosRequestEvent.VSPPosEvent,
             new onCorrectPosRequest(this));
         this.addEventHandler(SelfRemoveRequestEvent.VSPSelfRemoveEvent,
@@ -240,15 +237,20 @@ public class VerticalSortingPane extends Pane {
     }
     //static subroutines-------------------------------------------------------
 }
-
-class onReorderRequest implements EventHandler<ReorderRequestEvent>{
+/*
+    onReorderRequest
+    Depreciated event built for handling animated list reordering.
+    While not technically used anymore, i don't feel comfortable deleting it
+    yet, as we might decide to bring animated reordering back later
+*/
+/*class onReorderRequest implements EventHandler<ReorderRequestEvent>{
     //variables----------------------------------------------------------------
     VerticalSortingPane VSP;    // instantiation of VerticalSortingPane
     
     //constructors-------------------------------------------------------------
     /*
         constructor
-    */
+    *
     onReorderRequest(VerticalSortingPane VSP){
         super();
         this.VSP = VSP;
@@ -263,7 +265,7 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
         size, and position from the mouse Source is the object asking to be
         reordered, and Guest is the object it is making room for
         because when you have a guest you make room for them get it?
-    */
+    *
     @Override
     public void handle(ReorderRequestEvent event) {
         //list of all blocks
@@ -283,7 +285,7 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
             guest (currently being dragged) block, based on the guest's 
             y position relative to the block that fired the event 
             CommandBlock height is added to compensate for the block's size
-        */
+        *
         boolean reorderingUp = event.getGuestY() 
                 + CommandBlock.height < sourceY;
 
@@ -333,7 +335,7 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
         pull the positions are always called, the answer just isn't looked
         at until needed. Because pulling the positions with a bad index always
         breaks the program, I just check both conditions here.
-    */
+    *
     static boolean inSamePlaceByIndex(ObservableList<Node> list, 
             int indexA, int indexB) {
         boolean toReturn = false;
@@ -359,7 +361,7 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
         
         return toReturn;
     }
-}
+}*/
 
 class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
     //variables----------------------------------------------------------------
