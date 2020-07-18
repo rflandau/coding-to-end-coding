@@ -89,8 +89,8 @@ public class Workspace extends Application {
         scene = new Scene(root);
         //load the stylesheet
         //could, and probably should, be done from the FXML.
-        //scene.getStylesheets().add(getClass().getResource(
-        //    "/resources/skins/nordDark.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource(
+            "/resources/skins/nordDark.css").toExternalForm());
         //unpack all items
         SplitPane   scenePane = (SplitPane) root.getChildren().get(0);
         AnchorPane  sidebar = (AnchorPane) scenePane.getItems().get(0);
