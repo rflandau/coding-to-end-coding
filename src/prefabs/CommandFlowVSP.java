@@ -1,11 +1,11 @@
 package prefabs;
 
 import javafx.collections.ObservableList;
-import javafx.geometry.Point2D;
+//import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import structure.Command;
-import structure.Interpreter;
+//import javafx.scene.paint.Color;
+//import structure.Command;
+//import structure.Interpreter;
 import structure.ScriptStruct;
 
 /*  
@@ -35,6 +35,24 @@ public class CommandFlowVSP extends VerticalSortingPane {
     //subroutines--------------------------------------------------------------
     //none of these methods actually effect the added/removed command block
     
+    //commandStruct Getter
+    public ScriptStruct getCommandStruct() {
+        return this.commandStruct;
+    }
+    
+    /*
+        setCommandSyntax()
+        CB's newArgument gives the calling CB to this subroutine which
+        propagates the changes into ScriptStruct.
+     */
+    public void setCommandSyntax(CommandBlock cb) {
+        int cbi = this.getChildren().indexOf(cb);
+        //propagate changes across to SS
+        this.commandStruct.setCommandSyntax(cbi, cb.argument);
+
+        return;
+    }
+    
     /*
         addCommandBlock()
         adds an item to the VSP and automatically sorts it in
@@ -51,6 +69,7 @@ public class CommandFlowVSP extends VerticalSortingPane {
     }
     
     /*
+        removeCommandBlock()
         removes an item to the VSP and automatically resorts the list
         returns the command block, as it isn't actually destroyed
     */
@@ -64,27 +83,12 @@ public class CommandFlowVSP extends VerticalSortingPane {
         return super.removeCommandBlock(oldItem);
     }
 
-    /*
-        setCommandSyntax()
-        CB's newArgument gives the calling CB to this subroutine which
-        propagates the changes into ScriptStruct.
-    */
-    public void setCommandSyntax(CommandBlock cb) {
-        int cbi = this.getChildren().indexOf(cb);
-        //propagate changes across to SS
-        this.commandStruct.setCommandSyntax(cbi, cb.argument);
-
-        return;
-    }
-
-    //returns the ScriptStruct object assigned to the VSP
-    public ScriptStruct getCommandStruct() {
-        return this.commandStruct;
-    }
+    
 
     /*
         reorderItem()
-        NOTE: finish these comments
+        Changes a command block's location in the VSP and updates the command
+        flow to match
     */
     @Override
     void reorderItem(CommandBlock source, boolean reorderingUp) {

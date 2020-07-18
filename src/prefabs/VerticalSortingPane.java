@@ -79,11 +79,8 @@ public class VerticalSortingPane extends Pane {
         doesn't affect the added/removed command block
     */
     public CommandBlock removeCommandBlock(CommandBlock oldItem) {
-        System.out.println("This One called!");
         this.getChildren().remove(oldItem);
         this.refreshPane();
-        
-        System.out.println("old item " + oldItem.getCommandName() + " removed");
           
         this.height -= oldItem.height;
 
@@ -121,7 +118,9 @@ public class VerticalSortingPane extends Pane {
             node.setHomeY(newY);
             
             //change its index, if needed
-            this.changeIndex((int)(node.getHomeY() / CommandBlock.height), node);
+            this.changeIndex(
+                    (int)(node.getHomeY() / CommandBlock.height), node
+            );
         }
     }
     
@@ -242,10 +241,6 @@ public class VerticalSortingPane extends Pane {
     //static subroutines-------------------------------------------------------
 }
 
-/*
-    onReorderRequest
-    NOTE: finish these comments
-*/
 class onReorderRequest implements EventHandler<ReorderRequestEvent>{
     //variables----------------------------------------------------------------
     VerticalSortingPane VSP;    // instantiation of VerticalSortingPane
@@ -285,21 +280,15 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
         
         /*
             whether or not to move the blocks up or down to compensate for the
-            guest (currently being dragged) block, based on the guest's y position
-            relative to the block that fired the event 
+            guest (currently being dragged) block, based on the guest's 
+            y position relative to the block that fired the event 
             CommandBlock height is added to compensate for the block's size
-            
-            TODO: current step is to compensate for the change in index after
-            reorderItem is called.
-            reorderingDown (bottom to top) should be fine, but reorderingUp
-            (top to bottom) has a lot of trouble, since we're reordering
-            against the way lists reassign indices in java
         */
-        boolean reorderingUp = event.getGuestY() + CommandBlock.height < sourceY;
+        boolean reorderingUp = event.getGuestY() 
+                + CommandBlock.height < sourceY;
 
         //if the guest came from above the source...
         if(reorderingUp){
-            System.out.println("reordering Up");
             //reorder the block Up
             VSP.reorderItem(currentBlock, true);
             
@@ -308,7 +297,6 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
                     currentIndex, 
                     currentIndex-1
             )) {
-                System.out.println("index was " + currentIndex + " and now it's " + (currentIndex-1));
                 --currentIndex;
                 currentBlock = (CommandBlock)blocks.get(currentIndex);
                 VSP.reorderItem(currentBlock, true);
@@ -317,7 +305,6 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
         }
         //else the guest came from below the source
         else {
-            System.out.println("reordering Down");
             //reorder blocks Down
             VSP.reorderItem(currentBlock, false);
             
@@ -326,7 +313,6 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
                     currentIndex, 
                     currentIndex+1
             )) {
-                System.out.println("index was " + currentIndex + " and now it's " + (currentIndex+1));
                 ++currentIndex;
                 currentBlock = (CommandBlock)blocks.get(currentIndex);
                 VSP.reorderItem(currentBlock, false);
@@ -365,11 +351,6 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
             CommandBlock a = (CommandBlock)list.get(indexA);
             CommandBlock b = (CommandBlock)list.get(indexB);
             
-            System.out.println("Comparing incides: " + indexA +" & " + indexB + "\n"
-                            + a.getHomeX() + ", " + a.getHomeY()
-                            + "\nto\n"
-                            + b.getHomeX() + ", " + b.getHomeY());
-            
             toReturn =  a.getHomeX() == b.getHomeX()
                         &&
                         a.getHomeY() == b.getHomeY();
@@ -380,10 +361,6 @@ class onReorderRequest implements EventHandler<ReorderRequestEvent>{
     }
 }
 
-/*
-    onCorrectPosRequest
-    NOTE: finish these comments
-*/
 class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
     //variables----------------------------------------------------------------
     VerticalSortingPane VSP;    // instantiation of VerticalSortingPane

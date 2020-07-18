@@ -4,10 +4,6 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 
-/*
-    ReorderRequestEvent
-    NOTE: finish these comments
-*/
 public class ReorderRequestEvent extends Event{
     //variables----------------------------------------------------------------
     public static EventType<ReorderRequestEvent> VSPReorderEvent =
@@ -31,26 +27,24 @@ public class ReorderRequestEvent extends Event{
         this.guestY = draggedY - CommandBlock.height;
     }
     
+    //subroutines--------------------------------------------------------------
+    
     /*
         getSource()
-        NOTE: finish these comments
+        Getter for source. overrides original getSource to return CommandBlock
+        objects rather than nodes.
     */
+    @Override
     public CommandBlock getSource(){
         return source;
     }
     
-    /*
-        getGuestX()
-        NOTE: finish these comments
-    */
+    //GuestX Getter
     public double getGuestX() {
         return guestX;
     }
     
-    /*
-        getGuestY()
-        NOTE: finish these comments
-    */
+    //GuestY Getter
     public double getGuestY() {
         return guestY;
     }

@@ -4,10 +4,6 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 
-/*
-    CorrectPosRequestEvent
-    NOTE: finish these commands
-*/
 public class CorrectPosRequestEvent extends Event {
     //variables----------------------------------------------------------------
     public static EventType<CorrectPosRequestEvent> VSPPosEvent =
@@ -26,6 +22,12 @@ public class CorrectPosRequestEvent extends Event {
     }
     
     //subroutines--------------------------------------------------------------
+    /*
+    getSource()
+    Getter for source. overrides original getSource to return CommandBlock
+    objects rather than nodes.
+    */
+    @Override
     public CommandBlock getSource() {
         return this.source;
     }
