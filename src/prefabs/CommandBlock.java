@@ -57,7 +57,7 @@ public class CommandBlock extends StackPane {
     Rectangle               rect;           // block's physical body
     Label                   text;           // name of command on block body
     String                  argument,       // TODO: finish these comments
-	                    edited;         // TODO: finish these comments
+                        edited;         // TODO: finish these comments
 
     //constructors--------------------------------------------------------------
     /*
@@ -69,7 +69,7 @@ public class CommandBlock extends StackPane {
         cmdL, the ScriptStruct reference
     */
     public CommandBlock(double xPos, double yPos,
-			Command cmd, ScriptStruct cmdL) {
+            Command cmd, ScriptStruct cmdL) {
 
         //creating the jfx container
         super();
@@ -86,8 +86,8 @@ public class CommandBlock extends StackPane {
         //creating the visual shape and name label (and saving the block's color)
         this.commandColor = Color.web(nord10);
         this.rect = new Rectangle(CommandBlock.width,
-				  CommandBlock.height,
-				  commandColor);
+                  CommandBlock.height,
+                  commandColor);
         this.text = new Label(cmd.getName());
 
         //adds visuals to the container
@@ -163,29 +163,29 @@ public class CommandBlock extends StackPane {
         backwards to ScriptStruct using the adapter CFVSP.
     */
     public void newArgument(String inStr){
-	this.argument = inStr;
-	if (inStr.length() > 0){
-	    edited = " ...";
-	    this.text.setText(attachedCommand.getName()+edited);
+    this.argument = inStr;
+    if (inStr.length() > 0){
+        edited = " ...";
+        this.text.setText(attachedCommand.getName()+edited);
 
             CommandFlowVSP cfvsp = (CommandFlowVSP) this.getParent();
             cfvsp.setCommandSyntax(this);
-	}
+    }
     }
 
 
     public void onSidebar(boolean val) {
-	    if(val) this.home = livesOn.SIDEBAR;
+        if(val) this.home = livesOn.SIDEBAR;
     }
 
     //returns a deep copy of the command block this method is called on
     public CommandBlock copy() {
-	//we use localToScene(0, 0) to translate the block's position relative to itself to the scene
-	return new CommandBlock(
-				this.localToScene(0, 0).getX(),
-				this.localToScene(0, 0).getY(),
-				this.attachedCommand,
-				this.commandList);
+    // localToScene(0, 0) translates a block's pos relative to itself
+    return new CommandBlock(
+                this.localToScene(0, 0).getX(),
+                this.localToScene(0, 0).getY(),
+                this.attachedCommand,
+                this.commandList);
     }
 
     /*
@@ -206,12 +206,12 @@ public class CommandBlock extends StackPane {
     }
 
     private void setAsEdit(){
-	txtBox.setEdit(this);
-	this.rect.setStroke(Color.GREEN);
+    txtBox.setEdit(this);
+    this.rect.setStroke(Color.GREEN);
     }
 
     public void closeEdit(){
-	this.rect.setStroke(Color.LIGHTBLUE);
+    this.rect.setStroke(Color.LIGHTBLUE);
     }
 
 
@@ -220,33 +220,33 @@ public class CommandBlock extends StackPane {
     public void setContextMenu(){
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
-	editBlock = new MenuItem("Edit Command");
+    editBlock = new MenuItem("Edit Command");
 
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-		delete();
-	    }
+        delete();
+        }
         });
 
-	editBlock.setOnAction(new EventHandler<ActionEvent>(){
-	    @Override
-	    public void handle(ActionEvent event){
-		setAsEdit();
-	    }
-	});
+    editBlock.setOnAction(new EventHandler<ActionEvent>(){
+        @Override
+        public void handle(ActionEvent event){
+        setAsEdit();
+        }
+    });
 
-	//Add blocks to context menu
+    //Add blocks to context menu
         contextMenu.getItems().addAll(deleteBlock, editBlock);
 
-	this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+    this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
-	this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+    this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());

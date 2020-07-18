@@ -76,7 +76,7 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
         VerticalSortingPane sidebarVSP;     // available commands
         CommandFlowVSP canvasBoxVSP;        // contains flowchart
-	TextPanel textInputBox;
+    TextPanel textInputBox;
         Scene scene;
 
         //load the FXML
@@ -100,7 +100,7 @@ public class Workspace extends Application {
         SplitPane   canvasSplit = (SplitPane) mainCanvas.getChildren().get(0);
         AnchorPane  canvasPane = (AnchorPane) canvasSplit.getItems().get(0);
         AnchorPane  bottomPanel = (AnchorPane) canvasSplit.getItems().get(1);
-	HBox        bottomHbox = (HBox) bottomPanel.getChildren().get(0);
+    HBox        bottomHbox = (HBox) bottomPanel.getChildren().get(0);
         Button      exportButton = (Button) bottomHbox.getChildren().get(0);
         VBox        canvasBox = (VBox) canvasPane.getChildren().get(0);
         ScrollBar   canvasScroll = (ScrollBar) canvasPane.getChildren().get(1);
@@ -108,8 +108,8 @@ public class Workspace extends Application {
         //create non-fxml items
         canvasBoxVSP = new CommandFlowVSP(structure);
         canvasBox.getChildren().add(canvasBoxVSP);
-	textInputBox = new TextPanel();
-	bottomHbox.getChildren().add(textInputBox);
+    textInputBox = new TextPanel();
+    bottomHbox.getChildren().add(textInputBox);
 
         exportButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -121,26 +121,26 @@ public class Workspace extends Application {
             }
         });
 
-	    //Setting sidebar scrollbar
-	sidebarVbox.setLayoutY(0);
-	sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
-	    public void changed(ObservableValue<? extends Number> ov,
-				Number old_val, Number new_val){
-		int size = sidebarVbox.getChildren().size();
-		sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
-	    }
-	});
+        //Setting sidebar scrollbar
+    sidebarVbox.setLayoutY(0);
+    sidebarScroll.valueProperty().addListener(new ChangeListener<Number>(){
+        public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val){
+        int size = sidebarVbox.getChildren().size();
+        sidebarVbox.setLayoutY(-new_val.doubleValue() * size);
+        }
+    });
 
-	//Setting Canvas scrollbar
-	canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
-	    public void changed(ObservableValue<? extends Number> ov,
+    //Setting Canvas scrollbar
+    canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
+        public void changed(ObservableValue<? extends Number> ov,
                             Number old_val, Number new_val){
-		double height = canvasBoxVSP.getVSPHeight();
-		// 100 is the base value of height
-		double heightDiff = (height * new_val.doubleValue()) / 100;
-		canvasBox.setLayoutY(-heightDiff);
-	    }
-	});
+        double height = canvasBoxVSP.getVSPHeight();
+        // 100 is the base value of height
+        double heightDiff = (height * new_val.doubleValue()) / 100;
+        canvasBox.setLayoutY(-heightDiff);
+        }
+    });
 
         // populating available commands
         for(int i = 0; i < sidebarCommands.size(); i ++){
@@ -166,12 +166,12 @@ public class Workspace extends Application {
         Appends the CommandBlock to the canvas list and the command to flow.
     */
     public void addCommandBlock(CommandFlowVSP bBox, CommandBlock template,
-				TextPanel textBox){
+                TextPanel textBox){
         int index = structure.getFlowSize();
         Command c = template.getCommand();
         CommandBlock block = new CommandBlock(1,2,c,structure);
-	block.setEditBox(textBox);
-	block.setContextMenu();
+    block.setEditBox(textBox);
+    block.setContextMenu();
         //NOTE: This adds command to structure for us.
         bBox.addCommandBlock(block);
     }

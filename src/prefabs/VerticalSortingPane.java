@@ -11,12 +11,13 @@ import customevents.CorrectPosRequestEvent;
 import customevents.SelfRemoveRequestEvent;
 
 /*
-    A vertical sorting pane is like a VBox, but it doesn't lock elements in
-    place. Instead, it reorders elements after their moved. It'll do the whole
-    "boxes moving when things hover over them" deal. Be careful, VSPs assume
-    they only contain CommandBlocks, since that's the only consistent object
-    in this project that has a definite size
-    I just need to figure out how it will know that things are moving...
+    VerticalSortingPane
+    like a VBox, but it doesn't lock elements in place. Instead, it reorders
+    elements after their moved. It'll do the whole "boxes moving when things
+    hover over them" deal. Be careful, VSPs assume they only contain
+    CommandBlocks, since that's the only consistent object in this project
+    that has a definite size I just need to figure out how it will know that
+    things are moving...
 */
 public class VerticalSortingPane extends Pane {
     int height;
@@ -34,7 +35,7 @@ public class VerticalSortingPane extends Pane {
             new onSelfRemoveRequest(this));
 
         //init values
-	    this.height = 0;
+        this.height = 0;
     }
 
     //subroutines--------------------------------------------------------------
@@ -45,15 +46,15 @@ public class VerticalSortingPane extends Pane {
         doesn't affect the added/removed command block
     */
     public void addCommandBlock(CommandBlock newItem) {
-	int lastIndex = this.getChildren().size();
+    int lastIndex = this.getChildren().size();
         //add newItem to the VSP
         this.getChildren().add(lastIndex, newItem);
         //update newItem's home
         newItem.setHomeX(0);
         newItem.setHomeY(lastIndex * CommandBlock.height);
 
-	//update height
-	this.height += newItem.height;
+    //update height
+    this.height += newItem.height;
 
         this.refreshPane();
     }
@@ -75,7 +76,7 @@ public class VerticalSortingPane extends Pane {
 
     //Get height of the VSP
     public int getVSPHeight(){
-	    return this.height;
+        return this.height;
     }
 
     /*

@@ -6,8 +6,12 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 
+/*
+    SelfRemoveRequestEvent
+    NOTE: finish these comments
+*/
 public class SelfRemoveRequestEvent extends Event {
-//fields-----------------------------------------------------------------------
+    //fields-------------------------------------------------------------------
     public static EventType<SelfRemoveRequestEvent>
                                 VSPSelfRemoveEvent  =   new EventType
                                                         <SelfRemoveRequestEvent>
@@ -20,16 +24,16 @@ public class SelfRemoveRequestEvent extends Event {
 
     CommandBlock                source; //the block that asked for the removal
 
-//constructors-----------------------------------------------------------------
+    //constructors-------------------------------------------------------------
     public SelfRemoveRequestEvent(CommandBlock requestee) {
         super(VSPSelfRemoveEvent);
 
         this.source = requestee;
     }
 
-//subroutines------------------------------------------------------------------
+    //subroutines--------------------------------------------------------------
     //getters/setters
     public CommandBlock getCommandBlock() {return this.source;}
 
-//static subroutines-----------------------------------------------------------
+    //static subroutines-------------------------------------------------------
 }

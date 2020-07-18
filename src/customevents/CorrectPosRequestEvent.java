@@ -4,6 +4,10 @@ import javafx.event.Event;
 import javafx.event.EventType;
 import prefabs.CommandBlock;
 
+/*
+    CorrectPosRequestEvent
+    NOTE: finish these comments
+*/
 public class CorrectPosRequestEvent extends Event {
     //variables----------------------------------------------------------------
     public static EventType<CorrectPosRequestEvent> VSPPosEvent =
