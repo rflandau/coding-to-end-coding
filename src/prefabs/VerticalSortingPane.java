@@ -7,8 +7,8 @@ import javafx.scene.layout.Pane;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 //our stuff
-import customEvents.CorrectPosRequestEvent;
-import customEvents.SelfRemoveRequestEvent;
+import customevents.CorrectPosRequestEvent;
+import customevents.SelfRemoveRequestEvent;
 
 /*
     A vertical sorting pane is like a VBox, but it doesn't lock elements in

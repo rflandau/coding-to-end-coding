@@ -19,8 +19,8 @@ import javafx.scene.input.ContextMenuEvent;
 //import our other packages
 import structure.Command;
 import structure.ScriptStruct;
-import customEvents.CorrectPosRequestEvent;
-import customEvents.SelfRemoveRequestEvent;
+import customevents.CorrectPosRequestEvent;
+import customevents.SelfRemoveRequestEvent;
 import prefabs.TextPanel;
 
 /*
