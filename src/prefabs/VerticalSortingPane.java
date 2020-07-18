@@ -45,26 +45,15 @@ public class VerticalSortingPane extends Pane {
         doesn't affect the added/removed command block
     */
     public void addCommandBlock(CommandBlock newItem) {
-        //guessedIndex is where the VSP thinks the new item should go
-        int guessedIndex = (int)(newItem.localToParent(0, 0).getY() /
-            CommandBlock.height);
-        int maximumIndex = this.getChildren().size();
-
-        //if it's above the list, put it at the top (where is index 0)
-        if(guessedIndex < 0) {guessedIndex = 0;}
-        //if it's below the list, put it at the bottom (index...size()-1)
-        if(guessedIndex >= maximumIndex) {guessedIndex = maximumIndex - 1;}
-        //if the list is empty, re-correct to the top (0) again
-        if(maximumIndex == 0) {guessedIndex = 0;}
-
+	int lastIndex = this.getChildren().size();
         //add newItem to the VSP
-        this.getChildren().add(guessedIndex, newItem);
+        this.getChildren().add(lastIndex, newItem);
         //update newItem's home
         newItem.setHomeX(0);
-        newItem.setHomeY(guessedIndex * CommandBlock.height);
+        newItem.setHomeY(lastIndex * CommandBlock.height);
 
-	    //update height
-	    this.height += newItem.height;
+	//update height
+	this.height += newItem.height;
 
         this.refreshPane();
     }
@@ -237,131 +226,6 @@ public class VerticalSortingPane extends Pane {
     }
     //static subroutines-------------------------------------------------------
 }
-/*
-    onReorderRequest
-    Depreciated event built for handling animated list reordering.
-    While not technically used anymore, i don't feel comfortable deleting it
-    yet, as we might decide to bring animated reordering back later
-*/
-/*class onReorderRequest implements EventHandler<ReorderRequestEvent>{
-    //variables----------------------------------------------------------------
-    VerticalSortingPane VSP;    // instantiation of VerticalSortingPane
-
-    //constructors-------------------------------------------------------------
-    /*
-        constructor
-    *
-    onReorderRequest(VerticalSortingPane VSP){
-        super();
-        this.VSP = VSP;
-    }
-
-    //subroutines--------------------------------------------------------------
-    /*
-        handle()
-        what happens when a CommandBlock wants to be reordered
-        the event receives the block that wants to move and the position of the
-        mouse. We can infer the moving 'block' size from CommandBlock's static
-        size, and position from the mouse Source is the object asking to be
-        reordered, and Guest is the object it is making room for
-        because when you have a guest you make room for them get it?
-    *
-    @Override
-    public void handle(ReorderRequestEvent event) {
-        //list of all blocks
-        ObservableList<Node>    blocks = VSP.getChildren();
-
-        //block that started event
-        CommandBlock    currentBlock = event.getSource();
-
-        //currentBlock's y position
-        double  sourceY = currentBlock.localToParent(0, 0).getY();
-
-        //currentBlock's index
-        int     currentIndex = blocks.indexOf(currentBlock);
-
-        /*
-            whether or not to move the blocks up or down to compensate for the
-            guest (currently being dragged) block, based on the guest's 
-            y position relative to the block that fired the event 
-            CommandBlock height is added to compensate for the block's size
-        *
-        boolean reorderingUp = event.getGuestY() 
-                + CommandBlock.height < sourceY;
-
-        //if the guest came from above the source...
-        if(reorderingUp){
-            //reorder the block Up
-            VSP.reorderItem(currentBlock, true);
-
-            while(onReorderRequest.inSamePlaceByIndex(
-                    blocks,
-                    currentIndex,
-                    currentIndex-1
-            )) {
-                --currentIndex;
-                currentBlock = (CommandBlock)blocks.get(currentIndex);
-                VSP.reorderItem(currentBlock, true);
-            }
-
-        }
-        //else the guest came from below the source
-        else {
-            //reorder blocks Down
-            VSP.reorderItem(currentBlock, false);
-
-            while(onReorderRequest.inSamePlaceByIndex(
-                    blocks,
-                    currentIndex,
-                    currentIndex+1
-            )) {
-                ++currentIndex;
-                currentBlock = (CommandBlock)blocks.get(currentIndex);
-                VSP.reorderItem(currentBlock, false);
-            }
-
-        }
-
-        return;
-    }
-    //static subroutines-------------------------------------------------------
-    /*
-        inSamePlacebyIndex()
-        Returns true if the following conditions are met:
-        A: both indices are valid in list
-        B: the nodes belonging to those indices in list
-        aren't in the same place.
-        "Can't you just short-circuit, Thomas?" No, because the methods that
-        pull the positions are always called, the answer just isn't looked
-        at until needed. Because pulling the positions with a bad index always
-        breaks the program, I just check both conditions here.
-    *
-    static boolean inSamePlaceByIndex(ObservableList<Node> list, 
-            int indexA, int indexB) {
-        boolean toReturn = false;
-        int maxIndex = list.size() - 1;
-        int minIndex = 0;
-
-        //check if both indices are valid
-        if(minIndex <= indexA && indexA <= maxIndex
-                && minIndex <= indexB && indexB <= maxIndex) {
-            toReturn = true;
-        }
-
-        //if they are, check if they're in the same spot
-        if(toReturn) {
-            CommandBlock a = (CommandBlock)list.get(indexA);
-            CommandBlock b = (CommandBlock)list.get(indexB);
-            
-            toReturn =  a.getHomeX() == b.getHomeX()
-                        &&
-                        a.getHomeY() == b.getHomeY();
-        }
-
-
-        return toReturn;
-    }
-}*/
 
 class onCorrectPosRequest implements EventHandler<CorrectPosRequestEvent>{
     //variables----------------------------------------------------------------
