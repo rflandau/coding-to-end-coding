@@ -28,6 +28,11 @@ import prefabs.TextPanel;
     TODO: finish these comments
 */
 public class CommandBlock extends StackPane {
+    //nord theme, frost colors
+    final String            nord7   = "#8FBCBB",
+                            nord8   = "#88C0D0",
+                            nord9   = "#81A1C1",
+                            nord10  = "#5E81AC";
     //variables-----------------------------------------------------------------
     /*
         I'm assuming that every block is the same size. Rectangle has a native
@@ -79,7 +84,7 @@ public class CommandBlock extends StackPane {
         this.home = livesOn.WORKSPACE;
 
         //creating the visual shape and name label (and saving the block's color)
-        this.commandColor = Color.LIGHTBLUE;
+        this.commandColor = Color.web(nord10);
         this.rect = new Rectangle(CommandBlock.width,
 				  CommandBlock.height,
 				  commandColor);
@@ -204,7 +209,7 @@ public class CommandBlock extends StackPane {
 				this.attachedCommand,
 				this.commandList);
     }
-    
+
     /*
         delete()
         removes a CommandBlock from its parent.
@@ -212,8 +217,8 @@ public class CommandBlock extends StackPane {
         class without making it public
     */
     protected void delete(){
-        /*  
-        firing this event calls removeCommandBlock on the parent 
+        /*
+        firing this event calls removeCommandBlock on the parent
         without needing to know the type of the parent
         This of course means that if this's parent isn't a VSP,
         this method does nothing, but it would've crashed the program
@@ -295,7 +300,7 @@ class OnCommandBlockDrag implements EventHandler<MouseEvent>{
     public void handle(MouseEvent event) {
         //expose other events to the mouse during the drag
         targetBlock.setMouseTransparent(true);
-        
+
         targetBlock.startFullDrag();
 
         event.consume();
@@ -382,7 +387,7 @@ class OnContextDelete implements EventHandler<ActionEvent>{
           super();
           this.targetBlock = targetBlock;
       }
-      
+
     //subroutines--------------------------------------------------------------
       //what happens when an event wants to remove itself
       @Override
@@ -391,7 +396,7 @@ class OnContextDelete implements EventHandler<ActionEvent>{
                   new SelfRemoveRequestEvent(this.targetBlock)
           );
           this.targetBlock.delete();
-          
+
           return;
       }
     //static subroutines-------------------------------------------------------
