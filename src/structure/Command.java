@@ -132,12 +132,14 @@ public class Command{
         if(tooltip != c.getTooltip()){returnVal  = false;}
         
         cFlags = c.getFlags();
-        for(int i = 0; i < flags.size(); i ++){
+        if(cFlags.size() != flags.size()){returnVal = false;}
+        for(int i = 0; returnVal  && i < flags.size(); i ++){
             if(flags.get(i) != cFlags.get(i)){returnVal = false;}
         }
         
         cArgs = c.getArguments();
-        for(int i = 0; i < arguments.size(); i ++){
+        if(cArgs.size() != arguments.size()){returnVal = false;}
+        for(int i = 0; returnVal && i < arguments.size(); i ++){
             if(arguments.get(i) != cArgs.get(i)){returnVal = false;}
         }
         

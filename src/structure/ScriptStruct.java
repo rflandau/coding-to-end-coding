@@ -275,14 +275,25 @@ public class ScriptStruct{
     }
     
     /*
-        add()
-        TODO: finish these comments
+        moveCommand()
+        finds command in flow and moves from current location to newIndex
     */
-    public void add(int index, Command command){
+    public void moveCommand(int newIndex, Command command){
+        int oldIndex = 0;   // index commanmd is moved from
         
-        // validate index
-        if(0 <= index && index <= getFlowSize()){
-//             System.out.println("removing " command.getName() + " at " + index);
+        
+        // validate newIndex
+        if(0 <= newIndex && newIndex <= getFlowSize()){
+            // find oldIndex
+            for(int i = 0; i < flow.size(); i ++){
+                if(command.isEqual(getCommand(i))){
+                    oldIndex = i;
+                    break;
+                }
+            }
+            // remove command from oldIndex and place at newIndex
+            flow.remove(oldIndex);
+            flow.add(newIndex, command);
         }
     
     
