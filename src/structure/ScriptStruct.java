@@ -245,7 +245,7 @@ public class ScriptStruct{
         Command fetched;    // template Command fetched from Interpreter
 
         //validate index
-        if (0 <= i && i <= getFlowSize())
+        if (0 <= i && i <= getFlowSize()){
             //check the id exists
             if((fetched = interp.getCommand(id)) != null){
                 flow.add(i, new Command(fetched));

@@ -219,7 +219,7 @@ public class VerticalSortingPane extends Pane {
         //remove and replace movingItem
         nodeList.remove(movingItem);
         nodeList.add(newIndex, movingItem);
-        movingItem.commandList.add(newIndex, movingItem.getCommand());
+//         movingItem.commandList.add(newIndex, movingItem.getCommand());
     }
     //static subroutines-------------------------------------------------------
 }
