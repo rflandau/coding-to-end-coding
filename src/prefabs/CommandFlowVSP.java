@@ -15,7 +15,6 @@ import structure.ScriptStruct;
     efficient to do so, methods just call their super version with some small
     command flow tweaks
  */
-
 public class CommandFlowVSP extends VerticalSortingPane {
     //variables----------------------------------------------------------------
     ScriptStruct commandStruct;     // ScriptStruct containing the flow
@@ -83,21 +82,19 @@ public class CommandFlowVSP extends VerticalSortingPane {
         return super.removeCommandBlock(oldItem);
     }
 
-    
-
-    /*
-        reorderItem()
-        Changes a command block's location in the VSP and updates the command
-        flow to match
-    */
-    @Override
-    void reorderItem(CommandBlock source, boolean reorderingUp) {
-        //we just want the super method with commandflow trappings
-        super.reorderItem(source, reorderingUp);
-        
-        //update index of moved item in the flow, if needed
-        this.changeFlowIndex(this.getChildren().indexOf(source), source);
-    }
+//     /*
+//         reorderItem()
+//         Changes a command block's location in the VSP and updates the command
+//         flow to match
+//     */
+//     @Override
+//     void reorderItem(CommandBlock source, boolean reorderingUp) {
+//         //we just want the super method with commandflow trappings
+//         super.reorderItem(source, reorderingUp);
+//         
+//         //update index of moved item in the flow, if needed
+//         this.changeFlowIndex(this.getChildren().indexOf(source), source);
+//     }
     
     /*
         changeFlowIndex()

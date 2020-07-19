@@ -117,5 +117,33 @@ public class Command{
     public String toString(){
         return name + " -> " + syntax;
     }
+    
+    /*
+        isEqual()
+        returns true if command c is equal, returns false otherwise
+    */
+    public boolean isEqual(Command c){
+        boolean             returnVal = true;   // return value
+        ArrayList<String>   cFlags,             // Arraylist for flags of c
+                            cArgs;              // ArrayList for args of c
+        
+        if(name != c.getName()){returnVal  = false;}
+        if(syntax != c.getSyntax()){returnVal  = false;}
+        if(tooltip != c.getTooltip()){returnVal  = false;}
+        
+        cFlags = c.getFlags();
+        if(cFlags.size() != flags.size()){returnVal = false;}
+        for(int i = 0; returnVal  && i < flags.size(); i ++){
+            if(flags.get(i) != cFlags.get(i)){returnVal = false;}
+        }
+        
+        cArgs = c.getArguments();
+        if(cArgs.size() != arguments.size()){returnVal = false;}
+        for(int i = 0; returnVal && i < arguments.size(); i ++){
+            if(arguments.get(i) != cArgs.get(i)){returnVal = false;}
+        }
+        
+        return returnVal;
+    }
     //static subroutines--------------------------------------------------------
 }

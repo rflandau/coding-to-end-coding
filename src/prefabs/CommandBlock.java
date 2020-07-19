@@ -284,10 +284,10 @@ class OnCommandBlockDrag implements EventHandler<MouseEvent>{
     */
     @Override
     public void handle(MouseEvent event) {
-	MouseButton mb = event.getButton();
-	if (mb.compareTo(MouseButton.SECONDARY) == 0){
-	    return;
-	}
+    MouseButton mb = event.getButton();
+        if (mb.compareTo(MouseButton.SECONDARY) == 0){
+            return;
+        }
         //expose other events to the mouse during the drag
         targetBlock.setMouseTransparent(true);
 
@@ -319,10 +319,10 @@ class OnCommandBlockMove implements EventHandler<MouseEvent>{
     */
     @Override
     public void handle(MouseEvent event) {
-	MouseButton mb = event.getButton();
-	if (mb.compareTo(MouseButton.SECONDARY) == 0){
-	    return;
-	}
+        MouseButton mb = event.getButton();
+        if (mb.compareTo(MouseButton.SECONDARY) == 0){
+            return;
+        }
         /*
             relocate needs parent-relative coordinates. The event gives
             scene-relative coordinates.We need to go from scene to local to
@@ -364,18 +364,18 @@ class OnCommandBlockDrop implements EventHandler<MouseEvent>{
     @Override
     public void handle(MouseEvent event) {
         //correct block's position, if parent is a VSP
-	MouseButton mb = event.getButton();
-	if (mb.compareTo(MouseButton.SECONDARY) == 0){
-	    return;
-	}
-	
-	targetBlock.getParent().fireEvent(
+        MouseButton mb = event.getButton();
+        if (mb.compareTo(MouseButton.SECONDARY) == 0){
+            return;
+        }
+    
+    targetBlock.getParent().fireEvent(
                 new CorrectPosRequestEvent(targetBlock));
 
         targetBlock.setMouseTransparent(false);
 
         event.consume();
-	
+    
     }
     //static subroutines-------------------------------------------------------
 }
@@ -385,10 +385,10 @@ class OnContextDelete implements EventHandler<ActionEvent>{
       CommandBlock targetBlock;    //the VSP that handles this event
 
     //constructors-------------------------------------------------------------
-      OnContextDelete(CommandBlock targetBlock){
-          super();
-          this.targetBlock = targetBlock;
-      }
+    OnContextDelete(CommandBlock targetBlock){
+        super();
+        this.targetBlock = targetBlock;
+    }
 
     //subroutines--------------------------------------------------------------
       //what happens when an event wants to remove itself

@@ -13,7 +13,7 @@ import customevents.SelfRemoveRequestEvent;
 /*
     VerticalSortingPane
     like a VBox, but it doesn't lock elements in place. Instead, it reorders
-    elements after their moved. It'll do the whole "boxes moving when things
+    elements after they're moved. It'll do the whole "boxes moving when things
     hover over them" deal. Be careful, VSPs assume they only contain
     CommandBlocks, since that's the only consistent object in this project
     that has a definite size I just need to figure out how it will know that
@@ -111,51 +111,52 @@ public class VerticalSortingPane extends Pane {
         }
     }
 
-    /*
-        reorderItem()
-        moves command blocks up or down the list
-    */
-
-    void reorderItem(CommandBlock source, boolean reorderingUp) {
-        //0, 0 represents the location of source relative to itself
-        double sourceY = source.localToParent(0, 0).getY();
-
-        //if the guest came from below the source shift the source up
-        if(reorderingUp){source.relocate(0, sourceY - CommandBlock.height);}
-
-        //else the guest came from above the source
-        else {
-            //shift the source down to make room for the guest
-            source.relocate(0, sourceY + CommandBlock.height);
-        }
-        double newY = source.localToParent(0, 0).getY();
-        System.out.println("Relocated from " + sourceY + " to " + newY);
-
-        ///TEMP CODE TO HANDLE MISPOSITIONINGS THAT SHOULDN'T HAPPEN
-        //highestIndex is the biggest index an item can have right now
-        int highestIndex = this.getChildren().size() - 1;
-        //if the new position goes too high...
-        if(newY > highestIndex * CommandBlock.height) {
-            System.err.println("Command block overshot list. Relocating to " +
-                highestIndex * CommandBlock.height);
-            source.relocate(0, highestIndex * CommandBlock.height);
-            newY = highestIndex * CommandBlock.height;
-        }
-        //or too low
-        if(newY < 0) {
-            System.err.println("Command block overshot list. Relocating to " +
-                (double)0);
-            source.relocate(0, highestIndex * CommandBlock.height);
-            newY = 0;
-        }
-
-        //update source's home
-        source.setHomeX(0);
-        source.setHomeY(newY);
-
-        //change it's index to be the new height divided by 100
-        this.changeIndex((int)(newY / CommandBlock.height), source);
-    }
+//     /*
+//         reorderItem()
+//         moves command blocks up or down the list
+//     */
+//     void reorderItem(CommandBlock source, boolean reorderingUp) {
+//         //0, 0 represents the location of source relative to itself
+//         double sourceY = source.localToParent(0, 0).getY();
+// 
+//         //if the guest came from below the source shift the source up
+//         if(reorderingUp){source.relocate(0, sourceY - CommandBlock.height);}
+// 
+//         //else the guest came from above the source
+//         else {
+//             //shift the source down to make room for the guest
+//             source.relocate(0, sourceY + CommandBlock.height);
+//         }
+//         
+//         double newY = source.localToParent(0, 0).getY();
+//         System.out.println("Relocated from " + sourceY + " to " + newY);
+// 
+//         ///TEMP CODE TO HANDLE MISPOSITIONINGS THAT SHOULDN'T HAPPEN
+//         //highestIndex is the biggest index an item can have right now
+//         int highestIndex = this.getChildren().size() - 1;
+//         
+//         //if the new position goes too high...
+//         if(newY > highestIndex * CommandBlock.height) {
+//             System.err.println("Command block overshot list. Relocating to " +
+//                 highestIndex * CommandBlock.height);
+//             source.relocate(0, highestIndex * CommandBlock.height);
+//             newY = highestIndex * CommandBlock.height;
+//         }
+//         //or too low
+//         if(newY < 0) {
+//             System.err.println("Command block overshot list. Relocating to " +
+//                 (double)0);
+//             source.relocate(0, highestIndex * CommandBlock.height);
+//             newY = 0;
+//         }
+// 
+//         //update source's home
+//         source.setHomeX(0);
+//         source.setHomeY(newY);
+// 
+//         //change it's index to be the new height divided by 100
+//         this.changeIndex((int)(newY / CommandBlock.height), source);
+//     }
 
     /*
         refreshPane()
@@ -195,7 +196,6 @@ public class VerticalSortingPane extends Pane {
         destination index
         doesn't affect the added/removed command block
     */
-
     void changeIndex(int newIndex, CommandBlock movingItem) {
         ObservableList<Node> nodeList = this.getChildren();
 
@@ -205,7 +205,7 @@ public class VerticalSortingPane extends Pane {
             forward 1
         */
         if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;}
-        ///TEMP CODE TO DEAL WITH ITEMS OVERSHOOTING THE LIST
+        
         //check to see if something overshot where it should go
         if(newIndex > nodeList.size() - 1) {
             newIndex = nodeList.size() - 1;
@@ -215,11 +215,11 @@ public class VerticalSortingPane extends Pane {
             newIndex = 0;
             System.out.println("an item undershot the list");
         }
-        ///END TEMP CODE
-        //remove from old places
+        
+        //remove and replace movingItem
         nodeList.remove(movingItem);
-        //placing into new places
         nodeList.add(newIndex, movingItem);
+        movingItem.commandList.moveCommand(newIndex, movingItem.getCommand());
     }
     //static subroutines-------------------------------------------------------
 }

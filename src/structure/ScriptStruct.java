@@ -239,13 +239,13 @@ public class ScriptStruct{
         addCommandToFlow()
         Takes an id for a command, duplicates it from the current interpreter,
         and adds the new command to flow.
-        Alternative to addCommandToFlow() so Commands do not have to be passed.
         Does nothing if id is not found in interpreter hash.
     */
     public void addCommandToFlow(int i, String id){
         Command fetched;    // template Command fetched from Interpreter
 
-        if (0 <= i && i <= getFlowSize()){ //validate index
+        //validate index
+        if (0 <= i && i <= getFlowSize()){
             //check the id exists
             if((fetched = interp.getCommand(id)) != null){
                 flow.add(i, new Command(fetched));
@@ -273,7 +273,34 @@ public class ScriptStruct{
         }
         return;
     }
-
+    
+    /*
+        moveCommand()
+        finds command in flow and moves from current location to newIndex
+    */
+    public void moveCommand(int newIndex, Command command){
+        int oldIndex = 0;   // index commanmd is moved from
+        
+        
+        // validate newIndex
+        if(0 <= newIndex && newIndex <= getFlowSize()){
+            // find oldIndex
+            for(int i = 0; i < flow.size(); i ++){
+                if(command.isEqual(getCommand(i))){
+                    oldIndex = i;
+                    break;
+                }
+            }
+            // remove command from oldIndex and place at newIndex
+            flow.remove(oldIndex);
+            flow.add(newIndex, command);
+        }
+    }
+    
+    /*
+        setCommandSyntax()
+        TODO: finish these comments
+    */
     public void setCommandSyntax(int i, String arg){
         String[] nArgs; //new args
         nArgs = arg.trim().split(" ");
