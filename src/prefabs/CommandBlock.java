@@ -207,47 +207,40 @@ public class CommandBlock extends StackPane {
     }
 
     private void setAsEdit(){
-    txtBox.setEdit(this);
-    this.rect.setStroke(Color.GREEN);
+        txtBox.setEdit(this);
+        this.rect.setStroke(Color.GREEN);
     }
 
     public void closeEdit(){
-    this.rect.setStroke(Color.LIGHTBLUE);
+        this.rect.setStroke(Color.LIGHTBLUE);
     }
-
-
-
 
     public void setContextMenu(){
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
-    editBlock = new MenuItem("Edit Command");
+        editBlock = new MenuItem("Edit Command");
 
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
             @Override
-            public void handle(ActionEvent event){
-        delete();
-        }
+            public void handle(ActionEvent event){delete();}
         });
 
-    editBlock.setOnAction(new EventHandler<ActionEvent>(){
-        @Override
-        public void handle(ActionEvent event){
-        setAsEdit();
-        }
-    });
+        editBlock.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){setAsEdit();}
+        });
 
-    //Add blocks to context menu
+        //Add blocks to context menu
         contextMenu.getItems().addAll(deleteBlock, editBlock);
 
-    this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+        this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
-    this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+        this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());

@@ -15,7 +15,6 @@ import structure.ScriptStruct;
     efficient to do so, methods just call their super version with some small
     command flow tweaks
  */
-
 public class CommandFlowVSP extends VerticalSortingPane {
     //variables----------------------------------------------------------------
     ScriptStruct commandStruct;     // ScriptStruct containing the flow

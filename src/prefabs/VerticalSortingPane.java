@@ -13,7 +13,7 @@ import customevents.SelfRemoveRequestEvent;
 /*
     VerticalSortingPane
     like a VBox, but it doesn't lock elements in place. Instead, it reorders
-    elements after their moved. It'll do the whole "boxes moving when things
+    elements after they're moved. It'll do the whole "boxes moving when things
     hover over them" deal. Be careful, VSPs assume they only contain
     CommandBlocks, since that's the only consistent object in this project
     that has a definite size I just need to figure out how it will know that
@@ -206,7 +206,6 @@ public class VerticalSortingPane extends Pane {
         */
         if(nodeList.indexOf(movingItem) > newIndex) {--newIndex;}
         
-        ///TEMP CODE TO DEAL WITH ITEMS OVERSHOOTING THE LIST
         //check to see if something overshot where it should go
         if(newIndex > nodeList.size() - 1) {
             newIndex = nodeList.size() - 1;
@@ -216,11 +215,11 @@ public class VerticalSortingPane extends Pane {
             newIndex = 0;
             System.out.println("an item undershot the list");
         }
-        ///END TEMP CODE
-        //remove from old places
+        
+        //remove and replace movingItem
         nodeList.remove(movingItem);
-        //placing into new places
         nodeList.add(newIndex, movingItem);
+        movingItem.commandList.add(newIndex, movingItem.getCommand());
     }
     //static subroutines-------------------------------------------------------
 }
