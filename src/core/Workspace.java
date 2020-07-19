@@ -76,7 +76,7 @@ public class Workspace extends Application {
     public void start(Stage stage) throws Exception {
         VerticalSortingPane sidebarVSP;     // available commands
         CommandFlowVSP canvasBoxVSP;        // contains flowchart
-    TextPanel textInputBox;
+        TextPanel textInputBox;
         Scene scene;
 
         //load the FXML
@@ -133,13 +133,13 @@ public class Workspace extends Application {
 
         //Setting Canvas scrollbar
         canvasScroll.valueProperty().addListener(new ChangeListener<Number>(){
-        public void changed(ObservableValue<? extends Number> ov,
-                            Number old_val, Number new_val){
-        double height = canvasBoxVSP.getVSPHeight();
-        // 100 is the base value of height
-        double heightDiff = (height * new_val.doubleValue()) / 100;
-        canvasBox.setLayoutY(-heightDiff);
-        }
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val){
+                double height = canvasBoxVSP.getVSPHeight();
+                // 100 is the base value of height
+                double heightDiff = (height * new_val.doubleValue()) / 100;
+                canvasBox.setLayoutY(-heightDiff);
+            }
         });
 
         // populating available commands
