@@ -34,10 +34,10 @@ public class TextPanel extends StackPane{
     //constructor--------------------------
     public TextPanel(){
         //Variable Init--------------------
-        commandName = new Label("Box");
+        commandName = new Label("Edit Block Contents Here:");
         textBox = new TextField();
         hboxContainer = new HBox();
-        saveButton = new Button("Button");
+        saveButton = new Button("Save to Block");
 
         //Set Children---------------------
         hboxContainer.setAlignment(Pos.CENTER);
@@ -56,7 +56,13 @@ public class TextPanel extends StackPane{
         textBox.setText(arg);
         commandName.setText(newLabel+":");
     }
-
+    
+    //Current Block deleted
+    public void blockDeleted(){
+	currentBlock = null;
+	commandName.setText("Block Removed");
+    }
+    
     //Event Handling-----------------------
     private void eventHandlingInit(){
     saveButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -65,7 +71,7 @@ public class TextPanel extends StackPane{
             CharSequence txtInput = textBox.getCharacters();
             String txtStr = txtInput.toString();
             //If no block has been set to edit
-            if (currentBlock == null){System.out.println(txtInput);}
+            if (currentBlock == null){return;}
             //If block has been set to edit
             else{currentBlock.newArgument(txtStr);}
 

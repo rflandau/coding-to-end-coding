@@ -48,7 +48,8 @@ public class CommandBlock extends StackPane {
     livesOn                 home;           // where the block came from
     double                  homeX,          // x position when not moving
                             homeY;          // y position when not moving
-    boolean                 draggable;      // if the block can be dragged
+    boolean                 draggable,      // if the block can be dragged
+	                    currentEdit;    // Tracks if block is being edited
     int                     listIndex;      // TODO: finish these comments
     ContextMenu             contextMenu;    // TODO: finish these comments
     MenuItem                deleteBlock,    // TODO: finish these comments
@@ -58,7 +59,7 @@ public class CommandBlock extends StackPane {
     Rectangle               rect;           // block's physical body
     Label                   text;           // name of command on block body
     String                  argument,       // TODO: finish these comments
-                        edited;         // TODO: finish these comments
+                            edited;         // TODO: finish these comments
 
     //constructors--------------------------------------------------------------
     /*
@@ -156,7 +157,10 @@ public class CommandBlock extends StackPane {
     public void setHomeY(double newHomeY) {this.homeY = newHomeY;}
 
     //txtBox setter
-    public void setEditBox(TextPanel txtPanel){this.txtBox = txtPanel;}
+    public void setEditBox(TextPanel txtPanel){
+	this.txtBox = txtPanel;
+	this.currentEdit = false;
+    }
     
     /*
         newArgument()
@@ -207,47 +211,50 @@ public class CommandBlock extends StackPane {
     }
 
     private void setAsEdit(){
-    txtBox.setEdit(this);
-    this.rect.setStroke(Color.GREEN);
+	txtBox.setEdit(this);
+	this.rect.setStroke(Color.GREEN);
+	this.currentEdit = true;
+	
     }
 
     public void closeEdit(){
-    this.rect.setStroke(Color.LIGHTBLUE);
+	this.rect.setStroke(Color.LIGHTBLUE);
+	this.currentEdit = false;
     }
-
-
-
 
     public void setContextMenu(){
         contextMenu = new ContextMenu();
         deleteBlock = new MenuItem("Delete Command");
-    editBlock = new MenuItem("Edit Command");
+	editBlock = new MenuItem("Edit Command");
 
         //ContextMenu Behavior
         deleteBlock.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-        delete();
-        }
+		delete();
+		if (currentEdit){
+		    txtBox.blockDeleted();
+		}
+	    }
         });
 
-    editBlock.setOnAction(new EventHandler<ActionEvent>(){
-        @Override
-        public void handle(ActionEvent event){
-        setAsEdit();
-        }
-    });
+	editBlock.setOnAction(new EventHandler<ActionEvent>(){
+	    @Override
+	    public void handle(ActionEvent event){
+		setAsEdit();
+	    }
+	});
 
-    //Add blocks to context menu
+	//Add blocks to context menu
         contextMenu.getItems().addAll(deleteBlock, editBlock);
 
-    this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
-            @Override
+	this.rect.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+	    @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
             }
         });
-    this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
+	this.text.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>(){
             @Override
             public void handle(ContextMenuEvent event){
                 contextMenu.show(rect, event.getScreenX(), event.getScreenY());
