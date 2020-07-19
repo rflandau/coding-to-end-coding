@@ -295,10 +295,6 @@ public class ScriptStruct{
             flow.remove(oldIndex);
             flow.add(newIndex, command);
         }
-    
-    
-    
-//         System.out.println(command.getName());
     }
     
     /*
