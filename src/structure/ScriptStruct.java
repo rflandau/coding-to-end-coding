@@ -14,7 +14,6 @@ import java.lang.StringBuilder;
 */
 public class ScriptStruct{
     //variables----------------------------------------------------------------
-    @SuppressWarnings("FieldCanBeLocal")
     private final String        DEFAULTINTERP = "bash"; // default interpreter
     private static final String BREAKSEQ = "---";       // ctecblock delimiter
     public ArrayList<Command>   flow;                   // flowchart commands
@@ -59,7 +58,7 @@ public class ScriptStruct{
         their fields).
     */
     void generateInterpreters(){
-        String path = "../commands/bash.ctecblock";     // default input path
+        String path = "resources/commands/bash.ctecblock";     // default input path
 
         try{
             BufferedReader reader =
@@ -273,15 +272,15 @@ public class ScriptStruct{
         }
         return;
     }
-    
+
     /*
         moveCommand()
         finds command in flow and moves from current location to newIndex
     */
     public void moveCommand(int newIndex, Command command){
         int oldIndex = 0;   // index commanmd is moved from
-        
-        
+
+
         // validate newIndex
         if(0 <= newIndex && newIndex <= getFlowSize()){
             // find oldIndex
@@ -296,7 +295,7 @@ public class ScriptStruct{
             flow.add(newIndex, command);
         }
     }
-    
+
     /*
         setCommandSyntax()
         TODO: finish these comments
