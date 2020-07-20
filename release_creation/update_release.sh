@@ -9,8 +9,8 @@ mkdir ctec_$version
 cd ../
 # compile
 ./compile.sh
-# copy in new binaries and resources
-cp -r classes/* release_creation/ctec_$version/
+# copy in new binaries, resources, and libraries
+cp -r classes/* lib/ release_creation/ctec_$version/
 # move back down to release
 cd release_creation/
 # move constant files in
