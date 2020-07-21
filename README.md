@@ -7,16 +7,11 @@ By default, it supports bash output and a short list of bash commands (see below
 
 **REQUIRES JAVA 11 OR GREATER**
 
-See the releases sidebar for executables. Download, unzip, read README.txt.
+**ONLY SUPPORTED ON LINUX AT THE MOMENT**
 
-Basically, just run the script appropriate to your OS; the scripts will do the rest.
-*Linux: `./run.sh`
-*Windows: Run `run.bat`
+Download the release from the right sidebar, unzip, execute `run.sh`.
 
-None of us have macs, so it is unsupported (and Windows is barely supported, seeing as the outputted bash scripts won't run on windows anyways because it is *Bash*).
-
-
-If you have trouble, try compiling from source (only supported on Linux, see below). If you encounter a bug, please see **Known Bugs** below to see if it is listed.
+Developing on Windows is a nightmare and none of us have Macs, so only Linux is supported. If you get it working on a different operating system, please contact any and all of us. If you encounter a bug, please see **Known Bugs** below to see if it is listed.
 
 ## Compiling From Source
 Both `./compile.sh` and `make` access the included libraries and resources and output to *classes/*.
