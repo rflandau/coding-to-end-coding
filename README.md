@@ -4,6 +4,9 @@ Coding to End Coding (CTEC) is a visual script builder, built to be easy to use 
 By default, it supports bash output and a short list of bash commands (see below). However, it has support for any interpreter and single-line command.
 
 ## Usage
+
+**REQUIRES JAVA 11 OR GREATER**
+
 See the releases sidebar for executables. Download, unzip, read README.txt.
 
 Basically, just run the script appropriate to your OS; the scripts will do the rest.
